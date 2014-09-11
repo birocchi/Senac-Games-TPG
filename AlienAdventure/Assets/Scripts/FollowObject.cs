@@ -12,8 +12,10 @@ public class FollowObject : MonoBehaviour {
 	
 	void FixedUpdate () {
 		//Smoothly follows the object
-		transform.position = new Vector3(Mathf.Clamp(Mathf.SmoothDamp(transform.position.x, followedObject.position.x, ref velocity.x, dampingTime),minLimit.x,maxLimit.x),
-		                                 Mathf.Clamp(Mathf.SmoothDamp(transform.position.y, followedObject.position.y, ref velocity.y, dampingTime),minLimit.y,maxLimit.y),
-		                                 transform.position.z);
+		if(followedObject != null){
+			transform.position = new Vector3(Mathf.Clamp(Mathf.SmoothDamp(transform.position.x, followedObject.position.x, ref velocity.x, dampingTime),minLimit.x,maxLimit.x),
+		    	                             Mathf.Clamp(Mathf.SmoothDamp(transform.position.y, followedObject.position.y, ref velocity.y, dampingTime),minLimit.y,maxLimit.y),
+		        	                         transform.position.z);
+		}
 	}
 }
