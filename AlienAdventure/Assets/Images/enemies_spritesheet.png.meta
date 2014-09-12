@@ -3,13 +3,13 @@ guid: e13f353ad29d8d647b1481389019a564
 TextureImporter:
   fileIDToRecycleName:
     21300000: enemies_spritesheet
-    21300002: enemies_spritesheet_0
+    21300002: enemies_fly_1
     21300004: enemies_spritesheet_1
-    21300006: enemies_spritesheet_2
+    21300006: enemies_fly_dead
     21300008: enemies_spritesheet_3
     21300010: enemies_spritesheet_4
     21300012: enemies_spritesheet_5
-    21300014: enemies_spritesheet_6
+    21300014: enemies_fly_2
     21300016: enemies_spritesheet_7
     21300018: enemies_spritesheet_8
     21300020: enemies_spritesheet_9
@@ -62,7 +62,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: enemies_spritesheet_0
+    - name: enemies_fly_1
       rect:
         serializedVersion: 2
         x: 0
@@ -82,7 +82,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: enemies_spritesheet_2
+    - name: enemies_fly_dead
       rect:
         serializedVersion: 2
         x: 143
@@ -122,7 +122,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: enemies_spritesheet_6
+    - name: enemies_fly_2
       rect:
         serializedVersion: 2
         x: 0
