@@ -1,38 +1,37 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class HeartController : MonoBehaviour {
 
 	public int heartNumber;
 	
-	public Sprite fullHeartSprite;
-	public Sprite halfHeartSprite;
-	public Sprite emptyHeartSprite;
+	public Texture2D fullHeartSprite;
+	public Texture2D halfHeartSprite;
+	public Texture2D emptyHeartSprite;
 
-	private Sprite actualSprite;
+	private Texture2D actualSprite;
 	private int fullHeart;
 	private int halfHeart;
 	private LifeManager lifeManager;
-	private Image image;
+	private GUITexture image;
 
 	// Use this for initialization
 	void Start () {
 		fullHeart = heartNumber * 2;
 		halfHeart = fullHeart - 1;
 		lifeManager = GameObject.Find("GameManager").GetComponent<LifeManager>();
-		image = GetComponent<Image>();
+		image = GetComponent<GUITexture>();
 		actualSprite = fullHeartSprite;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(lifeManager.ActualLife == fullHeart && !actualSprite.Equals(fullHeartSprite)){
-			image.sprite = fullHeartSprite;
+			image.texture = fullHeartSprite;
 		} else if(lifeManager.ActualLife == halfHeart && !actualSprite.Equals(halfHeartSprite)){
-			image.sprite = halfHeartSprite;
+			image.texture = halfHeartSprite;
 		} else if(lifeManager.ActualLife < halfHeart && !actualSprite.Equals(emptyHeartSprite)){
-			image.sprite = emptyHeartSprite;
+			image.texture = emptyHeartSprite;
 		}
 	}
 }
