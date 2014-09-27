@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour {
 			transform.eulerAngles = new Vector3(0,0,0);
 		}
 
-		if(!isHurt){
+		if(!isHurt && Mathf.Abs(horizontalMove) > 0){
 			//Move the player
 			rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
 		}
