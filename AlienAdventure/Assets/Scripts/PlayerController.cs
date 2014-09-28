@@ -53,17 +53,11 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D other){
+	public void HurtPlayer(int damage){
 		if(!isHurt){
-			if(other.gameObject.tag == "Enemy" && other.contacts[0].normal.y < 0.8){
-				lifeManager.LifeDown(1);
-				rigidbody2D.velocity = Vector2.zero;
-				rigidbody2D.AddForce((other.contacts[0].normal + Vector2.up) * 100);
-				ouchSound.Play();
-				if(!isHurt){
-					StartCoroutine(StunPlayer(0.5f));
-				}
-			}
+			lifeManager.LifeDown(damage);
+			ouchSound.Play();
+			StartCoroutine(StunPlayer(0.8f));
 		}
 	}
 

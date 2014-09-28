@@ -6,6 +6,7 @@ public class EnemyController: MonoBehaviour {
 	enum Direction {left = -1, right = 1};
 	
 	public int scoreValue;
+	public int damage;
 	public float speed;
 	public float minWalkLimit;
 	public float maxWalkLimit;
@@ -42,15 +43,24 @@ public class EnemyController: MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
-		if(other.gameObject.tag == "Player" && other.contacts[0].normal.y < -0.8){
-			other.rigidbody.velocity += Vector2.up * 5;
-			Physics2D.IgnoreCollision (other.collider, this.collider2D);
-			audio.Play();
-			dead = true;
-			speed = 0;
-			animator.SetBool("Dead", true);
-			scoreManager.AddScore(scoreValue);
-			Destroy(gameObject,2);
+		if(other.gameObject.tag == "Player"){
+			if(other.contacts[0].normal.y < -0.8){
+				other.rigidbody.velocity += Vector2.up * 5;
+				Physics2D.IgnoreCollision (other.collider, this.collider2D);
+				audio.Play();
+				dead = true;
+				speed = 0;
+				animator.SetBool("Dead", true);
+				scoreManager.AddScore(scoreValue);
+				Destroy(gameObject,2);
+			}
+			else {
+
+				other.rigidbody.velocity = (-other.contacts[0].normal + Vector2.up) * 3;
+				//rigidbody2D.AddForce((other.contacts[0].normal + Vector2.up) * 100);
+				other.gameObject.GetComponent<PlayerController>().HurtPlayer(damage);
+
+			}
 		}
 	}
 	
