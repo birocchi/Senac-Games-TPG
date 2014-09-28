@@ -47,20 +47,22 @@ public class PlayerController : MonoBehaviour {
 			transform.eulerAngles = new Vector3(0,0,0);
 		}
 
-		if(!isHurt && Mathf.Abs(horizontalMove) > 0){
+		if(!isHurt){
 			//Move the player
 			rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
-		if(other.gameObject.tag == "Enemy" && other.contacts[0].normal.y < 0.9){
-			lifeManager.LifeDown(1);
-			rigidbody2D.velocity = Vector2.zero;
-			rigidbody2D.AddForce((other.contacts[0].normal + Vector2.up) * 100);
-			ouchSound.Play();
-			if(!isHurt){
-				StartCoroutine(StunPlayer(0.5f));
+		if(!isHurt){
+			if(other.gameObject.tag == "Enemy" && other.contacts[0].normal.y < 0.8){
+				lifeManager.LifeDown(1);
+				rigidbody2D.velocity = Vector2.zero;
+				rigidbody2D.AddForce((other.contacts[0].normal + Vector2.up) * 100);
+				ouchSound.Play();
+				if(!isHurt){
+					StartCoroutine(StunPlayer(0.5f));
+				}
 			}
 		}
 	}

@@ -5,6 +5,7 @@ public class EnemyController: MonoBehaviour {
 	
 	enum Direction {left = -1, right = 1};
 	
+	public int scoreValue;
 	public float speed;
 	public float minWalkLimit;
 	public float maxWalkLimit;
@@ -37,19 +38,19 @@ public class EnemyController: MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		rigidbody2D.velocity = new Vector2((int)direction * speed,rigidbody2D.velocity.y);
+		rigidbody2D.velocity = new Vector2((int)direction * speed, rigidbody2D.velocity.y);
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
 		if(other.gameObject.tag == "Player" && other.contacts[0].normal.y < -0.8){
+			other.rigidbody.velocity += Vector2.up * 5;
 			Physics2D.IgnoreCollision (other.collider, this.collider2D);
-			if(!dead)
-				audio.Play();
+			audio.Play();
 			dead = true;
 			speed = 0;
 			animator.SetBool("Dead", true);
-			scoreManager.AddScore(50);
-			Destroy(gameObject,5);
+			scoreManager.AddScore(scoreValue);
+			Destroy(gameObject,2);
 		}
 	}
 	
