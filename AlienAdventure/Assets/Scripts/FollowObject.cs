@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class FollowObject : MonoBehaviour {
-	//Variáveis públicas
+
 	public Transform followedObject;
 	public float dampingTime;
 	public Vector2 minLimit = new Vector2(1,1);
