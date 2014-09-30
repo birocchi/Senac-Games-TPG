@@ -57,7 +57,6 @@ public class EnemyController: MonoBehaviour {
 			else {
 
 				other.rigidbody.velocity = (-other.contacts[0].normal + Vector2.up) * 3;
-				//rigidbody2D.AddForce((other.contacts[0].normal + Vector2.up) * 100);
 				other.gameObject.GetComponent<PlayerController>().HurtPlayer(damage);
 
 			}
