@@ -83,13 +83,19 @@ namespace Char.Controller
         }
 		
 		public bool IsGrounded() {
+			/* 
+			Esse codigo nao entende quando o jogador esta em cima da platforma como grounded.
+			A animacao de caminhada continuava por conta propria.
+
 			BoxCollider2D boxCollider2D = (BoxCollider2D) this.collider2D;
 			RaycastHit2D hit = Physics2D.Raycast((new Vector2(this.transform.position.x + boxCollider2D.center.x - boxCollider2D.size.x * this.transform.localScale.x / 2, 
 			                                                  this.transform.position.y + boxCollider2D.center.y - boxCollider2D.size.y * this.transform.localScale.y / 2 - 0.025f)), 
 			                                     Vector2.right, boxCollider2D.size.x * this.transform.localScale.x, 1 << 8 | 1 << 9); 
-			return hit.collider != null;
+            */
+			RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up);
+			Boolean isGrounded = hit.collider != null;
+			Debug.Log ("Is Grounded: " + isGrounded.ToString());
+			return isGrounded;
 		}
-		
 	}
 }
-

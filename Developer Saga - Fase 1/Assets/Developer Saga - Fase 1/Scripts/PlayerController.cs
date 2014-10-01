@@ -3,8 +3,8 @@ using System.Collections;
 using Char.Controller;
 
 public class PlayerController : MonoBehaviour {
-
 	private CharController charController;
+	public float horizontalSpeed;
 
 	// Use this for initialization
 	void Awake () {
@@ -23,10 +23,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnLeft() {
-		charController.SetHorizontalSpeed(-5f);
+		charController.SetHorizontalSpeed(-horizontalSpeed);
 	}
 	void OnRight() {
-		charController.SetHorizontalSpeed(5f);
+		charController.SetHorizontalSpeed(horizontalSpeed);
 	}
 
 	void OnCenter() {
