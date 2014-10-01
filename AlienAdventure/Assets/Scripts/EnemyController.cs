@@ -45,7 +45,7 @@ public class EnemyController: MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other){
 		if(other.gameObject.tag == "Player"){
 			if(other.contacts[0].normal.y < -0.8){
-				other.rigidbody.velocity += Vector2.up * 5;
+				other.rigidbody.velocity = new Vector2(other.rigidbody.velocity.x, 5);
 				Physics2D.IgnoreCollision (other.collider, this.collider2D);
 				audio.Play();
 				dead = true;
