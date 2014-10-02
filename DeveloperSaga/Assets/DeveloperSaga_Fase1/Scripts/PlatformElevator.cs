@@ -6,10 +6,15 @@ public class PlatformElevator : MonoBehaviour {
 	private bool goUp;
 	private float initialPosition;
 	public float maxPosition;
+	public bool moveSideways;
 	
 	// Use this for initialization
 	void Start () {
-		initialPosition = transform.position.y;
+		if (moveSideways) {
+			initialPosition = transform.position.x;
+		} else {
+			initialPosition = transform.position.y;
+		}
 		if (maxPosition == 0) {
 			maxPosition = initialPosition + 5;
 		}
@@ -22,11 +27,18 @@ public class PlatformElevator : MonoBehaviour {
 	
 	void FixedUpdate () {
 		bool startPoint = false;
-		
-		if(this.transform.position.y >= maxPosition) {
+
+		float currentPosition;
+		if (moveSideways) {
+			currentPosition = this.transform.position.x;
+		} else {
+			currentPosition = this.transform.position.y;
+		}
+
+		if(currentPosition >= maxPosition) {
 			goUp = false;
 		}
-		if (this.transform.position.y <= initialPosition) {
+		if (currentPosition <= initialPosition) {
 			goUp = true;
 			startPoint = true;
 		}
@@ -36,9 +48,17 @@ public class PlatformElevator : MonoBehaviour {
 		}
 		
 		if (goUp == false) {
-			this.transform.Translate (0, -0.05f, 0);
+			if(moveSideways) {
+				this.transform.Translate (-0.05f, 0, 0);
+			} else {
+				this.transform.Translate (0, -0.05f, 0);
+			}
 		} else {
-			this.transform.Translate (0, 0.05f, 0);
+			if(moveSideways) {
+				this.transform.Translate (0.05f, 0, 0);
+			} else {
+				this.transform.Translate (0, 0.05f, 0);
+			}
 		}
 	}
 	
