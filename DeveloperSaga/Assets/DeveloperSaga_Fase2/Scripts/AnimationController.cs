@@ -14,15 +14,9 @@ public class AnimationController : MonoBehaviour {
 
 	void Update () {
 		animator.SetFloat("Speed", Mathf.Abs(playerController.rigidbody2D.velocity.x));
-		if(!playerController.isGrounded){
-			animator.SetBool("Jump",true);
-		}else{
-			animator.SetBool("Jump",false);
-		}
-		if(playerController.isHurt){
-			animator.SetBool("Hurt",true);
-		}else{
-			animator.SetBool("Hurt",false);
-		}
+		animator.SetFloat("HorizontalMove", Mathf.Abs(playerController.horizontalMove));
+		animator.SetBool("Jump", playerController.isGrounded ? false : true);
+		animator.SetBool("Hurt", playerController.isHurt ? true : false);
+		animator.SetBool("OnMovingPlatform", playerController.movingPlatform != null ? true : false);
 	}
 }

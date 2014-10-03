@@ -7,14 +7,20 @@ public class PlayerController_Fase2 : MonoBehaviour {
 	public float jumpForce;
 	public AudioSource ouchSound;
 
+	//Used by the AnimationController
 	[HideInInspector]
 	public bool isGrounded;
 	[HideInInspector]
 	public bool isHurt;
+	[HideInInspector]
+	public Rigidbody2D movingPlatform;
+	[HideInInspector]
+	public float horizontalMove;
 
-	float horizontalMove;
-	LifeManager lifeManager;
-	Transform groundCheck;
+	private LifeManager lifeManager;
+	private Transform groundCheck;
+	private bool jumpPressed;
+
 	
 	void Awake () {
 		//Set up references
@@ -31,6 +37,7 @@ public class PlayerController_Fase2 : MonoBehaviour {
 
 		//Jump if is grounded
 		if(Input.GetButtonDown("Jump") && isGrounded ){
+			jumpPressed = true;
 			rigidbody2D.velocity = new Vector2(horizontalMove * speed, Mathf.Abs(jumpForce));
 			audio.Play();
 		}
@@ -48,8 +55,33 @@ public class PlayerController_Fase2 : MonoBehaviour {
 		}
 
 		if(!isHurt){
-			//Move the player
-			rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
+			if(movingPlatform != null){
+				float speedSwitch = jumpPressed ? rigidbody2D.velocity.y : movingPlatform.velocity.y;
+				rigidbody2D.velocity = new Vector2((horizontalMove * speed) + movingPlatform.velocity.x, speedSwitch);
+			} else{
+				//Move the player
+				rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
+			}
+
+		}
+	}
+
+	void OnCollisionEnter2D(Collision2D other) {
+		if(other.gameObject.tag == "MovingPlatform" && other.contacts[0].normal.y >= 0.9){
+			movingPlatform = other.rigidbody;
+			jumpPressed = false;
+		}
+	}
+
+	void OnCollisionStay2D(Collision2D other) {
+		if(other.gameObject.tag == "MovingPlatform" && other.contacts[0].normal.y < 0.9){
+			movingPlatform = null;
+		}
+	}
+
+	void OnCollisionExit2D(Collision2D other) {
+		if(other.gameObject.tag == "MovingPlatform"){
+			movingPlatform = null;
 		}
 	}
 
