@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Char.Controller;
 
+[RequireComponent(typeof(PlayerController))]
 public class PlayerController_Fase1: MonoBehaviour {
-	private CharController charController;
+	private PlayerController playerController;
 	public float horizontalSpeed;
 
 	// Use this for initialization
 	void Awake () {
-		charController = GetComponent<CharController>();
+		playerController = GetComponent<PlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -17,21 +17,21 @@ public class PlayerController_Fase1: MonoBehaviour {
 	}
 
 	void OnJumpDown() {
-		if(charController.IsGrounded()) {
-			charController.Jump();
+		if(playerController.IsGrounded()) {
+			playerController.Jump();
 		}
 	}
 
 	void OnLeft() {
-		charController.SetHorizontalSpeed(-horizontalSpeed);
+		playerController.SetHorizontalSpeed(-horizontalSpeed);
 	}
 	void OnRight() {
-		charController.SetHorizontalSpeed(horizontalSpeed);
+		playerController.SetHorizontalSpeed(horizontalSpeed);
 	}
 
 	void OnCenter() {
-		if(charController.IsGrounded()) {
-			charController.SetHorizontalSpeed(0);
+		if(playerController.IsGrounded()) {
+			playerController.SetHorizontalSpeed(0);
 		}
 	}
 }

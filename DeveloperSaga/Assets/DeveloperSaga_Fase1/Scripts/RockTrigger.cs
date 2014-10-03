@@ -9,7 +9,9 @@ public class RockTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		Debug.Log ("Soltar Pedra!");
-		this.ReleaseRock();
+		if (other.tag.Equals ("Player")) {
+			Debug.Log ("Soltar Pedra!");
+			this.ReleaseRock ();
+		}
 	}
 }
