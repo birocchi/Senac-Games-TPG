@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: df7650c6d5b23c74c8d304478f6ba386
+guid: 0437b00c07fff904fa284a830af9e077
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Door
+    21300000: Stage Background A
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -22,10 +22,10 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
-  maxTextureSize: 1024
+  textureFormat: -3
+  maxTextureSize: 4096
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 1
     mipBias: -1
     wrapMode: 1
@@ -38,14 +38,10 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 10
   alphaIsTransparency: 1
   textureType: 8
-  buildTargetSettings:
-  - buildTarget: iPhone
-    maxTextureSize: 1024
-    textureFormat: -2
-    compressionQuality: 50
+  buildTargetSettings: []
   spriteSheet:
     sprites: []
   spritePackingTag: 

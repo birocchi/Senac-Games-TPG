@@ -1,13 +1,17 @@
 fileFormatVersion: 2
-guid: a664c0b3024481e42ab271f05633b104
+guid: 5a59bcaf7f3618e4d8ddb6ffb5757d98
 TextureImporter:
   fileIDToRecycleName:
     21300000: SPRITESHEET-8B-RUN
-    21300002: Player Run
-    21300004: Player Run_0
-    21300006: Player Run_1
-    21300008: Player Run_2
-    21300010: Player Run_3
+    21300002: SPRITESHEET-8B-RUN_0
+    21300004: SPRITESHEET-8B-RUN_1
+    21300006: SPRITESHEET-8B-RUN_2
+    21300008: SPRITESHEET-8B-RUN_3
+    21300010: Player Run
+    21300012: Player Run_0
+    21300014: Player Run_1
+    21300016: Player Run_2
+    21300018: Player Run_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -27,10 +31,10 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
-  maxTextureSize: 1024
+  textureFormat: -3
+  maxTextureSize: 4096
   textureSettings:
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: -1
     wrapMode: 1
@@ -43,7 +47,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 10
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -54,38 +58,38 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Run_1
       rect:
         serializedVersion: 2
-        x: 200
+        x: 10
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Run_2
       rect:
         serializedVersion: 2
-        x: 400
+        x: 20
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Run_3
       rect:
         serializedVersion: 2
-        x: 600
+        x: 30
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

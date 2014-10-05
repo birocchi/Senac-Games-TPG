@@ -1,9 +1,8 @@
 fileFormatVersion: 2
-guid: 06ab573873e17d44c95b17b13dcea56e
+guid: a83a7236a86c2c44c83ce2c5bd58b03e
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Platform1
-    21300002: Platform
+    21300000: Stage Ground A2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -24,9 +23,9 @@ TextureImporter:
   generateCubemap: 0
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 1024
+  maxTextureSize: 4096
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 1
     mipBias: -1
     wrapMode: 1
@@ -39,14 +38,10 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 10
   alphaIsTransparency: 1
   textureType: 8
-  buildTargetSettings:
-  - buildTarget: iPhone
-    maxTextureSize: 1024
-    textureFormat: -2
-    compressionQuality: 50
+  buildTargetSettings: []
   spriteSheet:
     sprites: []
   spritePackingTag: 

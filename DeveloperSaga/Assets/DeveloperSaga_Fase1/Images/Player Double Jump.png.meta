@@ -1,18 +1,27 @@
 fileFormatVersion: 2
-guid: 43c94117bea30a94dad0599b96c5c4f4
+guid: 5d38f3c0c328e7c418d03b600ea7b127
 TextureImporter:
   fileIDToRecycleName:
     21300000: SPRITESHEET-8B-DJUMP
-    21300002: Player Double Jump
-    21300004: Player Double Jump_0
-    21300006: Player Double Jump_1
-    21300008: Player Double Jump_2
-    21300010: Player Double Jump_3
-    21300012: Player Double Jump_4
-    21300014: Player Double Jump_5
-    21300016: Player Double Jump_6
-    21300018: Player Double Jump_7
-    21300020: Player Double Jump_8
+    21300002: SPRITESHEET-8B-DJUMP_0
+    21300004: SPRITESHEET-8B-DJUMP_1
+    21300006: SPRITESHEET-8B-DJUMP_2
+    21300008: SPRITESHEET-8B-DJUMP_3
+    21300010: SPRITESHEET-8B-DJUMP_4
+    21300012: SPRITESHEET-8B-DJUMP_5
+    21300014: SPRITESHEET-8B-DJUMP_6
+    21300016: SPRITESHEET-8B-DJUMP_7
+    21300018: SPRITESHEET-8B-DJUMP_8
+    21300020: Player Double Jump
+    21300022: Player Double Jump_0
+    21300024: Player Double Jump_1
+    21300026: Player Double Jump_2
+    21300028: Player Double Jump_3
+    21300030: Player Double Jump_4
+    21300032: Player Double Jump_5
+    21300034: Player Double Jump_6
+    21300036: Player Double Jump_7
+    21300038: Player Double Jump_8
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -32,10 +41,10 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
-  maxTextureSize: 1024
+  textureFormat: -3
+  maxTextureSize: 4096
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 1
     mipBias: -1
     wrapMode: 1
@@ -48,7 +57,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 10
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -59,88 +68,88 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_1
       rect:
         serializedVersion: 2
-        x: 200
+        x: 10
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_2
       rect:
         serializedVersion: 2
-        x: 400
+        x: 20
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_3
       rect:
         serializedVersion: 2
-        x: 600
+        x: 30
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_4
       rect:
         serializedVersion: 2
-        x: 800
+        x: 40
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_5
       rect:
         serializedVersion: 2
-        x: 1000
+        x: 50
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_6
       rect:
         serializedVersion: 2
-        x: 1200
+        x: 60
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_7
       rect:
         serializedVersion: 2
-        x: 1400
+        x: 70
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Player Double Jump_8
       rect:
         serializedVersion: 2
-        x: 1600
+        x: 80
         y: 0
-        width: 200
-        height: 250
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

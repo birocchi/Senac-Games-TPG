@@ -1,20 +1,16 @@
 fileFormatVersion: 2
-guid: 38aca6f7d941a654181826ff56f4929b
+guid: 2b44cf82b4741a14fbf41e9aa5c86b4b
 TextureImporter:
   fileIDToRecycleName:
-    21300000: SPRITESHEET-8B-JUMP
-    21300002: SPRITESHEET-8B-JUMP_0
-    21300004: SPRITESHEET-8B-JUMP_1
-    21300006: SPRITESHEET-8B-JUMP_2
-    21300008: SPRITESHEET-8B-JUMP_3
-    21300010: SPRITESHEET-8B-JUMP_4
-    21300012: SPRITESHEET-8B-JUMP_5
-    21300014: Player Jump_0
-    21300016: Player Jump_1
-    21300018: Player Jump_2
-    21300020: Player Jump_3
-    21300022: Player Jump_4
-    21300024: Player Jump_5
+    21300000: SPRITESHEET-8B-FLAME
+    21300002: SPRITESHEET-8B-FLAME_0
+    21300004: SPRITESHEET-8B-FLAME_1
+    21300006: SPRITESHEET-8B-FLAME_2
+    21300008: SPRITESHEET-8B-FLAME_3
+    21300010: Stage Flame_0
+    21300012: Stage Flame_1
+    21300014: Stage Flame_2
+    21300016: Stage Flame_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,63 +52,43 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Player Jump_0
+    - name: Stage Flame_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 10
-        height: 12
+        height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Player Jump_1
+    - name: Stage Flame_1
       rect:
         serializedVersion: 2
         x: 10
         y: 0
         width: 10
-        height: 12
+        height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Player Jump_2
+    - name: Stage Flame_2
       rect:
         serializedVersion: 2
         x: 20
         y: 0
         width: 10
-        height: 12
+        height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Player Jump_3
+    - name: Stage Flame_3
       rect:
         serializedVersion: 2
         x: 30
         y: 0
         width: 10
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Player Jump_4
-      rect:
-        serializedVersion: 2
-        x: 40
-        y: 0
-        width: 10
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Player Jump_5
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 0
-        width: 10
-        height: 12
+        height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
