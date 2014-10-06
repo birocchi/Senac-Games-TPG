@@ -5,6 +5,7 @@ public class MovingPlatform : MonoBehaviour {
 
 	public Transform destination;
 	public float speed = 1;
+	public float waitingTime = 1;
 
 	private Vector3 initialPosition;
 	private Vector3 finalPosition;
@@ -20,24 +21,29 @@ public class MovingPlatform : MonoBehaviour {
 
 	void FixedUpdate() {
 
-		if(Vector3.Distance(transform.position, finalPosition) > 0.01f){
+		//Move if it is not in the final position
+		if(Vector3.Distance(transform.position, finalPosition) > 0.05f){
 			rigidbody2D.velocity = movingDirection * speed;
 		}
+		//If not already waiting, stops and wait for some seconds
 		else if(!waiting){
 			rigidbody2D.velocity = Vector2.zero;
-			StartCoroutine(ChangeDirection(1));
+			StartCoroutine(ChangeDirection(waitingTime));
 		}
 	}
 
 	IEnumerator ChangeDirection(float seconds){
 		waiting = true;
 
+		//Wait for some seconds
 		yield return new WaitForSeconds(seconds);
 
+		//Swap the initial and final positions
 		Vector3 tempSwap = finalPosition;
 		finalPosition = initialPosition;
 		initialPosition = tempSwap;
 
+		//Invert the movind direction
 		movingDirection = -movingDirection;
 
 		waiting = false;
