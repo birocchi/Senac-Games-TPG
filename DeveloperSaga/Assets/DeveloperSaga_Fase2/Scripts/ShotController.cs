@@ -27,8 +27,12 @@ public class ShotController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
-		if(!other.gameObject.tag.Equals("Player")){
-			Destroy(gameObject);
+
+		if(other.gameObject.tag.Equals("Enemy") && this.gameObject.tag.Equals("PlayerShot")){
+			other.gameObject.GetComponent<EnemyController>().Die();
 		}
+
+		Destroy(gameObject);
+
 	}
 }

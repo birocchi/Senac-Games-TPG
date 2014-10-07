@@ -18,7 +18,7 @@ public class ShootingScript : MonoBehaviour {
 	}
 
 	void Update () {
-		if(Input.GetButton("Fire1") && elapsedTime >= fireInterval){
+		if(Input.GetButtonDown("Fire1") && elapsedTime >= fireInterval){
 			shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
 			shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right );
 			Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
