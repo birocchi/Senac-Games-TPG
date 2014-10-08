@@ -9,7 +9,7 @@ public class HeartController : MonoBehaviour {
 	public Texture2D halfHeartSprite;
 	public Texture2D emptyHeartSprite;
 
-	private Texture2D actualSprite;
+	//private Texture2D actualSprite;
 	private int fullHeart;
 	private int halfHeart;
 	private LifeManager lifeManager;
@@ -21,16 +21,16 @@ public class HeartController : MonoBehaviour {
 		halfHeart = fullHeart - 1;
 		lifeManager = GameObject.Find("GameManager").GetComponent<LifeManager>();
 		image = GetComponent<GUITexture>();
-		actualSprite = fullHeartSprite;
+		image.texture = fullHeartSprite;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(lifeManager.ActualLife == fullHeart && !actualSprite.Equals(fullHeartSprite)){
+		if(lifeManager.ActualLife >= fullHeart && !image.texture.Equals(fullHeartSprite)){
 			image.texture = fullHeartSprite;
-		} else if(lifeManager.ActualLife == halfHeart && !actualSprite.Equals(halfHeartSprite)){
+		} else if(lifeManager.ActualLife == halfHeart && !image.texture.Equals(halfHeartSprite)){
 			image.texture = halfHeartSprite;
-		} else if(lifeManager.ActualLife < halfHeart && !actualSprite.Equals(emptyHeartSprite)){
+		} else if(lifeManager.ActualLife < halfHeart && !image.texture.Equals(emptyHeartSprite)){
 			image.texture = emptyHeartSprite;
 		}
 	}

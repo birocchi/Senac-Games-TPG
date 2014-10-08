@@ -4,7 +4,7 @@ using System.Collections;
 public class FollowObject : MonoBehaviour {
 
 	public Transform followedObject;
-	public float dampingTime;
+	public float dampingTime = 0.25f;
 	public Vector2 minLimit = new Vector2(1,1);
 	public Vector2 maxLimit = new Vector2(26,26);
 

@@ -11,7 +11,6 @@ public class EnemyController: MonoBehaviour {
 	public Vector2 minLimit = new Vector2(-1,-1);
 	public Vector2 maxLimit = new Vector2(1,1);
 	public Vector2 initialDirection;
-	public Sprite deathSprite;
 
 	ScoreManager scoreManager;
 	Vector2 initialPosition;
