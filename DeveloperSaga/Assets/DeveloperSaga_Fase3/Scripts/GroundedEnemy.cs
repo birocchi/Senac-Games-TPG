@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovingEnemy : MonoBehaviour
+public class GroundedEnemy : MonoBehaviour
 {
 		
 		public Transform ponto;
@@ -30,18 +30,14 @@ public class MovingEnemy : MonoBehaviour
 										this.transform.Translate (new Vector3 (0, 0, 0.25f));								
 								}
 
-								if (player.position.y + 30f > transform.position.y) {
-										this.transform.Translate (new Vector3 (0, 0.25f, 0));								
-								}
-
-								Quaternion rotation = Quaternion.LookRotation (new Vector3 (player.position.x, player.position.y + 10f, player.position.z) - transform.position);
+								Quaternion rotation = Quaternion.LookRotation (player.position - transform.position);
 								transform.rotation = Quaternion.Slerp (transform.rotation, rotation, Time.deltaTime * 2f);
 
 								if (!isShooting) {
 										GameObject instance = (GameObject)Instantiate (bullet, ponto.position, ponto.rotation);
 										BulletController cont = (BulletController)instance.GetComponent <BulletController> ();
 										cont.damage = 1f;
-										instance.rigidbody.velocity = ponto.up * -100;
+										instance.rigidbody.velocity = ponto.up * 100f;
 										Destroy (instance, 5f);
 										StartCoroutine (WaitToFireAgain ());
 								}
@@ -62,7 +58,7 @@ public class MovingEnemy : MonoBehaviour
 		IEnumerator WaitToFireAgain ()
 		{
 				isShooting = true;
-				yield return new WaitForSeconds (1f);
+				yield return new WaitForSeconds (2f);
 				isShooting = false;
 
 		}		

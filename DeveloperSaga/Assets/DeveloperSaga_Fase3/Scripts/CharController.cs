@@ -122,40 +122,35 @@ public class CharController : MonoBehaviour
 	 
 		void OnControllerColliderHit (ControllerColliderHit hit)
 		{
-				Debug.Log ("Collision hit: " + hit.gameObject.tag);
-				if (hit.collider.gameObject.tag.Equals ("Enemy") || hit.collider.gameObject.tag.Equals ("Bullet") && Time.timeScale >= 0.75f) {
-						if (!invincible) {
-								Player.energia -= 0.5f;
-								StartCoroutine (CollideFlash ());
-						}
-				}
 				if (hit.collider.gameObject.tag.Equals ("Coin")) {	
 						hit.collider.gameObject.SendMessage ("GetCoin", SendMessageOptions.DontRequireReceiver);
 				}
-				if (hit.collider.gameObject.tag.Equals ("MovingEnemy")) {	
-						
+				if (hit.collider.gameObject.tag.Equals ("EnemyArea")) {			
 						hit.collider.gameObject.SendMessage ("PlayerNear");
 				}
-
+				if (hit.collider.gameObject.tag.Equals ("StaticEnemy")) {	
+			
+						DoDamage (0.25f);
+				}
 		}
 
 		void OnTriggerEnter (Collider trigger)
-		{
-				if (trigger.collider.gameObject.tag.Equals ("Enemy") || trigger.collider.gameObject.tag.Equals ("Bullet") && Time.timeScale >= 0.75f) {
-						if (!invincible) {
-								Player.energia -= 0.5f;
-								StartCoroutine (CollideFlash ());
-						}
-				}
+		{				
 				if (trigger.collider.gameObject.tag.Equals ("Coin")) {	
 						SendMessage ("GetCoin", SendMessageOptions.DontRequireReceiver);
 						trigger.collider.gameObject.SendMessage ("GetCoin", SendMessageOptions.DontRequireReceiver);
 				}
-				if (trigger.collider.gameObject.tag.Equals ("MovingEnemy")) {
-						
-						trigger.collider.gameObject.SendMessage ("PlayerNear");
+				if (trigger.gameObject.tag.Equals ("EnemyArea")) {	
+			
+						trigger.gameObject.SendMessage ("PlayerNear");
+				}
+				if (trigger.gameObject.tag.Equals ("StaticEnemy")) {	
+			
+						DoDamage (0.25f);
 				}
 		}
+
+		
 	
 		IEnumerator CollideFlash ()
 		{		
@@ -193,5 +188,14 @@ public class CharController : MonoBehaviour
 				obj.audio.pitch = pitch;
 				obj.audio.PlayOneShot (clip, volume);
 				Destroy (obj, clip.length / pitch);
+		}
+	
+		public void DoDamage (float damage)
+		{
+				if (!invincible) {
+						Player.energia -= damage;
+						invincible = true;
+						StartCoroutine (CollideFlash ());
+				}
 		}
 }

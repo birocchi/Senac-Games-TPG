@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovingEnemy : MonoBehaviour
+public class HoverEnemy : MonoBehaviour
 {
 		
 		public Transform ponto;
@@ -19,23 +19,28 @@ public class MovingEnemy : MonoBehaviour
 		{
 	
 		}
-	
+	 
 		// Update is called once per frame
 		void Update ()
 		{	
 				if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 						if (playerNear) {
 						
-								if (player.position.x <= transform.position.x - 40f || player.position.x > transform.position.x + 40f) {
-										this.transform.Translate (new Vector3 (0, 0, 0.25f));								
+								if (player.position.x < transform.position.x) {
+										this.transform.Translate (new Vector3 (-0.25f, 0, 0));								
+								}
+
+								if (player.position.x > transform.position.x) {
+										this.transform.Translate (new Vector3 (0.25f, 0, 0));								
 								}
 
 								if (player.position.y + 30f > transform.position.y) {
 										this.transform.Translate (new Vector3 (0, 0.25f, 0));								
 								}
 
-								Quaternion rotation = Quaternion.LookRotation (new Vector3 (player.position.x, player.position.y + 10f, player.position.z) - transform.position);
-								transform.rotation = Quaternion.Slerp (transform.rotation, rotation, Time.deltaTime * 2f);
+								if (player.position.y + 30f < transform.position.y) {
+										this.transform.Translate (new Vector3 (0, -0.25f, 0));								
+								}
 
 								if (!isShooting) {
 										GameObject instance = (GameObject)Instantiate (bullet, ponto.position, ponto.rotation);
