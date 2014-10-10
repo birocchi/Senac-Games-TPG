@@ -24,16 +24,18 @@ public class WeaponController : MonoBehaviour
 		// Update is called once per frame
 		void  Update ()
 		{
-				
-				if (Input.GetButtonDown ("Fire1")) {
-						Shot ();
+				if (Time.timeScale > 0.75) {
+						if (Input.GetButtonDown ("Fire1")) {
+								Shot ();
+						}
 				}
-				
 		}
 
 		void Shot ()
 		{
 				GameObject instance = (GameObject)Instantiate (bullet, pontoMira.position, pontoMira.rotation);
+				BulletController bc = instance.GetComponent<BulletController> ();
+				bc.damage = 1f;
 				instance.rigidbody.velocity = pontoMira.up * -100;
 				Destroy (instance, 10f);
 		}
@@ -44,16 +46,18 @@ public class WeaponController : MonoBehaviour
 
 				if (animator != null && pontoAtivo != null) {
 						if (Input.GetButton ("Fire1")) {
-								if (Input.GetAxis ("Vertical") > 0 && Input.GetAxis ("Horizontal") == 0f) {
-										pontoAtivo = pontoArmaCima;	
-								} else if (Input.GetAxis ("Vertical") > 0 && Input.GetAxis ("Horizontal") != 0f) {
-										pontoAtivo = pontoArmaDiagonal;
-								} else if (Input.GetAxis ("Vertical") <= 0) {
-										pontoAtivo = pontoArmaFrente;
-								}
-								weight += 0.1f;
-								if (weight >= 10f) {
-										weight = 1f;
+								if (Time.timeScale > 0.75) {
+										if (Input.GetAxis ("Vertical") > 0 && Input.GetAxis ("Horizontal") == 0f) {
+												pontoAtivo = pontoArmaCima;	
+										} else if (Input.GetAxis ("Vertical") > 0 && Input.GetAxis ("Horizontal") != 0f) {
+												pontoAtivo = pontoArmaDiagonal;
+										} else if (Input.GetAxis ("Vertical") <= 0) {
+												pontoAtivo = pontoArmaFrente;
+										}
+										weight += 0.1f;
+										if (weight >= 10f) {
+												weight = 1f;
+										}
 								}
 						} else {
 								
@@ -63,7 +67,7 @@ public class WeaponController : MonoBehaviour
 										weight = 0f;
 								}
 						}
-
+						
 						
 				
 						animator.SetIKPositionWeight (AvatarIKGoal.RightHand, 1f);
@@ -75,5 +79,6 @@ public class WeaponController : MonoBehaviour
 								animator.SetIKRotation (AvatarIKGoal.RightHand, pontoAtivo.rotation);
 						}
 				}
+				
 		}
 }

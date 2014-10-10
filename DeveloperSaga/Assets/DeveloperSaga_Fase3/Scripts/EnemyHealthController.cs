@@ -9,9 +9,9 @@ public class EnemyHealthController : MonoBehaviour
 		public GameObject[] blinking;
 		public ParticleSystem[] particleSystems;
 		public ParticleSystem explosionParticles0;
-		public ParticleSystem explosionParticles1;
 		private bool enemyDead = false;
 		public Transform explosionPoint;
+		public Transform center;
 		public Light light;
 	
 		// Use this for initialization
@@ -25,21 +25,19 @@ public class EnemyHealthController : MonoBehaviour
 		{					
 				if (!enemyDead) {
 						if (enemyHealth <= 0) {	
-								ParticleSystem instance0 = (ParticleSystem)Instantiate (explosionParticles0, new Vector3 (explosionPoint.position.x, explosionPoint.position.y, explosionPoint.position.z), transform.rotation);				
-								ParticleSystem instance1 = (ParticleSystem)Instantiate (explosionParticles1, new Vector3 (explosionPoint.position.x, explosionPoint.position.y, explosionPoint.position.z), transform.rotation);			
+								ParticleSystem instance0 = (ParticleSystem)Instantiate (explosionParticles0, new Vector3 (explosionPoint.position.x, explosionPoint.position.y, explosionPoint.position.z), transform.rotation);
 
 								foreach (ParticleSystem ps in particleSystems) {
 										ps.enableEmission = false;
 										ps.Stop ();
 								}
 
-								light.intensity = 0f;
-				
+								light.intensity = 0f;								
+
 								StartCoroutine (DisableRenderer ());
 								enemyDead = true;				
 								collider.enabled = false;
 								Destroy (instance0, 4f);
-								Destroy (instance1, 4f);
 								Destroy (mainObj, 4f);
 						}
 				}
@@ -47,13 +45,13 @@ public class EnemyHealthController : MonoBehaviour
 
 		public void DoDamage (float damage)
 		{
-				enemyHealth--;
+				enemyHealth -= damage;
 				StartCoroutine (CollideFlash ());
 		}
 
 		IEnumerator DisableRenderer ()
-		{		
-				yield return new WaitForSeconds (1f);
+		{						
+				yield return new WaitForSeconds (0.15f);
 		
 				foreach (GameObject go in blinking) {
 						go.renderer.enabled = false;
@@ -71,8 +69,10 @@ public class EnemyHealthController : MonoBehaviour
 
 								yield return new WaitForSeconds (0.025f);
 
-								foreach (GameObject go in blinking) {
-										go.renderer.enabled = true;
+								if (!enemyDead) {
+										foreach (GameObject go in blinking) {
+												go.renderer.enabled = true;
+										}
 								}
 								
 								yield return new WaitForSeconds (0.025f);

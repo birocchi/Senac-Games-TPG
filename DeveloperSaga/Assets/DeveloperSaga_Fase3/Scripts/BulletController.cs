@@ -5,24 +5,39 @@ public class BulletController : MonoBehaviour
 {
 		public ParticleSystem traceParticles;
 		public float damage = 0.25f;
+		public Color originalColor;
 
 		// Use this for initialization
 		void Start ()
 		{
-	
+				originalColor = renderer.material.GetColor ("_Emission");
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-	
+				if (Player.IsAbilityActive ("PowerShot.cs")) {						
+						renderer.material.SetColor ("_Emission", Color.red);
+				} else {						
+						renderer.material.SetColor ("_Emission", originalColor);
+				}
 		}
 
 		void OnCollisionEnter (Collision collision)
 		{
 				Debug.Log ("Collided with: " + collision.gameObject.tag);
-				if (collision.gameObject.tag.Equals ("Player") || collision.gameObject.tag.Equals ("Enemy")) {
-						collision.gameObject.SendMessage ("DoDamage", damage);
+				if (collision.gameObject.tag.Equals ("Enemy")) {						
+						if (Player.IsAbilityActive ("PowerShot.cs")) {
+								collision.gameObject.SendMessage ("DoDamage", damage * 3);
+						} else {
+								collision.gameObject.SendMessage ("DoDamage", damage);
+						}
+				} else if (collision.gameObject.tag.Equals ("Player")) {
+						if (Player.IsAbilityActive ("Shield.cs")) {
+								collision.gameObject.SendMessage ("DoDamage", damage / 2);
+						} else {
+								collision.gameObject.SendMessage ("DoDamage", damage);
+						}
 				}
 				this.traceParticles.enableEmission = false;
 				this.traceParticles.Stop ();

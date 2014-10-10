@@ -30,6 +30,7 @@ public class CharController : MonoBehaviour
 		public bool rotate = false;
 		public bool rotated = false;
 		public float rotation = 0f;
+		public ParticleSystem shieldParticles;
 	
 		
 		// Use this for initialization
@@ -42,7 +43,13 @@ public class CharController : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				
+				if (Player.IsAbilityActive ("Shield.cs")) {
+						shieldParticles.enableEmission = true;
+						shieldParticles.Play ();
+				} else {
+						shieldParticles.enableEmission = false;
+						shieldParticles.Stop ();
+				}
 		
 				Vector3 moveDirection;				
 				moveDirection = new Vector3 (0, 0, Input.GetAxis ("Horizontal") * -1);
