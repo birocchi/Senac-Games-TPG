@@ -3,16 +3,16 @@ using System.Collections;
 
 public class GetKey : MonoBehaviour {
 
-	KeysManager keyManager;
-
-	// Use this for initialization
+	public KeysManager.Keys keyColor;
+	KeysManager keysManager;
+	
 	void Start () {
-		keyManager = GameObject.Find("GameManager").GetComponent<KeysManager>();
+		keysManager = GameObject.Find("GameManager").GetComponent<KeysManager>();
 	}
 	
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag.Equals("Player")){
-			//keyManager.GetKey();
+			keysManager.GetKey(keyColor);
 			AudioSource.PlayClipAtPoint(audio.clip,transform.position);
 			Destroy(gameObject);
 		}
