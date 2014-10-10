@@ -19,47 +19,41 @@ public class HUD_KeyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		switch (keyColor){
-		case KeysManager.Keys.Red:
-			if(keysManager.HasRedKey && !image.texture.Equals(keyEnabled)){
-				image.texture = keyEnabled;
-			} else if(!keysManager.HasRedKey && !image.texture.Equals(keyDisabled)){
-				image.texture = keyDisabled;
-			}
-			break;
-		case KeysManager.Keys.Green:
-			if(keysManager.HasGreenKey && !image.texture.Equals(keyEnabled)){
-				image.texture = keyEnabled;
-			} else if(!keysManager.HasGreenKey && !image.texture.Equals(keyDisabled)){
-				image.texture = keyDisabled;
-			}
-			break;
-		case KeysManager.Keys.Blue:
-			if(keysManager.HasBlueKey && !image.texture.Equals(keyEnabled)){
-				image.texture = keyEnabled;
-			} else if(!keysManager.HasBlueKey && !image.texture.Equals(keyDisabled)){
-				image.texture = keyDisabled;
-			}
-			break;
-		case KeysManager.Keys.Yellow:
-			if(keysManager.HasYellowKey && !image.texture.Equals(keyEnabled)){
-				image.texture = keyEnabled;
-			} else if(!keysManager.HasYellowKey && !image.texture.Equals(keyDisabled)){
-				image.texture = keyDisabled;
-			}
-			break;
+		if(keysManager.HasKey(keyColor) && !image.texture.Equals(keyEnabled)){
+			image.texture = keyEnabled;
+		} else if(!keysManager.HasKey(keyColor) && !image.texture.Equals(keyDisabled)){
+			image.texture = keyDisabled;
 		}
-		if(keyColor.Equals(KeysManager.Keys.Red)){
+//		switch (keyColor){
+//		case KeysManager.Keys.Red:
+//			if(keysManager.HasRedKey && !image.texture.Equals(keyEnabled)){
+//				image.texture = keyEnabled;
+//			} else if(!keysManager.HasRedKey && !image.texture.Equals(keyDisabled)){
+//				image.texture = keyDisabled;
+//			}
+//			break;
+//		case KeysManager.Keys.Green:
+//			if(keysManager.HasGreenKey && !image.texture.Equals(keyEnabled)){
+//				image.texture = keyEnabled;
+//			} else if(!keysManager.HasGreenKey && !image.texture.Equals(keyDisabled)){
+//				image.texture = keyDisabled;
+//			}
+//			break;
+//		case KeysManager.Keys.Blue:
+//			if(keysManager.HasBlueKey && !image.texture.Equals(keyEnabled)){
+//				image.texture = keyEnabled;
+//			} else if(!keysManager.HasBlueKey && !image.texture.Equals(keyDisabled)){
+//				image.texture = keyDisabled;
+//			}
+//			break;
+//		case KeysManager.Keys.Yellow:
+//			if(keysManager.HasYellowKey && !image.texture.Equals(keyEnabled)){
+//				image.texture = keyEnabled;
+//			} else if(!keysManager.HasYellowKey && !image.texture.Equals(keyDisabled)){
+//				image.texture = keyDisabled;
+//			}
+//			break;
+//		}
 
-		}
-		if(keysManager.HasGreenKey && keyColor.Equals(KeysManager.Keys.Green) && !image.texture.Equals(keyEnabled)){
-			image.texture = keyEnabled;
-		}
-		if(keysManager.HasBlueKey && keyColor.Equals(KeysManager.Keys.Blue) && !image.texture.Equals(keyEnabled)){
-			image.texture = keyEnabled;
-		}
-		if(keysManager.HasYellowKey && keyColor.Equals(KeysManager.Keys.Yellow) && !image.texture.Equals(keyEnabled)){
-			image.texture = keyEnabled;
-		}
 	}
 }

@@ -10,11 +10,6 @@ public class KeysManager : MonoBehaviour {
 	bool hasGreenKey;
 	bool hasYellowKey;
 
-	public bool HasRedKey { get{return hasRedKey;} }
-	public bool HasBlueKey { get{return hasBlueKey;} }
-	public bool HasGreenKey { get{return hasGreenKey;} }
-	public bool HasYellowKey { get{return hasYellowKey;} }
-
 	// Use this for initialization
 	void Start () {
 		hasRedKey = false;
@@ -62,6 +57,22 @@ public class KeysManager : MonoBehaviour {
 		hasGreenKey = false;
 		hasBlueKey = false;
 		hasYellowKey = false;
+	}
+
+	public bool HasKey(Keys keyColor){
+		switch(keyColor){
+		case Keys.Red:
+			return hasRedKey;
+		case Keys.Green:
+			return hasGreenKey;
+		case Keys.Blue:
+			return hasBlueKey;
+		case Keys.Yellow:
+			return hasYellowKey;
+		default:
+			return false;
+		}
+
 	}
 
 }
