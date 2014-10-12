@@ -45,47 +45,51 @@ public class BossController : MonoBehaviour {
 	}
 	
 	void Update (){
-		// The boss is grounded if a linecast to the groundcheck position hits anything on the ground layer.
-		isGrounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Steppable"));
-		Debug.DrawLine(transform.position, groundCheck.position);
+		if(target != null){
+			// The boss is grounded if a linecast to the groundcheck position hits anything on the ground layer.
+			isGrounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Steppable"));
+			Debug.DrawLine(transform.position, groundCheck.position);
 
-		//Shoot
-		if(Vector2.Distance(target.position,transform.position) < viewDistance && elapsedTime >= fireInterval){
-			shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
-			shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right );
-			Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
-			elapsedTime = 0;
-		}
-		
-		if(elapsedTime < fireInterval){
-			elapsedTime += Time.fixedDeltaTime;
+			//Shoot
+			if(Vector2.Distance(target.position,transform.position) < viewDistance && elapsedTime >= fireInterval){
+				shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
+				shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right );
+				Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
+				elapsedTime = 0;
+			}
+			
+			if(elapsedTime < fireInterval){
+				elapsedTime += Time.fixedDeltaTime;
+			}
 		}
 	}
 	
 	void FixedUpdate () {
 
-		//Follow player
-		if(Vector2.Distance(target.position,transform.position) > safeDistance &&  Vector2.Distance(target.position,transform.position) < viewDistance){
-			horizontalMove = (target.position - transform.position).normalized.x;
-		}
-		else {
-			horizontalMove = 0;
-		}
+		if(target != null){
+			//Follow player
+			if(Vector2.Distance(target.position,transform.position) > safeDistance &&  Vector2.Distance(target.position,transform.position) < viewDistance){
+				horizontalMove = (target.position - transform.position).normalized.x;
+			}
+			else {
+				horizontalMove = 0;
+			}
 
-		//Jump if the player is in a higher position
-		if(target.position.y > transform.position.y + 0.7f){
-			Jump();
-		}
+			//Jump if the player is in a higher position
+			if(target.position.y > transform.position.y + 0.7f && Vector2.Distance(target.position,transform.position) < viewDistance){
+				Jump();
+			}
 
-		//Rotate the boss acording to its movement direction
-		if((target.position - transform.position).x < 0){
-			transform.eulerAngles = new Vector3(0,180,0);
-		} else if ((target.position - transform.position).x > 0){
-			transform.eulerAngles = new Vector3(0,0,0);
-		}
-		
-		if(!isHurt){
-			rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
+			//Rotate the boss acording to its movement direction
+			if((target.position - transform.position).x < 0){
+				transform.eulerAngles = new Vector3(0,180,0);
+			} else if ((target.position - transform.position).x > 0){
+				transform.eulerAngles = new Vector3(0,0,0);
+			}
+			
+			if(!isHurt){
+				rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
+			}
 		}
 	}
 
