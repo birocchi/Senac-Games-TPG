@@ -14,7 +14,7 @@ public class GetMushroom : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag.Equals("Player")){
-			lifeManager.LifeUp(healthRecover);
+			lifeManager.LifeUp(healthRecover,LifeManager.LifeType.Player);
 			AudioSource.PlayClipAtPoint(audio.clip,transform.position);
 			Destroy(gameObject);
 		}

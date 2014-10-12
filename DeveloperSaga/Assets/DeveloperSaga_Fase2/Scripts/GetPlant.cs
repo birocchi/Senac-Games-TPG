@@ -12,7 +12,7 @@ public class GetPlant : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag.Equals("Player")){
-			lifeManager.FillLife();
+			lifeManager.FillLife(LifeManager.LifeType.Player);
 			AudioSource.PlayClipAtPoint(audio.clip,transform.position);
 			Destroy(gameObject);
 		}

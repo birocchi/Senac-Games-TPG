@@ -2,46 +2,83 @@
 using System.Collections;
 
 public class LifeManager : MonoBehaviour {
-	
-	private int actualLife;
-	private int maxLife = 6;
 
-	public int ActualLife {get { return actualLife; }}
+	public enum LifeType {Player, Boss};
+
+	private int playerLife;
+	public int maxLife = 6;
+
+	private int bossLife;
+	public int bossMaxLife = 6;
+
+	public int PlayerLife {get { return playerLife; }}
+	public int BossLife {get { return bossLife; }}
 
 	void Start(){
-		actualLife = maxLife;
+		playerLife = maxLife;
+		bossLife = bossMaxLife;
 	}
 
 	void Update(){
-		if(actualLife <= 0){
+		if(playerLife <= 0){
 			StartCoroutine(ChangeToGameOver());
 		}
 	}
 
-	public void LifeUp(int value){
-		if(actualLife < maxLife){
-			actualLife += value;
+	public void LifeUp(int value, LifeType type){
+		if(type.Equals(LifeType.Player)){
+			if(playerLife < maxLife){
+				playerLife += value;
+			}
+			if(playerLife > maxLife){
+				playerLife = maxLife;
+			}
 		}
-		if(actualLife > maxLife){
-			actualLife = maxLife;
+		if(type.Equals(LifeType.Boss)){
+			if(bossLife < bossMaxLife){
+				bossLife += value;
+			}
+			if(bossLife > bossMaxLife){
+				bossLife = bossMaxLife;
+			}
 		}
 	}
 
-	public void LifeDown(int value){
-		if(actualLife > 0){
-			actualLife -= value;
+	public void LifeDown(int value, LifeType type){
+		if(type.Equals(LifeType.Player)){
+			if(playerLife > 0){
+				playerLife -= value;
+			}
+			if(playerLife < 0){
+				playerLife = 0;
+			}
 		}
-		if(actualLife < 0){
-			actualLife = 0;
+		if(type.Equals(LifeType.Boss)){
+			if(bossLife > 0){
+				bossLife -= value;
+			}
+			if(bossLife < 0){
+				bossLife = 0;
+			}
 		}
 	}
 
-	public void FillLife(){
-		actualLife = maxLife;
+	public void FillLife(LifeType type){
+		if(type.Equals(LifeType.Player)){
+			playerLife = maxLife;
+		}
+		if(type.Equals(LifeType.Boss)){
+			bossLife = bossMaxLife;
+		}
 	}
 
-	public void EmptyLife(){
-		actualLife = 0;
+	public void EmptyLife(LifeType type){
+		if(type.Equals(LifeType.Player)){
+			playerLife = 0;
+		}
+		if(type.Equals(LifeType.Boss)){
+			bossLife = 0;
+		}
 	}
 
 	IEnumerator ChangeToGameOver(){

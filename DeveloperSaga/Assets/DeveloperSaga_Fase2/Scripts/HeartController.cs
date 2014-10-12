@@ -26,11 +26,11 @@ public class HeartController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(lifeManager.ActualLife >= fullHeart && !image.texture.Equals(fullHeartSprite)){
+		if(lifeManager.PlayerLife >= fullHeart && !image.texture.Equals(fullHeartSprite)){
 			image.texture = fullHeartSprite;
-		} else if(lifeManager.ActualLife == halfHeart && !image.texture.Equals(halfHeartSprite)){
+		} else if(lifeManager.PlayerLife == halfHeart && !image.texture.Equals(halfHeartSprite)){
 			image.texture = halfHeartSprite;
-		} else if(lifeManager.ActualLife < halfHeart && !image.texture.Equals(emptyHeartSprite)){
+		} else if(lifeManager.PlayerLife < halfHeart && !image.texture.Equals(emptyHeartSprite)){
 			image.texture = emptyHeartSprite;
 		}
 	}

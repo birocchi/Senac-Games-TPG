@@ -4,10 +4,9 @@ using System.Collections;
 public class ShootingScript : MonoBehaviour {
 
 	public GameObject shot;
-	public int fireRate = 1;
+	public float fireRate = 1;
 	public float shotSpeed = 7;
-
-	private Vector2 shotDirection;
+	
 	private float fireInterval;
 	private float elapsedTime;
 	private GameObject shotInstance;

@@ -32,6 +32,21 @@ public class ShotController : MonoBehaviour {
 			other.gameObject.GetComponent<EnemyController>().Die();
 		}
 
+		if(other.gameObject.tag.Equals("Boss") && this.gameObject.tag.Equals("PlayerShot")){
+			other.rigidbody.velocity = (-other.contacts[0].normal + Vector2.up) * 3;
+			other.gameObject.GetComponent<BossController>().HurtBoss(1);
+		}
+
+		if(other.gameObject.tag.Equals("EnemyShot") && this.gameObject.tag.Equals("PlayerShot") ||
+		   other.gameObject.tag.Equals("PlayerShot") && this.gameObject.tag.Equals("EnemyShot")){
+			Destroy(other.gameObject);
+		}
+
+		if(other.gameObject.tag.Equals("Player") && this.gameObject.tag.Equals("EnemyShot")){
+			other.rigidbody.velocity = (-other.contacts[0].normal + Vector2.up) * 3;
+			other.gameObject.GetComponent<PlayerController_Fase2>().HurtPlayer(1);
+		}
+
 		Destroy(gameObject);
 
 	}

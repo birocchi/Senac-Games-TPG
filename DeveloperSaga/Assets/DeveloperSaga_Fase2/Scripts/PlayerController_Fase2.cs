@@ -87,7 +87,7 @@ public class PlayerController_Fase2 : MonoBehaviour {
 
 	public void HurtPlayer(int damage){
 		if(!isHurt){
-			lifeManager.LifeDown(damage);
+			lifeManager.LifeDown(damage,LifeManager.LifeType.Player);
 			ouchSound.Play();
 			StartCoroutine(StunPlayer(0.8f));
 		}
