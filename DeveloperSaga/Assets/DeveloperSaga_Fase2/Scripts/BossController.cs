@@ -7,7 +7,7 @@ public class BossController : MonoBehaviour {
 	public float speed;
 	public float jumpForce;
 	public float safeDistance;
-	//public float viewDistance;
+	public float viewDistance;
 
 	//Shot variables
 	public GameObject shot;
@@ -50,7 +50,7 @@ public class BossController : MonoBehaviour {
 		Debug.DrawLine(transform.position, groundCheck.position);
 
 		//Shoot
-		if(elapsedTime >= fireInterval){
+		if(Vector2.Distance(target.position,transform.position) < viewDistance && elapsedTime >= fireInterval){
 			shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
 			shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right );
 			Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
@@ -65,7 +65,7 @@ public class BossController : MonoBehaviour {
 	void FixedUpdate () {
 
 		//Follow player
-		if(Vector2.Distance(target.position,transform.position) > safeDistance ){
+		if(Vector2.Distance(target.position,transform.position) > safeDistance &&  Vector2.Distance(target.position,transform.position) < viewDistance){
 			horizontalMove = (target.position - transform.position).normalized.x;
 		}
 		else {
@@ -120,5 +120,11 @@ public class BossController : MonoBehaviour {
 		GameObject particle = (GameObject)GameObject.Instantiate(explosion,transform.position,transform.rotation);
 		particle.GetComponent<ParticleSystem>().renderer.sortingLayerName = "ForeGround";
 		particle.GetComponent<ParticleSystem>().particleSystem.renderer.sortingOrder = 1;
+	}
+
+	void OnDrawGizmos(){
+		Vector3 leftDistance = new Vector2(transform.position.x - viewDistance, transform.position.y);
+		Vector3 rightDistance = new Vector2(transform.position.x + viewDistance, transform.position.y);
+		Gizmos.DrawLine(leftDistance, rightDistance);
 	}
 }
