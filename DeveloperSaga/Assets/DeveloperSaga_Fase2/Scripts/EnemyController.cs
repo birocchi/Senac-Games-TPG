@@ -78,5 +78,18 @@ public class EnemyController: MonoBehaviour {
 		scoreManager.AddScore(scoreValue);
 		Destroy(gameObject,2);
 	}
+
+	void OnDrawGizmos(){
+		if(initialPosition.Equals(Vector2.zero)){
+			Gizmos.DrawWireCube (new Vector2(transform.position.x + (maxLimit.x + minLimit.x)/2, transform.position.y + (maxLimit.y + minLimit.y)/2), 
+			                     new Vector2(maxLimit.x - minLimit.x,maxLimit.y - minLimit.y));
+			Gizmos.DrawLine(transform.position, transform.position + (Vector3)initialDirection.normalized);
+		}
+		else{
+			Gizmos.DrawWireCube (new Vector2(initialPosition.x + (maxLimit.x + minLimit.x)/2,  initialPosition.y + (maxLimit.y + minLimit.y)/2), 
+			                     new Vector2(maxLimit.x - minLimit.x,maxLimit.y - minLimit.y));
+			Gizmos.DrawLine(transform.position, transform.position + (Vector3)direction.normalized);
+		}
+	}
 	
 }
