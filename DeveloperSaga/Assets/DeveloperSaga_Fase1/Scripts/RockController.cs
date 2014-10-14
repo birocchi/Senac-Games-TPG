@@ -9,9 +9,7 @@ public class RockController : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter2D(Collision2D collision) {
-		Debug.Log(collision.gameObject.layer);
 		if (collision.gameObject.layer == 8) {
-			Debug.Log("Pedra no chao!");
 			Physics2D.IgnoreCollision (playerCollider, this.collider2D);
 		}
 	}

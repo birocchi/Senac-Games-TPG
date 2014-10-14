@@ -13,14 +13,11 @@ using System.Collections;
 /// </summary>
 public class PlayerController_Fase1: MonoBehaviour
 {
+	public bool jumpAllowed = false;
 	public float jumpBaseIntensity = 7f;
 	public float horizontalSpeed;
 	private float bottomY;
 
-	void Awake() {
-
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetButtonDown("Jump")) {
@@ -42,7 +39,7 @@ public class PlayerController_Fase1: MonoBehaviour
 	/// </summary>
 	/// <param name="intensityMultiplier">Intensity multiplier.</param>
 	public void Jump(float intensityMultiplier) {
-		if(IsGrounded()) {
+		if(IsGrounded() && jumpAllowed) {
 			this.rigidbody2D.velocity = new Vector2(this.rigidbody2D.velocity.x, intensityMultiplier * jumpBaseIntensity);
 		}
 	}
