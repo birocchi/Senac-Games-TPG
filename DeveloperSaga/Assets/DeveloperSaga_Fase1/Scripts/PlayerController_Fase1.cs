@@ -18,6 +18,8 @@ public class PlayerController_Fase1: MonoBehaviour
 	public float horizontalSpeed;
 	private float bottomY;
 	public GameObject corpse;
+	public Vector3 latestCheckpoint;
+	private bool restartLevel;
 
 	// Update is called once per frame
 	void Update () {
@@ -32,6 +34,10 @@ public class PlayerController_Fase1: MonoBehaviour
 		}
 		if(Input.GetAxis("Horizontal") == 0) {
 			Stand();
+		}
+
+		if(restartLevel) {
+			Application.LoadLevel (Application.loadedLevelName);
 		}
 	}
 	
@@ -94,8 +100,17 @@ public class PlayerController_Fase1: MonoBehaviour
 		if(collision.gameObject.tag.Equals("Enemy")) {
 			if(corpse != null) {
 				Instantiate(corpse, this.transform.position, this.transform.rotation);
-				//Destroy (this.gameObject);
+				this.renderer.enabled = false;
+				if(latestCheckpoint != null) {
+					StartCoroutine(WaitUp());
+					//this.rigidbody2D.position = latestCheckpoint;
+				}
 			}
 		}
+	}
+
+	IEnumerator WaitUp() {
+		yield return new WaitForSeconds(1.5f);
+		this.restartLevel = true;
 	}
 }
