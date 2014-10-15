@@ -7,11 +7,14 @@ public class Level2Camera : MonoBehaviour {
 	public Transform player;
 
 	public float dampingTime = 0.1f;
+	public float xMin;
+	public float xMax;
 	public float groundLevel;
 	public float minY1;
 	public float minY2;
 
-	public float actualMin;
+	private float actualMin;
+
 	
 	Vector3 velocity = Vector3.zero;
 	
@@ -25,7 +28,7 @@ public class Level2Camera : MonoBehaviour {
 				actualMin = minY2;
 			}
 
-			transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x, player.position.x, ref velocity.x, dampingTime),
+			transform.position = new Vector3(Mathf.Clamp(Mathf.SmoothDamp(transform.position.x, player.position.x, ref velocity.x, dampingTime),xMin,xMax),
 			                                 Mathf.Clamp(Mathf.SmoothDamp(transform.position.y, player.position.y, ref velocity.y, dampingTime),actualMin,100),
 			                                 transform.position.z);
 		}
