@@ -17,6 +17,7 @@ public class PlayerController_Fase1: MonoBehaviour
 	public float jumpBaseIntensity = 7f;
 	public float horizontalSpeed;
 	private float bottomY;
+	public GameObject corpse;
 
 	// Update is called once per frame
 	void Update () {
@@ -87,5 +88,14 @@ public class PlayerController_Fase1: MonoBehaviour
 		
 		Boolean isGrounded = hit.collider != null;
 		return isGrounded;
+	}
+
+	void OnCollisionEnter2D (Collision2D collision) {
+		if(collision.gameObject.tag.Equals("Enemy")) {
+			if(corpse != null) {
+				Instantiate(corpse, this.transform.position, this.transform.rotation);
+				//Destroy (this.gameObject);
+			}
+		}
 	}
 }
