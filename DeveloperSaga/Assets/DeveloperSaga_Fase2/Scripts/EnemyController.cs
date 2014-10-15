@@ -23,7 +23,7 @@ public class EnemyController: MonoBehaviour {
 		scoreManager = GameObject.Find("GameManager").GetComponent<ScoreManager>();
 		initialPosition = transform.position;
 		direction = initialDirection;
-		if(initialDirection.x == (int)Direction.right) 
+		if(initialDirection.x > 0) 
 			transform.eulerAngles = new Vector3(0,180,0);
 	}
 
