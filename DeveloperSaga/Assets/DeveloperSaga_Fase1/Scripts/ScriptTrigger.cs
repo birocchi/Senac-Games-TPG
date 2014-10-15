@@ -6,7 +6,8 @@ public class ScriptTrigger : MonoBehaviour {
 	Animator animator;
 	
 	void Start () {
-		playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController_Fase1>();
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		playerController = player.GetComponent<PlayerController_Fase1>();
 		animator = this.GetComponent<Animator>();
 	}
 
