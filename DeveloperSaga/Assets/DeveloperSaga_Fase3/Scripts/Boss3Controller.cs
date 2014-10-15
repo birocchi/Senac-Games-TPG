@@ -182,7 +182,7 @@ public class Boss3Controller : MonoBehaviour
 								timeToWait = 10;
 								currentBossModeRightHand = Random.Range (1, 3);
 								currentBossModeLeftHand = Random.Range (1, 3);
-								eyeAttack = Random.Range (1, 11);
+								eyeAttack = Random.Range (1, 4);
 								handInUse = Random.Range (1, 4);
 						} else if (bossEnergy > 0f) {
 								numberOfShots = 5;
