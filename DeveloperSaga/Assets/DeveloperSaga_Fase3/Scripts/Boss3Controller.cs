@@ -26,10 +26,8 @@ public class Boss3Controller : MonoBehaviour
 		public GameObject cabeca;
 		private float cabecaX;
 
-		private int numberOfShots;
-		private int hand;
-		private string shotAnimationName;
-		private string handNameAnimation;
+		private int numberOfShotsRight;	
+		private int numberOfShotsLeft;	
 	
 		private bool enemyDead = false;
 
@@ -91,26 +89,42 @@ public class Boss3Controller : MonoBehaviour
 		}
 
 
-		IEnumerator PrepareShot (int hand, string shotAnimationName, string handNameAnimation, float timeToWait)
+		IEnumerator PrepareShotRight (float timeToWait)
 		{		
 
 				modeRunning++;
-				this.hand = hand;
-				this.shotAnimationName = shotAnimationName;
-				this.handNameAnimation = handNameAnimation;
 				
 				
 		
-				animator.SetInteger (handNameAnimation, 0);
+				animator.SetInteger ("rightHandAnimation", 0);
 				
 		
 				yield return new WaitForSeconds (timeToWait + 1f);
 				
 
-				animator.SetInteger (handNameAnimation, -1);
+				animator.SetInteger ("rightHandAnimation", -1);
 				yield return new WaitForSeconds (3.5f);
 				modeRunning--;
 				
+		}
+
+		IEnumerator PrepareShotLeft (float timeToWait)
+		{		
+		
+				modeRunning++;
+		
+		
+		
+				animator.SetInteger ("leftHandAnimation", 0);
+		
+		
+				yield return new WaitForSeconds (timeToWait + 1f);
+		
+		
+				animator.SetInteger ("leftHandAnimation", -1);
+				yield return new WaitForSeconds (3.5f);
+				modeRunning--;
+		
 		}
 
 		IEnumerator Slap (string slapAnimationName, string handNameAnimation)
@@ -171,22 +185,19 @@ public class Boss3Controller : MonoBehaviour
 						float timeToWait = 3f;
 						Random random = new Random ();
 						if (bossEnergy > 77f) {
-								numberOfShots = 2;
-								timeToWait = 5;
+								timeToWait = 5f;
 								currentBossModeRightHand = Random.Range (1, 3);
 								currentBossModeLeftHand = Random.Range (1, 3);
 								eyeAttack = 0;
 								handInUse = Random.Range (1, 3);
 						} else if (bossEnergy > 33f) {
-								numberOfShots = 3;
-								timeToWait = 10;
+								timeToWait = 10f;
 								currentBossModeRightHand = Random.Range (1, 3);
 								currentBossModeLeftHand = Random.Range (1, 3);
 								eyeAttack = Random.Range (1, 4);
 								handInUse = Random.Range (1, 4);
 						} else if (bossEnergy > 0f) {
-								numberOfShots = 5;
-								timeToWait = 15;
+								timeToWait = 15f;
 								currentBossModeRightHand = Random.Range (1, 3);
 								currentBossModeLeftHand = Random.Range (1, 3);
 								eyeAttack = Random.Range (1, 6);
@@ -198,14 +209,14 @@ public class Boss3Controller : MonoBehaviour
 						} else {
 								if (handInUse == 1 || handInUse == 3) {
 										if (currentBossModeRightHand == 1) {
-												StartCoroutine (PrepareShot (1, SHOTING_RIGHT_ANIMATION_NAME, "rightHandAnimation", timeToWait));					
+												StartCoroutine (PrepareShotRight (timeToWait));					
 										} else {
 												StartCoroutine (Slap (SLAP_RIGHT_ANIMATION_NAME, "rightHandAnimation"));	 				
 										}
 								}
 								if (handInUse == 2 || handInUse == 3) {
 										if (currentBossModeLeftHand == 1) {
-												StartCoroutine (PrepareShot (2, SHOTING_LEFT_ANIMATION_NAME, "leftHandAnimation", timeToWait));					
+												StartCoroutine (PrepareShotLeft (timeToWait));					
 										} else {
 												StartCoroutine (Slap (SLAP_LEFT_ANIMATION_NAME, "leftHandAnimation"));					
 										}
@@ -214,9 +225,21 @@ public class Boss3Controller : MonoBehaviour
 				}
 		}
 	
-		public void Shot ()
+		public void ShotRight ()
 		{		
-				for (int i = hand * shotsPerHand - shotsPerHand; i < (hand * shotsPerHand); i++) {
+				for (int i = 1 * shotsPerHand - shotsPerHand; i < (1 * shotsPerHand); i++) {
+						GameObject target = handTargets [i];
+						GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
+						BulletController bc = bulletInstance.GetComponent<BulletController> ();
+						bc.damage = 1f; 
+						bulletInstance.rigidbody.velocity = target.transform.up * 100; 
+						Destroy (bulletInstance, 5f);						
+				}
+		}
+
+		public void ShotLeft ()
+		{		
+				for (int i = 2 * shotsPerHand - shotsPerHand; i < (2 * shotsPerHand); i++) {
 						GameObject target = handTargets [i];
 						GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
 						BulletController bc = bulletInstance.GetComponent<BulletController> ();
