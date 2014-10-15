@@ -4,7 +4,7 @@ using System.Collections;
 public class RockController : MonoBehaviour {
 	private Collider2D playerCollider;
 
-	void Start () {
+	void Awake () {
 		playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
 	}
 	

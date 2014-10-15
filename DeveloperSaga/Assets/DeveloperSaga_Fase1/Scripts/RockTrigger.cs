@@ -5,8 +5,10 @@ public class RockTrigger : MonoBehaviour {
 	public GameObject Rock;
 
 	private void ReleaseRock() {
-		Rock.rigidbody2D.isKinematic = false;
-		this.collider2D.enabled = false;
+		if(Rock != null) {
+			Rock.rigidbody2D.isKinematic = false;
+			this.collider2D.enabled = false;
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {

@@ -5,12 +5,10 @@ public class ScriptTrigger : MonoBehaviour {
 	private PlayerController_Fase1 playerController;
 	Animator animator;
 	
-	void Start () {
-		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		playerController = player.GetComponent<PlayerController_Fase1>();
+	void Awake () {
+		playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController_Fase1>();
 		animator = this.GetComponent<Animator>();
 	}
-
 	
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other != null && other.tag.Equals ("Player")  ) {

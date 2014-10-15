@@ -9,7 +9,7 @@ public class PlatformElevator : MonoBehaviour {
 	public bool moveSideways;
 	
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		if (moveSideways) {
 			initialPosition = transform.position.x;
 		} else {
