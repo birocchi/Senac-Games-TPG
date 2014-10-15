@@ -51,8 +51,10 @@ public class CharController : MonoBehaviour
 						shieldParticles.Stop ();
 				}
 		
-				Vector3 moveDirection;				
-				moveDirection = new Vector3 (0, 0, Input.GetAxis ("Horizontal") * -1);
+				Vector3 moveDirection;
+				float value = Input.GetAxis ("Horizontal");
+
+				moveDirection = new Vector3 (0, 0, value * -1);
 				moveDirection = transform.TransformDirection (moveDirection);
 				moveDirection *= speed;
 				if (controller.isGrounded) {
@@ -106,9 +108,6 @@ public class CharController : MonoBehaviour
 						animator2.SetBool ("run", false);		
 				}
 				
-				if (Input.GetButton ("Fire3")) {
-							
-				}
 				
 		}
 		
@@ -135,9 +134,11 @@ public class CharController : MonoBehaviour
 				if (hit.collider.gameObject.tag.Equals ("EnemyArea")) {			
 						hit.collider.gameObject.SendMessage ("PlayerNear");
 				}
-				if (hit.collider.gameObject.tag.Equals ("StaticEnemy")) {	
-			
+				if (hit.collider.gameObject.tag.Equals ("StaticEnemy")) {			
 						DoDamage (0.25f);
+				}
+				if (hit.collider.gameObject.tag.Equals ("Boss")) {			
+						DoDamage (1f);
 				}
 		}
 
@@ -156,8 +157,6 @@ public class CharController : MonoBehaviour
 						DoDamage (0.25f);
 				}
 		}
-
-		
 	
 		IEnumerator CollideFlash ()
 		{		
@@ -196,6 +195,7 @@ public class CharController : MonoBehaviour
 				obj.audio.PlayOneShot (clip, volume);
 				Destroy (obj, clip.length / pitch);
 		}
+
 	
 		public void DoDamage (float damage)
 		{
@@ -204,5 +204,15 @@ public class CharController : MonoBehaviour
 						invincible = true;
 						StartCoroutine (CollideFlash ());
 				}
+		}
+
+		void OnParticleCollision (GameObject other)
+		{
+				if (Player.IsAbilityActive ("Shield.cs")) {
+						DoDamage (0.5f);
+				} else {
+						DoDamage (1f);
+				}
+		
 		}
 }
