@@ -20,6 +20,12 @@ public class PlayerController_Fase1: MonoBehaviour
 	public GameObject corpse;
 	public Vector3 latestCheckpoint;
 	private bool restartLevel;
+	private LifeManager lifeManager;
+
+	void Awake() {
+		GameObject gameManager = GameObject.Find ("GameManager");
+		lifeManager = gameManager.GetComponent<LifeManager> ();
+	}
 
 	// Update is called once per frame
 	void Update () {
@@ -98,14 +104,28 @@ public class PlayerController_Fase1: MonoBehaviour
 
 	void OnCollisionEnter2D (Collision2D collision) {
 		if(collision.gameObject.tag.Equals("Enemy")) {
-			if(corpse != null) {
-				Instantiate(corpse, this.transform.position, this.transform.rotation);
-				this.renderer.enabled = false;
-				if(latestCheckpoint != null) {
-					StartCoroutine(WaitUp());
-					//this.rigidbody2D.position = latestCheckpoint;
-				}
+			DoDamage(1);
+		}
+	}
+
+	private void Die() {
+		if(corpse != null) {
+			Instantiate(corpse, this.transform.position, this.transform.rotation);
+			this.renderer.enabled = false;
+			this.rigidbody2D.isKinematic = true;
+			if(latestCheckpoint != null) {
+				StartCoroutine(WaitUp());
+				//this.rigidbody2D.position = latestCheckpoint;
 			}
+		}
+	}
+
+	private void DoDamage (int damage)
+	{
+		if(lifeManager.PlayerLife == 1) {
+			Die();
+		} else {
+			lifeManager.LifeDown (damage, LifeManager.LifeType.Player);
 		}
 	}
 
