@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GetCoin : MonoBehaviour {
+public class GetCoin : MonoBehaviour
+{
 	
-	private ScoreManager scoreManager;
+		private CoinManager coinManager;
 
-	void Start(){
-		scoreManager = GameObject.Find("GameManager").GetComponent<ScoreManager>();
-	}
-
-	void OnTriggerEnter2D(Collider2D other){
-		if(other.tag.Equals("Player")){
-			scoreManager.AddScore(10);
-			AudioSource.PlayClipAtPoint(audio.clip,transform.position);
-			Destroy(gameObject);
+		void Start ()
+		{
+				coinManager = GameObject.Find ("GameManager").GetComponent<CoinManager> ();
 		}
-	}
+
+		void OnTriggerEnter2D (Collider2D other)
+		{
+				if (other.tag.Equals ("Player")) {
+						coinManager.numberOfCoins++;
+						AudioSource.PlayClipAtPoint (audio.clip, transform.position);
+						Destroy (gameObject);
+				}
+		}
 }
