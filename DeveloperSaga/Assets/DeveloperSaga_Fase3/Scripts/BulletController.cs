@@ -4,19 +4,22 @@ using System.Collections;
 public class BulletController : MonoBehaviour
 {
 		public ParticleSystem traceParticles;
-		public float damage = 0.5f;
+		public int damage = 1;
 		public Color originalColor;
+		private AbilitiesManager abilitiesManager;
 
 		// Use this for initialization
 		void Start ()
 		{
+				GameObject gameManager = GameObject.Find ("GameManager");
+				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
 				originalColor = renderer.material.GetColor ("_Emission");
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-				if (Player.IsAbilityActive ("PowerShot.cs")) {						
+				if (abilitiesManager.IsAbilityActive ("PowerShot.cs")) {						
 						renderer.material.SetColor ("_Emission", Color.red);
 				} else {						
 						renderer.material.SetColor ("_Emission", originalColor);
@@ -27,13 +30,13 @@ public class BulletController : MonoBehaviour
 		{
 				Debug.Log ("Collided with: " + collision.gameObject.name);
 				if (collision.gameObject.tag.Equals ("Enemy")) {						
-						if (Player.IsAbilityActive ("PowerShot.cs")) {
+						if (abilitiesManager.IsAbilityActive ("PowerShot.cs")) {
 								collision.gameObject.SendMessage ("DoDamage", damage * 3);
 						} else {
 								collision.gameObject.SendMessage ("DoDamage", damage);
 						}
 				} else if (collision.gameObject.tag.Equals ("Player")) {
-						if (Player.IsAbilityActive ("Shield.cs")) {
+						if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
 								collision.gameObject.SendMessage ("DoDamage", damage / 2);
 						} else {
 								collision.gameObject.SendMessage ("DoDamage", damage);
@@ -41,7 +44,7 @@ public class BulletController : MonoBehaviour
 				} else if (!name.Equals ("Boss Bullet")) {						
 						foreach (ContactPoint c in collision.contacts) {
 								if (c.otherCollider.gameObject.name.Equals ("AreaDanoBoss")) {
-										if (Player.IsAbilityActive ("PowerShot.cs")) {
+										if (abilitiesManager.IsAbilityActive ("PowerShot.cs")) {
 												collision.gameObject.SendMessage ("DoDamage", damage * 3);
 										} else {
 												collision.gameObject.SendMessage ("DoDamage", damage);

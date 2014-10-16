@@ -1,49 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CoinController : MonoBehaviour
+public class ScriptIconController : MonoBehaviour
 {
 		private bool fadeAlpha;
+		private AbilitiesManager abilitiesManager;
+		public string abilityName;
+		public Ability.AbilityType abilityType;
+		public string abilityDescription;
+		public int abilityDuration;
+		public int abilityCooldown;
 	
-		private CoinManager coinManager;
-
 		// Use this for initialization
 		void Start ()
 		{
 		
 				GameObject gameManager = GameObject.Find ("GameManager");
-				coinManager = gameManager.GetComponent<CoinManager> ();
+				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
 				fadeAlpha = false;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-				this.transform.Rotate (new Vector3 (0, 1 * Time.timeScale, 0));
+				this.transform.Rotate (new Vector3 (0, 0, 1 * Time.timeScale));
 				if (fadeAlpha && renderer.material.color.a > 0) {
 						Color color = renderer.material.color;
 						color.a -= 0.1f;
 						renderer.material.color = color;
 				}
 		}
-
+	
 		public void GetCoin ()
 		{
-				coinManager.numberOfCoins++;
+				abilitiesManager.abilitiesList.Add (new Ability (abilityName, abilityType, null, abilityDescription, abilityDuration, abilityCooldown));
 				StartCoroutine (DestroyThis ());
 		}
-
-
+	
+	
 	
 		IEnumerator DestroyThis ()
 		{	
 				fadeAlpha = true;
-
+		
 				this.particleSystem.enableEmission = false;
 		
 				this.collider.enabled = false;
 				yield return new WaitForSeconds (1f);
-
+		
 				Destroy (this);
 		}
 }

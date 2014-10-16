@@ -231,7 +231,7 @@ public class Boss3Controller : MonoBehaviour
 						GameObject target = handTargets [i];
 						GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
 						BulletController bc = bulletInstance.GetComponent<BulletController> ();
-						bc.damage = 1f; 
+						bc.damage = 2; 
 						bulletInstance.rigidbody.velocity = target.transform.up * 100; 
 						Destroy (bulletInstance, 5f);						
 				}
@@ -243,7 +243,7 @@ public class Boss3Controller : MonoBehaviour
 						GameObject target = handTargets [i];
 						GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
 						BulletController bc = bulletInstance.GetComponent<BulletController> ();
-						bc.damage = 1f; 
+						bc.damage = 2; 
 						bulletInstance.rigidbody.velocity = target.transform.up * 100; 
 						Destroy (bulletInstance, 5f);						
 				}

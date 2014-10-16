@@ -9,27 +9,34 @@ public class DragRigidbody : MonoBehaviour
 		public static bool allowDrag = false;
 		public float force = 600;
 		public float damping = 6;
+		private AbilitiesManager abilitiesManager;
 	
 		Transform jointTrans;
 		float dragDepth;
-	
+
+		void Start ()
+		{		
+				GameObject gameManager = GameObject.Find ("GameManager");
+				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
+		}
+
 		void OnMouseDown ()
 		{
-				if (Player.IsAbilityActive ("Force.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Force.cs")) {
 						HandleInputBegin (Input.mousePosition);
 				}
 		}
 	
 		void OnMouseUp ()
 		{
-				if (Player.IsAbilityActive ("Force.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Force.cs")) {
 						HandleInputEnd (Input.mousePosition);
 				}
 		}
 	
 		void OnMouseDrag ()
 		{
-				if (Player.IsAbilityActive ("Force.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Force.cs")) {
 						HandleInput (Input.mousePosition);
 				}
 		}

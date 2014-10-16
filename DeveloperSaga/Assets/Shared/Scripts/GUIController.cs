@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AbilitiesController : MonoBehaviour
-{
+public class GUIController : MonoBehaviour
+{ 
 		//Flags
 		private bool stopTime;
 		private bool timeStopped;
@@ -53,10 +53,22 @@ public class AbilitiesController : MonoBehaviour
 		private bool showBox;
 		private int coinsToShow;
 
+		public GUISkin skin;
 
 		//Sons da GUI
 		public AudioClip freezeSound;
 		public AudioClip revertSound;
+
+		//LifeManager
+		LifeManager lifeManager;
+		
+		//AbilitiesManager
+		AbilitiesManager abilitiesManager;
+
+		//CoinManager
+		CoinManager coinManager;
+
+		private int previousNumberOfCoins;
 
 		/**
 	 * Nome: Start
@@ -67,14 +79,10 @@ public class AbilitiesController : MonoBehaviour
 	 **/
 		void Start ()
 		{
-				//Teste de habilidades
-				Player.listaHabilidades.Add (new Ability ("Pistol.cs", Ability.AbilityType.WeaponAbility, "iconPath", "Equip/Unequip pistol"));				
-				Player.listaHabilidades.Add (new Ability ("Halt.cs", Ability.AbilityType.PowerAbility, "test", "Temporarily halts all enemies", 1000, 2000));
-				Player.listaHabilidades.Add (new Ability ("PowerShot.cs", Ability.AbilityType.PowerAbility, "test", "Enchances pistol power", 1000, 2000));
-				Player.listaHabilidades.Add (new Ability ("Shield.cs", Ability.AbilityType.PowerAbility, "test", "Halves damage", 1000, 2000));
-				Player.listaHabilidades.Add (new Ability ("Force.cs", Ability.AbilityType.PowerAbility, "test", "Allow object manipulation", 1000, 2000));
-				Player.listaHabilidades.Add (new Ability ("NullVariables.cs", Ability.AbilityType.SpecialAbility, "test", "Destroy all visible enemies"));
-
+				GameObject gameManager = GameObject.Find ("GameManager");
+				lifeManager = gameManager.GetComponent<LifeManager> ();
+				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
+				coinManager = gameManager.GetComponent<CoinManager> ();
 
 				//Inicializando valores
 				stopTime = false;
@@ -92,6 +100,7 @@ public class AbilitiesController : MonoBehaviour
 				boxPositionY = boxStartPositionY;
 
 				coinsToShow = 0;
+				previousNumberOfCoins = coinManager.numberOfCoins;
 		}
 
 		/**
@@ -104,6 +113,11 @@ public class AbilitiesController : MonoBehaviour
 	 **/
 		void Update ()
 		{
+				if (previousNumberOfCoins != coinManager.numberOfCoins) {
+						coinsToShow++;
+						previousNumberOfCoins = coinManager.numberOfCoins;
+						StartCoroutine (ShowCoinGUI ());
+				}
 		}
 
 		/**
@@ -115,7 +129,8 @@ public class AbilitiesController : MonoBehaviour
 	 **/
 		void OnGUI ()
 		{
-		
+				GUI.skin = skin;
+
 				//Controla a exibiçao de energia na tela
 				this.GerenciarEnergia ();
 		
@@ -151,13 +166,13 @@ public class AbilitiesController : MonoBehaviour
 				//Verifica se as texturas necessarias foram definidas
 				if (energyFull != null && energyHalf != null && energyEmpty != null) {
 						//Inicializa os valores
-						int energyElementsToDraw = Player.energiaTotal;
+						int energyElementsToDraw = lifeManager.maxLife / 2;
 						int energyElementXPos = energyElementStartingXPos;
 						int energyElementYPos = energyElementStartingYPos;
 						int energyElement = 0;
 						int layer = 0;
-						int energiaTotal = 1;
-						float energiaCorrente = Player.energia;
+						int energiaTotal = 2;
+						int energiaCorrente = lifeManager.PlayerLife;
 
 						//Repete a exibiçao de energia enquanto houver elementos de energia a serem exibidos.
 						//Referente a energia total do personagem (definida em "Constants" e "Player")
@@ -167,15 +182,17 @@ public class AbilitiesController : MonoBehaviour
 								//menor que a posiçao anterior, um vazio. Se estiver entre as duas, um icone "pela metade"
 								if (energiaCorrente >= energiaTotal) {
 										GUI.DrawTexture (new Rect (energyElementXPos, energyElementYPos, 49, 44), energyFull);
-								} else if (energiaCorrente < energiaTotal) {
-										if (energiaCorrente > energiaTotal - 1) {
+								} else {
+										if (energiaCorrente == energiaTotal - 1) {
 												GUI.DrawTexture (new Rect (energyElementXPos, energyElementYPos, 49, 44), energyHalf);
 										} else {
+												
 												GUI.DrawTexture (new Rect (energyElementXPos, energyElementYPos, 49, 44), energyEmpty);
+												 
 										}
 								}
-								if (energiaTotal < Player.energiaTotal) {
-										energiaTotal++;
+								if (energiaTotal < lifeManager.maxLife) {
+										energiaTotal += 2;
 								}
 
 								//Alinha as posiçoes de desenho para linhas e colunas, com base no espaçamento definido no
@@ -190,7 +207,7 @@ public class AbilitiesController : MonoBehaviour
 								}
 								//Diminui a quantidade de elementos que precisam ser renderizados, ja que
 								//acabou-se de renderizar um deles
-								energyElementsToDraw--;
+								energyElementsToDraw --;
 						} while (energyElementsToDraw > 0);
 				}
 		}
@@ -302,7 +319,7 @@ public class AbilitiesController : MonoBehaviour
 				List<Ability> listaPoderes = new List<Ability> ();
 				List<Ability> listaEspeciais = new List<Ability> ();
 
-				foreach (Ability ability in Player.listaHabilidades) {
+				foreach (Ability ability in abilitiesManager.abilitiesList) {
 						if (ability.type == Ability.AbilityType.WeaponAbility) {
 								listaArmas.Add (ability);
 						} else if (ability.type == Ability.AbilityType.PowerAbility) {
@@ -331,15 +348,15 @@ public class AbilitiesController : MonoBehaviour
 
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
-								do {
+								while (weaponAbilitiesToDraw > 0) {
 										Rect weaponButton = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);	
 
 										if (weaponButton.Contains (Event.current.mousePosition)) {
 												GUI.color = Color.white;
 												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 200, 72), listaArmas [listaArmas.Count - weaponAbilitiesToDraw].name, style);
+												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaArmas [listaArmas.Count - weaponAbilitiesToDraw].name, style);
 												style.fontSize = 12;
-												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 200, 72), listaArmas [listaArmas.Count - weaponAbilitiesToDraw].description, style);
+												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 500, 72), listaArmas [listaArmas.Count - weaponAbilitiesToDraw].description, style);
 
 												if (Input.GetMouseButton (0)) {
 														GUI.DrawTexture (weaponButton, abilityWeaponClicked);
@@ -353,23 +370,23 @@ public class AbilitiesController : MonoBehaviour
 
 										abilitiesElementYPos += 85;
 										weaponAbilitiesToDraw--;
-								} while (weaponAbilitiesToDraw > 0);
+								}
 
 								//Insere um espaço extra entre as armas e as demais habilidades
 								abilitiesElementYPos += 20;
 
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
-								do {
+								while (powerAbilitiesToDraw > 0) {
 										Rect powerButton = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);	
 
 										if (!listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active && !listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown) {
 												if (powerButton.Contains (Event.current.mousePosition)) {
 														GUI.color = Color.white;
 														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 200, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name, style);
+														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name, style);
 														style.fontSize = 12;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 200, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].description, style);
+														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].description, style);
 						
 														if (Input.GetMouseButton (0) || listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active) {
 																GUI.DrawTexture (powerButton, abilityPowerClicked);
@@ -388,7 +405,7 @@ public class AbilitiesController : MonoBehaviour
 							
 														GUI.color = Color.white;
 														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 300, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (running)", style);
+														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (running)", style);
 							
 														int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeRunning * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeActive;
 							
@@ -421,7 +438,7 @@ public class AbilitiesController : MonoBehaviour
 							
 														GUI.color = Color.white;
 														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 300, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (cooldown)", style);
+														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (cooldown)", style);
 							
 														int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeCooldown - 100;
 														totalBarra *= -1;
@@ -451,19 +468,19 @@ public class AbilitiesController : MonoBehaviour
 
 										abilitiesElementYPos += 85;
 										powerAbilitiesToDraw--;
-								} while (powerAbilitiesToDraw > 0);
+								} 
 
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
-								do {
+								while (specialAbilitiesToDraw > 0) {
 										Rect specialButton = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);				
 				
 										if (specialButton.Contains (Event.current.mousePosition)) {
 												GUI.color = Color.white;
 												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 200, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].name, style);
+												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].name, style);
 												style.fontSize = 12;
-												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 200, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].description, style);
+												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].description, style);
 						
 												if (Input.GetMouseButton (0)) {
 														GUI.DrawTexture (specialButton, abilitySpecialClicked);
@@ -476,7 +493,7 @@ public class AbilitiesController : MonoBehaviour
 
 										abilitiesElementYPos += 85;
 										specialAbilitiesToDraw--;
-								} while (specialAbilitiesToDraw > 0);
+								}
 						}
 				} else {
 						//Verifica se as texturas necessarias foram definidas
@@ -490,23 +507,23 @@ public class AbilitiesController : MonoBehaviour
 				
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
-								do {			
+								while (weaponAbilitiesToDraw > 0) {			
 										abilitiesElementYPos += 85;  
 										weaponAbilitiesToDraw--; 
-								} while (weaponAbilitiesToDraw > 0);
+								} 
 				
 								//Insere um espaço extra entre as armas e as demais habilidades
 								abilitiesElementYPos += 20;
 				
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
-								do {
+								while (powerAbilitiesToDraw > 0) {
 										if (listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active) {					
 												Rect powerButton = new Rect (moveXValueActive + 17, abilitiesElementYPos, 72, 72);	
 
 												GUI.color = Color.white;
 												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 300, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (running)", style);
+												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (running)", style);
 												
 												int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeRunning * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeActive;
 
@@ -540,7 +557,7 @@ public class AbilitiesController : MonoBehaviour
 						
 												GUI.color = Color.white;
 												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 300, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (cooldown)", style);
+												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (cooldown)", style);
 						
 												int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeCooldown - 100;
 												totalBarra *= -1;
@@ -570,7 +587,7 @@ public class AbilitiesController : MonoBehaviour
 					
 										abilitiesElementYPos += 85;
 										powerAbilitiesToDraw--;
-								} while (powerAbilitiesToDraw > 0);
+								}
 						}
 				}
 		}
@@ -607,16 +624,11 @@ public class AbilitiesController : MonoBehaviour
 						GUI.DrawTexture (weaponButton, scriptHud);
 						GUI.color = Color.black;
 						GUI.contentColor = Color.white;
-						GUI.Label (new Rect (boxPositionX + offsetTextX, boxPositionY + offsetTextY, boxWidth, boxHeight), Player.moedas + " / " + Player.moedasTotal, style);
+						GUI.Label (new Rect (boxPositionX + offsetTextX, boxPositionY + offsetTextY, boxWidth, boxHeight), coinManager.numberOfCoins + " / " + coinManager.maximumCoins, style);
 						GUI.color = Color.white;
 				}
 		}
 
-		public void GetCoin ()
-		{
-				coinsToShow++;
-				StartCoroutine (ShowCoinGUI ());
-		}
 
 		IEnumerator ShowCoinGUI ()
 		{			
