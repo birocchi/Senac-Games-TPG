@@ -35,7 +35,7 @@ public class WeaponController : MonoBehaviour
 		{
 				GameObject instance = (GameObject)Instantiate (bullet, pontoMira.position, pontoMira.rotation);
 				BulletController bc = instance.GetComponent<BulletController> ();
-				bc.damage = 1f;
+				bc.damage = 1;
 				instance.rigidbody.velocity = pontoMira.up * -100;
 				Destroy (instance, 10f);
 		}

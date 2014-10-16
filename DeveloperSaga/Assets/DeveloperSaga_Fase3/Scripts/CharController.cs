@@ -31,6 +31,9 @@ public class CharController : MonoBehaviour
 		public bool rotated = false;
 		public float rotation = 0f;
 		public ParticleSystem shieldParticles;
+		private LifeManager lifeManager;
+		private AbilitiesManager abilitiesManager;
+		private CoinManager coinManager;
 	
 		
 		// Use this for initialization
@@ -38,12 +41,17 @@ public class CharController : MonoBehaviour
 		{
 				controller = GetComponent<CharacterController> ();
 				animator2 = playerAvatar.GetComponent<Animator> ();
+		
+				GameObject gameManager = GameObject.Find ("GameManager");
+				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
+				lifeManager = gameManager.GetComponent<LifeManager> ();
+				coinManager = gameManager.GetComponent<CoinManager> ();
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-				if (Player.IsAbilityActive ("Shield.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
 						shieldParticles.enableEmission = true;
 						shieldParticles.Play ();
 				} else {
@@ -135,10 +143,10 @@ public class CharController : MonoBehaviour
 						hit.collider.gameObject.SendMessage ("PlayerNear");
 				}
 				if (hit.collider.gameObject.tag.Equals ("StaticEnemy")) {			
-						DoDamage (0.25f);
+						DoDamage (1);
 				}
 				if (hit.collider.gameObject.tag.Equals ("Boss")) {			
-						DoDamage (1f);
+						DoDamage (1);
 				}
 		}
 
@@ -154,7 +162,7 @@ public class CharController : MonoBehaviour
 				}
 				if (trigger.gameObject.tag.Equals ("StaticEnemy")) {	
 			
-						DoDamage (0.25f);
+						DoDamage (1);
 				}
 		}
 	
@@ -184,6 +192,7 @@ public class CharController : MonoBehaviour
 						damageParticles [i].particleSystem.Stop ();					
 				}
 		}
+
 		
 		private void TocarSomNumPonto (AudioClip clip, Vector3 position, float volume, float pitch)
 		{
@@ -197,10 +206,10 @@ public class CharController : MonoBehaviour
 		}
 
 	
-		public void DoDamage (float damage)
+		public void DoDamage (int damage)
 		{
 				if (!invincible) {
-						Player.energia -= damage;
+						lifeManager.LifeDown (damage, LifeManager.LifeType.Player);
 						invincible = true;
 						StartCoroutine (CollideFlash ());
 				}
@@ -208,10 +217,10 @@ public class CharController : MonoBehaviour
 
 		void OnParticleCollision (GameObject other)
 		{
-				if (Player.IsAbilityActive ("Shield.cs")) {
-						DoDamage (0.5f);
+				if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
+						DoDamage (1);
 				} else {
-						DoDamage (1f);
+						DoDamage (1);
 				}
 		
 		}

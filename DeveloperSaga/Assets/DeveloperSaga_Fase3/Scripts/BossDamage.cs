@@ -5,11 +5,13 @@ public class BossDamage : MonoBehaviour
 {
 		public float damage = 1f;
 		public GameObject boss;
+		private AbilitiesManager abilitiesManager;
 	
 		// Use this for initialization
 		void Start ()
 		{
-
+				GameObject gameManager = GameObject.Find ("GameManager");
+				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
 		}
 	
 		// Update is called once per frame
@@ -21,7 +23,7 @@ public class BossDamage : MonoBehaviour
 		void OnCollisionEnter (Collision collision)
 		{
 				if (collision.gameObject.tag.Equals ("Player")) {
-						if (Player.IsAbilityActive ("Shield.cs")) {
+						if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
 								collision.gameObject.SendMessage ("DoDamage", 1f / 2f);
 						} else {
 								collision.gameObject.SendMessage ("DoDamage", 1f);
