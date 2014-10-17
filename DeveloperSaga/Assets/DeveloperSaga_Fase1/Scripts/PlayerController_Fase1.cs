@@ -21,27 +21,40 @@ public class PlayerController_Fase1: MonoBehaviour
 	public Vector3 latestCheckpoint;
 	private bool restartLevel;
 	private LifeManager lifeManager;
-
+	private bool jumpPressed;
+	
+	[HideInInspector]
+	public Rigidbody2D movingPlatform;
+	
 	void Awake() {
 		GameObject gameManager = GameObject.Find ("GameManager");
 		lifeManager = gameManager.GetComponent<LifeManager> ();
 	}
-
+	
 	// Update is called once per frame
 	void Update () {
+		float horizontalMove = Input.GetAxis("Horizontal");
+		
 		if(Input.GetButtonDown("Jump")) {
+			jumpPressed = true;
 			Jump();
 		}
-		if(Input.GetAxis("Horizontal") < 0) {
-			WalkLeft();
+		
+		if(movingPlatform != null){
+			float speedSwitch = jumpPressed ? rigidbody2D.velocity.y : movingPlatform.velocity.y;
+			rigidbody2D.velocity = new Vector2((horizontalMove * horizontalSpeed) + movingPlatform.velocity.x, speedSwitch);
+		} else {
+			if(horizontalMove < 0) {
+				WalkLeft();
+			}
+			if(horizontalMove > 0) {
+				WalkRight();
+			}
+			if(horizontalMove == 0) {
+				Stand();
+			}
 		}
-		if(Input.GetAxis("Horizontal") > 0) {
-			WalkRight();
-		}
-		if(Input.GetAxis("Horizontal") == 0) {
-			Stand();
-		}
-
+		
 		if(restartLevel) {
 			Application.LoadLevel (Application.loadedLevelName);
 		}
@@ -85,7 +98,7 @@ public class PlayerController_Fase1: MonoBehaviour
 	public void SetHorizontalSpeed(float velocity) {
 		this.rigidbody2D.velocity = new Vector2(velocity, this.rigidbody2D.velocity.y);
 	}
-
+	
 	void Stand() {
 		if(IsGrounded()) {
 			SetHorizontalSpeed(0);
@@ -101,13 +114,30 @@ public class PlayerController_Fase1: MonoBehaviour
 		Boolean isGrounded = hit.collider != null;
 		return isGrounded;
 	}
-
+	
 	void OnCollisionEnter2D (Collision2D collision) {
 		if(collision.gameObject.tag.Equals("Enemy")) {
 			DoDamage(1);
 		}
+		
+		if(collision.gameObject.tag == "MovingPlatform" && collision.contacts[0].normal.y >= 0.9){
+			movingPlatform = collision.rigidbody;
+			jumpPressed = false;
+		}
 	}
-
+	
+	void OnCollisionStay2D(Collision2D other) {
+		if(other.gameObject.tag == "MovingPlatform" && other.contacts[0].normal.y < 0.9){
+			movingPlatform = null;
+		}
+	}
+	
+	void OnCollisionExit2D(Collision2D other) {
+		if(other.gameObject.tag == "MovingPlatform"){
+			movingPlatform = null;
+		}
+	}
+	
 	private void Die() {
 		if(corpse != null) {
 			Instantiate(corpse, this.transform.position, this.transform.rotation);
@@ -119,7 +149,7 @@ public class PlayerController_Fase1: MonoBehaviour
 			}
 		}
 	}
-
+	
 	private void DoDamage (int damage)
 	{
 		if(lifeManager.PlayerLife == 1) {
@@ -128,7 +158,7 @@ public class PlayerController_Fase1: MonoBehaviour
 			lifeManager.LifeDown (damage, LifeManager.LifeType.Player);
 		}
 	}
-
+	
 	IEnumerator WaitUp() {
 		yield return new WaitForSeconds(1.5f);
 		this.restartLevel = true;
