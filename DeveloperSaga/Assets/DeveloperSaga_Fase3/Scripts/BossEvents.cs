@@ -117,15 +117,22 @@ public class BossEvents : MonoBehaviour
 		
 				CharController.halt = false;
 				GUIController.halt = false;
+				MovingEnemy.shouldMove = true;
+				GroundedEnemy.shouldMove = true;
+				HoverEnemy.shouldMove = true;
 				
 		}
 
 		void OnTriggerEnter (Collider other)
 		{				
 				if (other.collider.gameObject.tag.Equals ("Player")) {		
+						SongController.songToPlay = 1;
 						boss.SetActive (true);
 						CharController.halt = true;
 						GUIController.halt = true;
+						MovingEnemy.shouldMove = false;
+						GroundedEnemy.shouldMove = false;
+						HoverEnemy.shouldMove = false;
 				}
 		}
 	 

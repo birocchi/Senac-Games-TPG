@@ -83,8 +83,8 @@ public class Boss3Controller : MonoBehaviour
 		IEnumerator PlayBossSong (int secs)
 		{		
 				yield return new WaitForSeconds (secs);		
-				if (SongController.songToPlay != 1) {
-						SongController.songToPlay = 1;
+				if (SongController.songToPlay != 2) {
+						SongController.songToPlay = 2;
 				}
 		}
 
@@ -283,7 +283,6 @@ public class Boss3Controller : MonoBehaviour
 
 		public void DoDamage (float damage)
 		{
-				Debug.Log ("Lost Energy!"); 
 				bossEnergy -= damage;
 		}
 	 
