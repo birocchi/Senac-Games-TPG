@@ -26,7 +26,7 @@ public class MovingEnemy : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{	
-				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Halt.cs")) {
+				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs")) {
 						if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 								if (playerNear) {
 						

@@ -19,7 +19,7 @@ public class BulletController : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				if (abilitiesManager.IsAbilityActive ("PowerShot.cs")) {						
+				if (abilitiesManager.IsAbilityActive ("SuperTiro.cs")) {						
 						renderer.material.SetColor ("_Emission", Color.red);
 				} else {						
 						renderer.material.SetColor ("_Emission", originalColor);
@@ -30,13 +30,13 @@ public class BulletController : MonoBehaviour
 		{
 				Debug.Log ("Collided with: " + collision.gameObject.name);
 				if (collision.gameObject.tag.Equals ("Enemy")) {						
-						if (abilitiesManager.IsAbilityActive ("PowerShot.cs")) {
+						if (abilitiesManager.IsAbilityActive ("SuperTiro.cs")) {
 								collision.gameObject.SendMessage ("DoDamage", damage * 3);
 						} else {
 								collision.gameObject.SendMessage ("DoDamage", damage);
 						}
 				} else if (collision.gameObject.tag.Equals ("Player")) {
-						if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
+						if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 								collision.gameObject.SendMessage ("DoDamage", damage / 2);
 						} else {
 								collision.gameObject.SendMessage ("DoDamage", damage);
@@ -44,7 +44,7 @@ public class BulletController : MonoBehaviour
 				} else if (!name.Equals ("Boss Bullet")) {						
 						foreach (ContactPoint c in collision.contacts) {
 								if (c.otherCollider.gameObject.name.Equals ("AreaDanoBoss")) {
-										if (abilitiesManager.IsAbilityActive ("PowerShot.cs")) {
+										if (abilitiesManager.IsAbilityActive ("SuperTiro.cs")) {
 												collision.gameObject.SendMessage ("DoDamage", damage * 3);
 										} else {
 												collision.gameObject.SendMessage ("DoDamage", damage);

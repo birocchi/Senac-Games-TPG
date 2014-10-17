@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CharController : MonoBehaviour
 {
+		public static bool halt = false;
+		
 		public float speed = 2.5f;	
 		public float jumpSpeed = 1.0f;
 		private float vSpeed = 0f;
@@ -51,72 +53,76 @@ public class CharController : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
-						shieldParticles.enableEmission = true;
-						shieldParticles.Play ();
-				} else {
-						shieldParticles.enableEmission = false;
-						shieldParticles.Stop ();
-				}
-		
-				Vector3 moveDirection;
-				float value = Input.GetAxis ("Horizontal");
+				if (!halt) {
 
-				moveDirection = new Vector3 (0, 0, value * -1);
-				moveDirection = transform.TransformDirection (moveDirection);
-				moveDirection *= speed;
-				if (controller.isGrounded) {
-						vSpeed = -2;
-						if (Input.GetButtonDown ("Jump")) {
-								vSpeed = jumpSpeed;
+						if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
+								shieldParticles.enableEmission = true;
+								shieldParticles.Play ();
+						} else {
+								shieldParticles.enableEmission = false;
+								shieldParticles.Stop ();
 						}
-				}
-				vSpeed -= gravity * Time.deltaTime;
-				moveDirection.y = vSpeed;
-				controller.Move (moveDirection * Time.deltaTime);
+		
+						Vector3 moveDirection;
+						float value = Input.GetAxis ("Horizontal");
+
+						moveDirection = new Vector3 (0, 0, value * -1);
+						moveDirection = transform.TransformDirection (moveDirection);
+						moveDirection *= speed;
+						if (controller.isGrounded) {
+								vSpeed = -2;
+								if (Input.GetButtonDown ("Jump")) {
+										vSpeed = jumpSpeed;
+								}
+						}
+						vSpeed -= gravity * Time.deltaTime;
+						moveDirection.y = vSpeed;
+						controller.Move (moveDirection * Time.deltaTime);
 				
-				if (Input.GetAxis ("Horizontal") * -1 < 0 && !back) {
-						rotateLeft = true;
+						if (Input.GetAxis ("Horizontal") * -1 < 0 && !back) {
+								rotateLeft = true;
 									
 						
-				} else if (Input.GetAxis ("Horizontal") * -1 > 0 && back) {
-						rotateRight = true;
-				}
+						} else if (Input.GetAxis ("Horizontal") * -1 > 0 && back) {
+								rotateRight = true;
+						}
 				
-				if (rotateLeft) {
-						toRotate++;
-						if (toRotate <= 20) {
-								playerAvatar.transform.Rotate (new Vector3 (0, -9, 0));
+						if (rotateLeft) {
+								toRotate++;
+								if (toRotate <= 20) {
+										playerAvatar.transform.Rotate (new Vector3 (0, -9, 0));
+								} else {
+										back = true;
+										rotateLeft = false;
+										toRotate = 0;
+								}		
+						} else if (rotateRight) {
+								toRotate--;
+								if (toRotate >= -20) {
+										playerAvatar.transform.Rotate (new Vector3 (0, 9, 0));
+								} else {
+										back = false;
+										rotateRight = false;
+										toRotate = 0;
+								}		
+						}			
+				
+						if (Input.GetButtonDown ("Jump")) {
+								animator2.SetBool ("jump", true);		
+						}
+						if (controller.isGrounded) {
+								animator2.SetBool ("jump", false);					
+						}
+				
+						if (Input.GetAxis ("Horizontal") > 0.1f || Input.GetAxis ("Horizontal") < -0.1f) {			
+								animator2.SetBool ("run", true);
 						} else {
-								back = true;
-								rotateLeft = false;
-								toRotate = 0;
-						}		
-				} else if (rotateRight) {
-						toRotate--;
-						if (toRotate >= -20) {
-								playerAvatar.transform.Rotate (new Vector3 (0, 9, 0));
-						} else {
-								back = false;
-								rotateRight = false;
-								toRotate = 0;
-						}		
-				}			
+								animator2.SetBool ("run", false);		
+						}
 				
-				if (Input.GetButtonDown ("Jump")) {
-						animator2.SetBool ("jump", true);		
-				}
-				if (controller.isGrounded) {
-						animator2.SetBool ("jump", false);					
-				}
-				
-				if (Input.GetAxis ("Horizontal") > 0.1f || Input.GetAxis ("Horizontal") < -0.1f) {			
-						animator2.SetBool ("run", true);
 				} else {
-						animator2.SetBool ("run", false);		
+						animator2.SetBool ("run", false);
 				}
-				
-				
 		}
 		
 		void FixedUpdate ()
@@ -148,6 +154,20 @@ public class CharController : MonoBehaviour
 				if (hit.collider.gameObject.tag.Equals ("Boss")) {			
 						DoDamage (1);
 				}
+				if (hit.collider.gameObject.tag.Equals ("Mug")) {	
+						hit.collider.gameObject.SendMessage ("GetMug", SendMessageOptions.DontRequireReceiver);
+				}
+				if (hit.collider.gameObject.tag.Equals ("Ability")) {	
+						hit.collider.gameObject.SendMessage ("GetAbility", SendMessageOptions.DontRequireReceiver);
+				}
+		}
+	
+		void OnTriggerExit (Collider t)
+		{				
+				if (t.gameObject.tag == "Platform") {
+						gameObject.transform.parent = null;
+						
+				}
 		}
 
 		void OnTriggerEnter (Collider trigger)
@@ -164,6 +184,27 @@ public class CharController : MonoBehaviour
 			
 						DoDamage (1);
 				}
+				if (trigger.gameObject.tag == "Platform") {
+						gameObject.transform.parent = trigger.gameObject.transform;
+						
+				}
+				if (trigger.collider.gameObject.tag.Equals ("Mug")) {
+						trigger.collider.gameObject.SendMessage ("GetMug", SendMessageOptions.DontRequireReceiver);
+				}
+				if (trigger.collider.gameObject.tag.Equals ("Ability")) {
+						trigger.collider.gameObject.SendMessage ("GetAbility", SendMessageOptions.DontRequireReceiver);
+				}
+				if (trigger.collider.gameObject.tag.Equals ("Pit")) {			
+						StartCoroutine (Fall ());
+				}
+		}
+
+		IEnumerator Fall ()
+		{		
+				CameraFollow.follow = false;
+				yield return new WaitForSeconds (1f);
+				Application.LoadLevel ("GameOver");
+				
 		}
 	
 		IEnumerator CollideFlash ()
@@ -217,7 +258,7 @@ public class CharController : MonoBehaviour
 
 		void OnParticleCollision (GameObject other)
 		{
-				if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 						DoDamage (1);
 				} else {
 						DoDamage (1);

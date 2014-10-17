@@ -7,6 +7,7 @@
 public class DragRigidbody : MonoBehaviour
 {
 		public static bool allowDrag = false;
+
 		public float force = 600;
 		public float damping = 6;
 		private AbilitiesManager abilitiesManager;
@@ -22,21 +23,21 @@ public class DragRigidbody : MonoBehaviour
 
 		void OnMouseDown ()
 		{
-				if (abilitiesManager.IsAbilityActive ("Force.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Forca.cs")) {
 						HandleInputBegin (Input.mousePosition);
 				}
 		}
 	
 		void OnMouseUp ()
 		{
-				if (abilitiesManager.IsAbilityActive ("Force.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Forca.cs")) {
 						HandleInputEnd (Input.mousePosition);
 				}
 		}
 	
 		void OnMouseDrag ()
 		{
-				if (abilitiesManager.IsAbilityActive ("Force.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Forca.cs")) {
 						HandleInput (Input.mousePosition);
 				}
 		}

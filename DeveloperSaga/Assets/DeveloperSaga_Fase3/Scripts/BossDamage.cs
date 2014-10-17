@@ -23,7 +23,7 @@ public class BossDamage : MonoBehaviour
 		void OnCollisionEnter (Collision collision)
 		{
 				if (collision.gameObject.tag.Equals ("Player")) {
-						if (abilitiesManager.IsAbilityActive ("Shield.cs")) {
+						if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 								collision.gameObject.SendMessage ("DoDamage", 1f / 2f);
 						} else {
 								collision.gameObject.SendMessage ("DoDamage", 1f);

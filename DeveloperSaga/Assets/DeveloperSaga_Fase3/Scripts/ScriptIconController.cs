@@ -26,12 +26,12 @@ public class ScriptIconController : MonoBehaviour
 				this.transform.Rotate (new Vector3 (0, 0, 1 * Time.timeScale));
 				if (fadeAlpha && renderer.material.color.a > 0) {
 						Color color = renderer.material.color;
-						color.a -= 0.1f;
+						color.a -= 5f * Time.deltaTime;
 						renderer.material.color = color;
 				}
 		}
 	
-		public void GetCoin ()
+		public void GetAbility ()
 		{
 				abilitiesManager.abilitiesList.Add (new Ability (abilityName, abilityType, null, abilityDescription, abilityDuration, abilityCooldown));
 				StartCoroutine (DestroyThis ());
@@ -48,6 +48,6 @@ public class ScriptIconController : MonoBehaviour
 				this.collider.enabled = false;
 				yield return new WaitForSeconds (1f);
 		
-				Destroy (this);
+				Destroy (this, 7f);
 		}
 }

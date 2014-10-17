@@ -5,6 +5,9 @@ using System.Collections.Generic;
 public class GUIController : MonoBehaviour
 { 
 		//Flags
+	
+		public static bool halt = false;
+
 		private bool stopTime;
 		private bool timeStopped;
 		private bool playedFreezeSound;
@@ -113,10 +116,12 @@ public class GUIController : MonoBehaviour
 	 **/
 		void Update ()
 		{
-				if (previousNumberOfCoins != coinManager.numberOfCoins) {
-						coinsToShow++;
-						previousNumberOfCoins = coinManager.numberOfCoins;
-						StartCoroutine (ShowCoinGUI ());
+				if (!halt) {
+						if (previousNumberOfCoins != coinManager.numberOfCoins) {
+								coinsToShow++;
+								previousNumberOfCoins = coinManager.numberOfCoins;
+								StartCoroutine (ShowCoinGUI ());
+						}
 				}
 		}
 
@@ -129,27 +134,29 @@ public class GUIController : MonoBehaviour
 	 **/
 		void OnGUI ()
 		{
-				GUI.skin = skin;
+				if (!halt) {
+						GUI.skin = skin;
 
-				//Controla a exibiçao de energia na tela
-				this.GerenciarEnergia ();
+						//Controla a exibiçao de energia na tela
+						this.GerenciarEnergia ();
 		
-				//Gerencia a exibiçao ou retraçao do menu de habilidades e a parada do tempo
-				this.GerenciarMenuHabilidades ();
+						//Gerencia a exibiçao ou retraçao do menu de habilidades e a parada do tempo
+						this.GerenciarMenuHabilidades ();
 
-				this.ShowCoins ();
+						this.ShowCoins ();
 		
-				//Se foram definidas imagens de menu e script padrao, exibe-as
-				if (computerImage != null && computerScriptImage != null) {			
-						//Se o tempo deve ser parado, exibe o icone de "scripts"
-						//Ambos os icones possuem prioridade ("camada") maior em
-						//relaçao ao "menu" de habilidades
-						if (stopTime) {
-								GUI.DrawTexture (new Rect (5, 5, 96, 96), computerScriptImage);
-						}
+						//Se foram definidas imagens de menu e script padrao, exibe-as
+						if (computerImage != null && computerScriptImage != null) {			
+								//Se o tempo deve ser parado, exibe o icone de "scripts"
+								//Ambos os icones possuem prioridade ("camada") maior em
+								//relaçao ao "menu" de habilidades
+								if (stopTime) {
+										GUI.DrawTexture (new Rect (5, 5, 96, 96), computerScriptImage);
+								}
 			//Caso contrario, exibe o icone "normal"
 			else {
-								GUI.DrawTexture (new Rect (5, 5, 96, 96), computerImage);
+										GUI.DrawTexture (new Rect (5, 5, 96, 96), computerImage);
+								}
 						}
 				}
 		}

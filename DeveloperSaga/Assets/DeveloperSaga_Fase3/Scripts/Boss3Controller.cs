@@ -290,7 +290,7 @@ public class Boss3Controller : MonoBehaviour
 		IEnumerator EnableBoss ()
 		{	
 
-				StartCoroutine (PlayBossSong (1));				
+				StartCoroutine (PlayBossSong (0));				
 		
 				yield return new WaitForSeconds (2f);				
 

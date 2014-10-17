@@ -42,33 +42,33 @@ public class AbilitiesManager : MonoBehaviour
 
 						abilitiesList = new List<Ability> ();
 
-						if (PlayerPrefs.GetInt ("Pistol.cs") == 1) {
-								abilitiesList.Add (new Ability ("Pistol.cs", Ability.AbilityType.WeaponAbility, "iconPath", "Equip/Unequip pistol"));				
+						if (PlayerPrefs.GetInt ("Pistola.cs") == 1) {
+								abilitiesList.Add (new Ability ("Pistola.cs", Ability.AbilityType.WeaponAbility, "iconPath", "Equipa/Remove a arma"));				
 						}
 
-						if (PlayerPrefs.GetInt ("Halt.cs") == 1) {
-								abilitiesList.Add (new Ability ("Halt.cs", Ability.AbilityType.PowerAbility, "test", "Temporarily halts all enemies", 1000, 2000));
+						if (PlayerPrefs.GetInt ("Parar.cs") == 1) {
+								abilitiesList.Add (new Ability ("Parar.cs", Ability.AbilityType.PowerAbility, "test", "Temporariamente pausa os inimigos", 1000, 2000));
 						}
 
-						if (PlayerPrefs.GetInt ("PowerShot.cs") == 1) {
-								abilitiesList.Add (new Ability ("PowerShot.cs", Ability.AbilityType.PowerAbility, "test", "Enchances pistol power", 1000, 2000));
+						if (PlayerPrefs.GetInt ("SuperTiro.cs") == 1) {
+								abilitiesList.Add (new Ability ("SuperTiro.cs", Ability.AbilityType.PowerAbility, "test", "Aumenta o poder da pistola", 1000, 2000));
 						}
 
-						if (PlayerPrefs.GetInt ("Shield.cs") == 1) {
-								abilitiesList.Add (new Ability ("Shield.cs", Ability.AbilityType.PowerAbility, "test", "Halves damage", 1000, 2000));
+						if (PlayerPrefs.GetInt ("Escudos.cs") == 1) {
+								abilitiesList.Add (new Ability ("Escudos.cs", Ability.AbilityType.PowerAbility, "test", "Diminui o dano pela metade", 1000, 2000));
 						}
 
-						if (PlayerPrefs.GetInt ("Force.cs") == 1) {
-								abilitiesList.Add (new Ability ("Force.cs", Ability.AbilityType.PowerAbility, "test", "Allow object manipulation", 1000, 2000));
+						if (PlayerPrefs.GetInt ("Forca.cs") == 1) {
+								abilitiesList.Add (new Ability ("Forca.cs", Ability.AbilityType.PowerAbility, "test", "Permite manipular objetos", 1000, 2000));
 						}
 
-						if (PlayerPrefs.GetInt ("NullVariables.cs") == 1) {
-								abilitiesList.Add (new Ability ("NullVariables.cs", Ability.AbilityType.SpecialAbility, "test", "Destroy all visible enemies"));
+						if (PlayerPrefs.GetInt ("ZerarVariaveis.cs") == 1) {
+								abilitiesList.Add (new Ability ("ZerarVariaveis.cs", Ability.AbilityType.SpecialAbility, "test", "Destroi todos os inimigos visiveis"));
 						}
 
 
 						if (abilitiesList.Count <= 0) {
-								abilitiesList.Add (new Ability ("Halt.cs", Ability.AbilityType.PowerAbility, "test", "Temporarily halts all enemies", 1000, 2000));
+								abilitiesList.Add (new Ability ("ZerarVariaveis.cs", Ability.AbilityType.PowerAbility, "test", "Temporariamente pausa os inimigos", 1000, 2000));
 						}						
 				}
 

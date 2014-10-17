@@ -22,7 +22,7 @@ public class CoinController : MonoBehaviour
 				this.transform.Rotate (new Vector3 (0, 1 * Time.timeScale, 0));
 				if (fadeAlpha && renderer.material.color.a > 0) {
 						Color color = renderer.material.color;
-						color.a -= 0.1f;
+						color.a -= 5f * Time.deltaTime;
 						renderer.material.color = color;
 				}
 		}
