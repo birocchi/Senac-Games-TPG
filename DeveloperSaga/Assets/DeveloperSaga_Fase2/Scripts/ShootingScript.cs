@@ -6,6 +6,7 @@ public class ShootingScript : MonoBehaviour {
 	public GameObject shot;
 	public float fireRate = 1;
 	public float shotSpeed = 7;
+	public float shotLifeTime = 0.6f;
 	
 	private float fireInterval;
 	private float elapsedTime;
@@ -19,7 +20,7 @@ public class ShootingScript : MonoBehaviour {
 	void Update () {
 		if(Input.GetButtonDown("Fire1") && elapsedTime >= fireInterval){
 			shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
-			shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right );
+			shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right, shotLifeTime );
 			Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
 			elapsedTime = 0;
 		}

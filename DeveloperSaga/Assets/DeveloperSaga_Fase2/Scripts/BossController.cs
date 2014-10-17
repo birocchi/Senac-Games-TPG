@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class BossController : MonoBehaviour {
@@ -13,6 +13,7 @@ public class BossController : MonoBehaviour {
 	public GameObject shot;
 	public float fireRate = 1;
 	public float shotSpeed = 9;
+	public float shotLifeTime = 0.6f;
 	private float fireInterval;
 	private float elapsedTime;
 	private GameObject shotInstance;
@@ -23,14 +24,14 @@ public class BossController : MonoBehaviour {
 	[HideInInspector]
 	public bool isHurt;
 	[HideInInspector]
-	public Rigidbody2D movingPlatform;
-	[HideInInspector]
 	public float horizontalMove;
 
 	//Other variables
 	public Transform target;
 	public AudioSource ouchSound;
+	public AudioSource explosionSound;
 	public GameObject explosion;
+	public GameObject lasers;
 	private LifeManager lifeManager;
 	private Transform groundCheck;
 	
@@ -53,7 +54,7 @@ public class BossController : MonoBehaviour {
 			//Shoot
 			if(Vector2.Distance(target.position,transform.position) < viewDistance && elapsedTime >= fireInterval){
 				shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
-				shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right );
+				shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right, shotLifeTime );
 				Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
 				elapsedTime = 0;
 			}
@@ -112,11 +113,10 @@ public class BossController : MonoBehaviour {
 	
 	IEnumerator StunBoss(float stunTime){
 		isHurt = true;
-		yield return new WaitForSeconds(stunTime);
 		if(lifeManager.BossLife <= 0){
-			Explode();
-			Destroy(gameObject);
+			EndBossBattle();
 		}
+		yield return new WaitForSeconds(stunTime);
 		isHurt = false;
 	}
 
@@ -124,6 +124,14 @@ public class BossController : MonoBehaviour {
 		GameObject particle = (GameObject)GameObject.Instantiate(explosion,transform.position,transform.rotation);
 		particle.GetComponent<ParticleSystem>().renderer.sortingLayerName = "ForeGround";
 		particle.GetComponent<ParticleSystem>().particleSystem.renderer.sortingOrder = 1;
+		AudioSource.PlayClipAtPoint(explosionSound.clip,transform.position);
+	}
+
+	void EndBossBattle(){
+		Explode();
+		lasers.SetActive(false);
+		SongController.songToPlay = 0;
+		Destroy(gameObject);
 	}
 
 	void OnDrawGizmos(){

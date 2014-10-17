@@ -5,10 +5,11 @@ public class ShotController : MonoBehaviour {
 
 	private float shotSpeed;
 	private Vector2 direction;
+	private float destroyTime;
 
 	void Start(){
 		AudioSource.PlayClipAtPoint(audio.clip,transform.position);
-		StartCoroutine(TimedDestroy(1));
+		StartCoroutine(TimedDestroy(destroyTime));
 	}
 
 	// Update is called once per frame
@@ -16,9 +17,10 @@ public class ShotController : MonoBehaviour {
 		rigidbody2D.velocity = direction.normalized * shotSpeed;
 	}
 
-	public void Initialize(float _shotSpeed, Vector2 _direction){
+	public void Initialize(float _shotSpeed, Vector2 _direction, float _destroyTime){
 		shotSpeed = _shotSpeed;
 		direction = _direction;
+		destroyTime = _destroyTime;
 	}
 
 	IEnumerator TimedDestroy(float seconds){
