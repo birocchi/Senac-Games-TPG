@@ -6,7 +6,7 @@ public class AnimatorController : MonoBehaviour {
 	private PlayerController_Fase1 playerController;
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		animator = this.GetComponent<Animator>();
 		playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController_Fase1>();
 	}
