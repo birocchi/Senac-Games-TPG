@@ -24,9 +24,20 @@ public class MenuController : MonoBehaviour
 				GUI.skin = guiskin;
 				GUI.DrawTexture (new Rect (Screen.width / 2 - logo.width / 2, Screen.height / 2 - logo.height / 2 - 200, logo.width, logo.height), logo);
 				if (GUI.Button (new Rect (Screen.width / 2 - 300 / 2, Screen.height / 2 - 50 / 2 + 150, 300, 50), "{ INICIAR }")) {
+						PlayerPrefs.SetString ("CurrentLevel", "Fase1");
 						Application.LoadLevel ("cutscene1");
 				}
-				GUI.Button (new Rect (Screen.width / 2 - 300 / 2, Screen.height / 2 - 50 / 2 + 220, 300, 50), "{ CONTINUAR }");
+				if (PlayerPrefs.GetString ("CurrentLevel") != null && !PlayerPrefs.GetString ("CurrentLevel").Equals ("")) {
+						if (GUI.Button (new Rect (Screen.width / 2 - 300 / 2, Screen.height / 2 - 50 / 2 + 220, 300, 50), "{ CONTINUAR }")) {						
+								Application.LoadLevel (PlayerPrefs.GetString ("CurrentLevel"));
+						}
+				}
+				
+
+
+		
+		
+
 				if (GUI.Button (new Rect (Screen.width / 2 - 300 / 2, Screen.height / 2 - 50 / 2 + 290, 300, 50), "{ SAIR }")) {
 						Application.Quit ();
 				}

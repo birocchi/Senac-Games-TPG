@@ -14,6 +14,8 @@ public class SkipAndLoad : MonoBehaviour
 		void Update ()
 		{
 				if (Input.GetKeyUp (KeyCode.Escape)) {
+						PlayerPrefs.SetString ("CurrentLevel", levelName);
+						PlayerPrefs.Save ();
 						Application.LoadLevel (levelName);
 				}
 		}

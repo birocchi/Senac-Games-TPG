@@ -73,8 +73,11 @@ public class Boss3Controller : MonoBehaviour
 
 								enemyDead = true;		
 								
-								Destroy (instance, 3f);
-								Destroy (this.gameObject);
+								Destroy (instance, 3);
+								Destroy (this.gameObject, 7);
+
+								StartCoroutine (Exit ());
+
 						}
 						
 				}
@@ -105,6 +108,13 @@ public class Boss3Controller : MonoBehaviour
 				animator.SetInteger ("rightHandAnimation", -1);
 				yield return new WaitForSeconds (3.5f);
 				modeRunning--;
+				
+		}
+
+		IEnumerator Exit ()
+		{		
+				yield return new WaitForSeconds (3);
+				Application.LoadLevel ("cutscene4");
 				
 		}
 
