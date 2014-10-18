@@ -16,5 +16,6 @@ public class BossAnimationController : MonoBehaviour {
 		animator.SetFloat("Speed", Mathf.Abs(bossController.rigidbody2D.velocity.x));
 		animator.SetBool("Jump", bossController.isGrounded ? false : true);
 		animator.SetBool("Hurt", bossController.isHurt ? true : false);
+		animator.SetFloat("Shooting", bossController.isShooting ? 1 : 0);
 	}
 }
