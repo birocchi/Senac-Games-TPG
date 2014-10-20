@@ -20,6 +20,20 @@ public class AbilitiesManager : MonoBehaviour
 				}
 				return abilityToReturn;
 		}
+
+		public bool HetAbility (string name)
+		{
+				bool result = false;
+				if (abilitiesList != null && abilitiesList.Count > 0) {
+						foreach (Ability ab in abilitiesList) {
+								if (ab.name.Equals (name)) {
+										result = true;
+										break;
+								}
+						}
+				}
+				return result;
+		}
 	
 		public bool IsAbilityActive (string name)
 		{
@@ -66,13 +80,20 @@ public class AbilitiesManager : MonoBehaviour
 								abilitiesList.Add (new Ability ("ZerarVariaveis.cs", Ability.AbilityType.SpecialAbility, "test", "Destroi todos os inimigos visiveis"));
 						}
 
+						if (PlayerPrefs.GetInt ("CafeExpresso.cs") == 1) {
+								abilitiesList.Add (new Ability ("CafeExpresso.cs", Ability.AbilityType.SpecialAbility, "test", "Recupera dois cafes", 100, 5000));
+						}
+
 
 						if (abilitiesList.Count <= 0) {
-								abilitiesList.Add (new Ability ("ZerarVariaveis.cs", Ability.AbilityType.PowerAbility, "test", "Temporariamente pausa os inimigos", 1000, 2000));
+								abilitiesList.Add (new Ability ("Parar.cs", Ability.AbilityType.PowerAbility, "test", "Temporariamente pausa os inimigos", 1000, 2000));
 						}						
+
+
+						
 				}
 
-				foreach (Ability ability in abilitiesList) {
+				foreach (Ability ability in abilitiesList) { 
 						PlayerPrefs.SetInt (ability.name, 1);
 				}			
 		}

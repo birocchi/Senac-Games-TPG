@@ -33,7 +33,9 @@ public class ScriptIconController : MonoBehaviour
 	
 		public void GetAbility ()
 		{
-				abilitiesManager.abilitiesList.Add (new Ability (abilityName, abilityType, null, abilityDescription, abilityDuration, abilityCooldown));
+				if (!abilitiesManager.HetAbility (abilityName)) {
+						abilitiesManager.abilitiesList.Add (new Ability (abilityName, abilityType, null, abilityDescription, abilityDuration, abilityCooldown));
+				}
 				StartCoroutine (DestroyThis ());
 		}
 	

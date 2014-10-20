@@ -36,6 +36,7 @@ public class CharController : MonoBehaviour
 		private LifeManager lifeManager;
 		private AbilitiesManager abilitiesManager;
 		private CoinManager coinManager;
+		private bool cureActivated = false;
 	
 		
 		// Use this for initialization
@@ -89,8 +90,8 @@ public class CharController : MonoBehaviour
 				
 						if (rotateLeft) {
 								toRotate++;
-								if (toRotate <= 20) {
-										playerAvatar.transform.Rotate (new Vector3 (0, -9, 0));
+								if (toRotate <= 10) {
+										playerAvatar.transform.Rotate (new Vector3 (0, -18, 0));
 								} else {
 										back = true;
 										rotateLeft = false;
@@ -98,8 +99,8 @@ public class CharController : MonoBehaviour
 								}		
 						} else if (rotateRight) {
 								toRotate--;
-								if (toRotate >= -20) {
-										playerAvatar.transform.Rotate (new Vector3 (0, 9, 0));
+								if (toRotate >= -10) {
+										playerAvatar.transform.Rotate (new Vector3 (0, 18, 0));
 								} else {
 										back = false;
 										rotateRight = false;
@@ -123,6 +124,25 @@ public class CharController : MonoBehaviour
 				} else {
 						animator2.SetBool ("run", false);
 				}
+						
+				if (abilitiesManager.IsAbilityActive ("CafeExpresso.cs") && !cureActivated) {
+						cureActivated = true;					
+						StartCoroutine (CastCure ());
+				}
+		}
+
+		IEnumerator CastCure ()
+		{		
+				lifeManager.LifeUp (4, LifeManager.LifeType.Player);
+				shieldParticles.enableEmission = true;
+				shieldParticles.Play ();
+				yield return new WaitForSeconds (1f);
+				shieldParticles.enableEmission = false;
+				shieldParticles.Stop ();
+				yield return new WaitForSeconds (1f);
+				cureActivated = false;
+
+		
 		}
 		
 		void FixedUpdate ()
@@ -202,8 +222,12 @@ public class CharController : MonoBehaviour
 		IEnumerator Fall ()
 		{		
 				CameraFollow.follow = false;
-				yield return new WaitForSeconds (1f);
+				yield return new WaitForSeconds (1f);				
+
 				Application.LoadLevel ("GameOver");
+
+		
+				GameObject.Find ("Camera").SendMessage ("OnApplicationQuit");
 				
 		}
 	
@@ -261,7 +285,7 @@ public class CharController : MonoBehaviour
 				if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 						DoDamage (1);
 				} else {
-						DoDamage (1);
+						DoDamage (2);
 				}
 		
 		}

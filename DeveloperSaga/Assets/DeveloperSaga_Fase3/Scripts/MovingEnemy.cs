@@ -3,7 +3,8 @@ using System.Collections;
 
 public class MovingEnemy : MonoBehaviour
 {
-		
+	
+		public static bool shouldMove = true;
 		public Transform ponto;
 		public GameObject bullet;
 		private bool playerNear = false;
@@ -13,6 +14,7 @@ public class MovingEnemy : MonoBehaviour
 		public bool shouldRotate = false;
 		public EnemyHealthController enemyHealth;
 		private AbilitiesManager abilitiesManager;
+		public int damage = 1;
 		
 
 		// Use this for initialization
@@ -26,7 +28,7 @@ public class MovingEnemy : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{	
-				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs")) {
+				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs") && shouldMove) {
 						if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 								if (playerNear) {
 						
@@ -44,7 +46,7 @@ public class MovingEnemy : MonoBehaviour
 										if (!isShooting) {
 												GameObject instance = (GameObject)Instantiate (bullet, ponto.position, ponto.rotation);
 												BulletController cont = (BulletController)instance.GetComponent <BulletController> ();
-												cont.damage = 1;
+												cont.damage = damage;
 												instance.rigidbody.velocity = ponto.up * -100;
 												Destroy (instance, 5f);
 												StartCoroutine (WaitToFireAgain ());

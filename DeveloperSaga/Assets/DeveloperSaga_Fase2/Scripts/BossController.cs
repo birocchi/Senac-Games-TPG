@@ -8,6 +8,7 @@ public class BossController : MonoBehaviour {
 	public float jumpForce;
 	public float safeDistance;
 	public float viewDistance;
+	public float armUpTime = 1.2f;
 
 	//Shot variables
 	public GameObject shot;
@@ -16,6 +17,7 @@ public class BossController : MonoBehaviour {
 	public float shotLifeTime = 0.6f;
 	private float fireInterval;
 	private float elapsedTime;
+	private float armUpCounter;
 	private GameObject shotInstance;
 	
 	//Used by the AnimationController
@@ -25,6 +27,8 @@ public class BossController : MonoBehaviour {
 	public bool isHurt;
 	[HideInInspector]
 	public float horizontalMove;
+	[HideInInspector]
+	public bool isShooting;
 
 	//Other variables
 	public Transform target;
@@ -53,14 +57,22 @@ public class BossController : MonoBehaviour {
 
 			//Shoot
 			if(Vector2.Distance(target.position,transform.position) < viewDistance && elapsedTime >= fireInterval){
+				isShooting = true;
 				shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
 				shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right, shotLifeTime );
 				Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
 				elapsedTime = 0;
+				armUpCounter = armUpTime;
 			}
 			
 			if(elapsedTime < fireInterval){
 				elapsedTime += Time.fixedDeltaTime;
+			}
+
+			if(armUpCounter <= 0){
+				isShooting = false;
+			}else{
+				armUpCounter -= Time.deltaTime;
 			}
 		}
 	}

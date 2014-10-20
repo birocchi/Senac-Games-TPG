@@ -28,7 +28,6 @@ public class BulletController : MonoBehaviour
 
 		void OnCollisionEnter (Collision collision)
 		{
-				Debug.Log ("Collided with: " + collision.gameObject.name);
 				if (collision.gameObject.tag.Equals ("Enemy")) {						
 						if (abilitiesManager.IsAbilityActive ("SuperTiro.cs")) {
 								collision.gameObject.SendMessage ("DoDamage", damage * 3);

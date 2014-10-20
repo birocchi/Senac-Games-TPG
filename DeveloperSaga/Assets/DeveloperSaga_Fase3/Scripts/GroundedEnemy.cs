@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GroundedEnemy : MonoBehaviour
 {
-		
+		public static bool shouldMove = true;
 		public Transform ponto;
 		public GameObject bullet;
 		private bool playerNear = false;
@@ -26,7 +26,7 @@ public class GroundedEnemy : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{	
-				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs")) {
+				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs") && shouldMove) {
 						if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 								if (playerNear) {
 						

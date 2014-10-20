@@ -19,6 +19,7 @@ public class ActionController : MonoBehaviour
 		public Transform startingPoint;
 		public Vector3 axis;
 		public GameObject toMove;
+		public bool shouldGoBack = false;
 	
 		void Start ()
 		{
@@ -147,6 +148,10 @@ public class ActionController : MonoBehaviour
 		void OnTriggerExit (Collider other)
 		{
 				if (other.gameObject.tag.Equals ("Player")) {
+						if (shouldGoBack && up) {
+								moved = false;
+								shouldMove = true; 
+						}
 						showMessage = false;
 				}
 		}

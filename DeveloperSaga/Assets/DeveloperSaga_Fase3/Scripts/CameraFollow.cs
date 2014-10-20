@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
 
 		void Start ()
 		{
-	
+				follow = true;
 		}
 	
 		void Update ()

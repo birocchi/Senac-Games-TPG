@@ -21,7 +21,7 @@ public class SongController : MonoBehaviour
 								audio.volume = audio.volume -= 0.01f;
 								if (audio.volume <= 0f) {
 										audio.Stop ();
-										audio.volume = 1f;
+										audio.volume = 0.8f;
 										audio.clip = avaliableSongs [songToPlay];
 										playingSong = songToPlay;
 										audio.Play ();
