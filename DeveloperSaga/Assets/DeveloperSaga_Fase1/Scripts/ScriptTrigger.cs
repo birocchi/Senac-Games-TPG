@@ -14,11 +14,8 @@ public class ScriptTrigger : MonoBehaviour {
 		if (other != null && other.tag.Equals ("Player")  ) {
 			Destroy(this.collider2D);
 			animator.SetBool("ScriptTaken", true);
-			this.ApplyScript ();
+			other.GetComponent<JumpScript>().enabled = true;
 		}
 	}
-	
-	void ApplyScript() {
-		playerController.jumpAllowed = true;
-	}
+
 }

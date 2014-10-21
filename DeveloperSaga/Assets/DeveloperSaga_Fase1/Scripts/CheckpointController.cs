@@ -2,10 +2,11 @@
 using System.Collections;
 
 public class CheckpointController : MonoBehaviour {
-	public bool enabled;
+
 	PlayerController_Fase1 playerController;
-	void Awake () {
-		playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController_Fase1>();
+
+	void Start () {
+		playerController = GameObject.Find("Player").GetComponent<PlayerController_Fase1>();
 	}
 	
 	void OnTriggerEnter2D(Collider2D other) {
