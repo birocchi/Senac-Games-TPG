@@ -6,9 +6,9 @@ public class CharController : MonoBehaviour
 		public static bool halt = false;
 		
 		public float speed = 2.5f;	
-		public float jumpSpeed = 1.0f;
+		public float jumpSpeed = 0.3f;
 		private float vSpeed = 0f;
-		private float gravity = 125f;
+		private float gravity = 10f; 
 		private bool back = false;
 		private float toRotate;
 		private Animator animator2;
@@ -18,16 +18,16 @@ public class CharController : MonoBehaviour
 		private bool colored = false;
 		private float blinkingColorValue = 0f;
 		public GameObject blinking1;
-		public GameObject blinking2;
+		public GameObject blinking2;  
 		private bool rotateLeft = false;
 		private bool rotateRight = false;
-		public int demageFlashTimes;
+		public int demageFlashTimes; 
 		public AudioClip hit;
 		public AudioClip ah;
 		private bool invincible = false;
 		public GameObject[] damageParticles;
 		private GameObject[] damageInstances;
-		public Transform damagePosition;
+		public Transform damagePosition; 
 		public GameObject camera;
 		public bool rotate = false;
 		public bool rotated = false;
@@ -37,6 +37,7 @@ public class CharController : MonoBehaviour
 		private AbilitiesManager abilitiesManager;
 		private CoinManager coinManager;
 		private bool cureActivated = false;
+		public static float fixedZ;
 	
 		
 		// Use this for initialization
@@ -49,13 +50,14 @@ public class CharController : MonoBehaviour
 				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
 				lifeManager = gameManager.GetComponent<LifeManager> ();
 				coinManager = gameManager.GetComponent<CoinManager> ();
+				fixedZ = this.transform.position.z;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
 				if (!halt) {
-
+						this.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y, fixedZ);
 						if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 								shieldParticles.enableEmission = true;
 								shieldParticles.Play ();
@@ -67,7 +69,7 @@ public class CharController : MonoBehaviour
 						Vector3 moveDirection;
 						float value = Input.GetAxis ("Horizontal");
 
-						moveDirection = new Vector3 (0, 0, value * -1);
+						moveDirection = new Vector3 (0, 0, value * -0.3f);
 						moveDirection = transform.TransformDirection (moveDirection);
 						moveDirection *= speed;
 						if (controller.isGrounded) {
@@ -78,6 +80,8 @@ public class CharController : MonoBehaviour
 						}
 						vSpeed -= gravity * Time.deltaTime;
 						moveDirection.y = vSpeed;
+						moveDirection.z = 0f;
+				
 						controller.Move (moveDirection * Time.deltaTime);
 				
 						if (Input.GetAxis ("Horizontal") * -1 < 0 && !back) {
@@ -90,8 +94,8 @@ public class CharController : MonoBehaviour
 				
 						if (rotateLeft) {
 								toRotate++;
-								if (toRotate <= 10) {
-										playerAvatar.transform.Rotate (new Vector3 (0, -18, 0));
+								if (toRotate <= 9) {
+										playerAvatar.transform.Rotate (new Vector3 (0, -20, 0));
 								} else {
 										back = true;
 										rotateLeft = false;
@@ -99,8 +103,8 @@ public class CharController : MonoBehaviour
 								}		
 						} else if (rotateRight) {
 								toRotate--;
-								if (toRotate >= -10) {
-										playerAvatar.transform.Rotate (new Vector3 (0, 18, 0));
+								if (toRotate >= -9) {
+										playerAvatar.transform.Rotate (new Vector3 (0, 20, 0));  
 								} else {
 										back = false;
 										rotateRight = false;
@@ -282,6 +286,7 @@ public class CharController : MonoBehaviour
 
 		void OnParticleCollision (GameObject other)
 		{
+				Debug.Log ("Collided with particle!"); 
 				if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 						DoDamage (1);
 				} else {

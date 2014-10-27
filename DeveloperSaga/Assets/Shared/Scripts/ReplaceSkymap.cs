@@ -17,8 +17,10 @@ public class ReplaceSkymap : MonoBehaviour
 				int i = 0;
 				originalColor = RenderSettings.skybox.GetColor ("_Tint");
 				foreach (Material mat in materialsToRestore) {
-						originalColors [i] = mat.GetColor ("_Color");
-						i++;
+						if (mat != null) {
+								originalColors [i] = mat.GetColor ("_Color");
+								i++;
+						}
 				}
 		}
 	
@@ -33,8 +35,10 @@ public class ReplaceSkymap : MonoBehaviour
 				int i = 0;
 				RenderSettings.skybox.SetColor ("_Tint", originalColor);
 				foreach (Material mat in materialsToRestore) {
-						mat.SetColor ("_Color", originalColors [i++]);
-						i++;
+						if (mat != null) {
+								mat.SetColor ("_Color", originalColors [i++]);
+						}
+						i++;						
 				}
 		}
 }

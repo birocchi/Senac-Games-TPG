@@ -20,6 +20,7 @@ public class ActionController : MonoBehaviour
 		public Vector3 axis;
 		public GameObject toMove;
 		public bool shouldGoBack = false;
+		public float velocity = 5f;
 	
 		void Start ()
 		{
@@ -38,9 +39,9 @@ public class ActionController : MonoBehaviour
 								message = downText;
 						}
 						Vector3 position = Camera.main.WorldToScreenPoint (target.position);			
-						GUI.DrawTexture (new Rect (position.x, position.y, 250, 203), lockImage);
+						GUI.DrawTexture (new Rect (position.x, position.y + 25f, 250, 203), lockImage);
 						GUI.skin.label.wordWrap = true;
-						GUI.Label (new Rect (position.x, position.y + 20, 200, 180), message, font);
+						GUI.Label (new Rect (position.x, position.y + 35f, 200, 180), message, font);
 				}
 		}
 	
@@ -54,7 +55,7 @@ public class ActionController : MonoBehaviour
 				}
 
 				if (shouldMove && !moved) {
-						float moveValue = 100f * Time.deltaTime;
+						float moveValue = velocity * Time.deltaTime;
 							
 						if (axis.x == 1) {
 								if (toMove.transform.position.x < goToPoint.transform.position.x + moveValue) {

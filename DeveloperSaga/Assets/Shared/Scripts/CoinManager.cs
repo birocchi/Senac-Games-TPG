@@ -9,7 +9,8 @@ public class CoinManager : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
-	
+				GameObject[] coins = GameObject.FindGameObjectsWithTag ("Coin");
+				maximumCoins = coins.Length;
 		}
 	
 		// Update is called once per frame

@@ -29,9 +29,10 @@ public class GroundedEnemy : MonoBehaviour
 				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs") && shouldMove) {
 						if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 								if (playerNear) {
+										this.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y, player.position.z);
 						
-										if (player.position.x <= transform.position.x - 40f || player.position.x > transform.position.x + 40f) {
-												this.transform.Translate (new Vector3 (0, 0, 0.25f));								
+										if (player.position.x <= transform.position.x - 3f || player.position.x > transform.position.x + 3f) {
+												this.transform.Translate (new Vector3 (0, 0, 0.02f));									
 										}
 
 										Quaternion rotation = Quaternion.LookRotation (player.position - transform.position);
@@ -41,7 +42,7 @@ public class GroundedEnemy : MonoBehaviour
 												GameObject instance = (GameObject)Instantiate (bullet, ponto.position, ponto.rotation);
 												BulletController cont = (BulletController)instance.GetComponent <BulletController> ();
 												cont.damage = 1;
-												instance.rigidbody.velocity = ponto.up * 100f;
+												instance.rigidbody.velocity = ponto.up * 5f;
 												Destroy (instance, 5f);
 												StartCoroutine (WaitToFireAgain ());
 										}

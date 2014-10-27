@@ -25,8 +25,8 @@ public class BossTeleporter : MonoBehaviour
 		// Update is called once per frame
 		void FixedUpdate ()
 		{
-				if (moveCamera && i <= 100) {						
-						camera.transform.position = new Vector3 (camera.transform.position.x, camera.transform.position.y, camera.transform.position.z - 0.25f);
+				if (moveCamera && i <= 100f) {						
+						camera.transform.position = new Vector3 (camera.transform.position.x, camera.transform.position.y, camera.transform.position.z - 0.005f);
 						i++;
 				}
 				

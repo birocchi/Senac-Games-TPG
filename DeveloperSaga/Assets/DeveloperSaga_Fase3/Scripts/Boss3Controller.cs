@@ -28,8 +28,6 @@ public class Boss3Controller : MonoBehaviour
 
 		private int numberOfShotsRight;	
 		private int numberOfShotsLeft;	
-	
-		private bool enemyDead = false;
 
 		private bool bossEnabled = false;
 		private float previousHealth;
@@ -70,11 +68,9 @@ public class Boss3Controller : MonoBehaviour
 								Light[] ls = GetComponentsInChildren<Light> ();
 								foreach (Light l in ls)
 										l.enabled = false;
-
-								enemyDead = true;		
 								
 								Destroy (instance, 3);
-								Destroy (this.gameObject, 7);
+								Destroy (this.gameObject, 5);
 
 								StartCoroutine (Exit ());
 
@@ -139,40 +135,43 @@ public class Boss3Controller : MonoBehaviour
 
 		IEnumerator Slap (string slapAnimationName, string handNameAnimation)
 		{				
-				modeRunning++;
-				animator.SetInteger (handNameAnimation, 1);		
+				if (bossEnabled) {
+						modeRunning++;
+						animator.SetInteger (handNameAnimation, 1);		
 		
-				yield return new WaitForSeconds (4f);		
+						yield return new WaitForSeconds (4f);		
 		
-				animator.SetInteger (handNameAnimation, -1);
-				yield return new WaitForSeconds (3.5f);
-				modeRunning--;
+						animator.SetInteger (handNameAnimation, -1);
+						yield return new WaitForSeconds (3.5f);
+						modeRunning--;
+				}
 		
 		}
 
 		IEnumerator EyeLaser (int command)
 		{				
-				modeRunning++;
+				if (bossEnabled) {
+						modeRunning++;
 
-				foreach (ParticleSystem particle in eyeParticles) {
-						particle.enableEmission = true;		
-						particle.Play ();
-				}
+						foreach (ParticleSystem particle in eyeParticles) {
+								particle.enableEmission = true;		
+								particle.Play ();
+						}
 					
 
-				animator.SetInteger ("moveHead", command);
+						animator.SetInteger ("moveHead", command);
 		
-				yield return new WaitForSeconds (5f);		
+						yield return new WaitForSeconds (5f);		
 		
-				foreach (ParticleSystem particle in eyeParticles) {
-						particle.enableEmission = false;		
-						particle.Stop ();
-				}
+						foreach (ParticleSystem particle in eyeParticles) {
+								particle.enableEmission = false;		
+								particle.Stop ();
+						}
 
-				animator.SetInteger ("moveHead", 0);
+						animator.SetInteger ("moveHead", 0);
 		
-				modeRunning--;
-		
+						modeRunning--;
+				}
 		}
 	
 		IEnumerator ControlStateChange ()
@@ -192,6 +191,7 @@ public class Boss3Controller : MonoBehaviour
 						int currentBossModeRightHand = -1;
 						int currentBossModeLeftHand = -1;
 						int eyeAttack = -1;
+						int eyeAttackDir = 1;
 						float timeToWait = 3f;
 						Random random = new Random ();
 						if (bossEnergy > 77f) {
@@ -215,7 +215,8 @@ public class Boss3Controller : MonoBehaviour
 						}
 						
 						if (eyeAttack >= 3) {
-								StartCoroutine (EyeLaser (1));			
+								eyeAttackDir = Random.Range (1, 3);
+								StartCoroutine (EyeLaser (eyeAttackDir));			
 						} else {
 								if (handInUse == 1 || handInUse == 3) {
 										if (currentBossModeRightHand == 1) {
@@ -236,26 +237,30 @@ public class Boss3Controller : MonoBehaviour
 		}
 	
 		public void ShotRight ()
-		{		
-				for (int i = 1 * shotsPerHand - shotsPerHand; i < (1 * shotsPerHand); i++) {
-						GameObject target = handTargets [i];
-						GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
-						BulletController bc = bulletInstance.GetComponent<BulletController> ();
-						bc.damage = 2; 
-						bulletInstance.rigidbody.velocity = target.transform.up * 100; 
-						Destroy (bulletInstance, 5f);						
+		{			
+				if (bossEnabled) {
+						for (int i = 1 * shotsPerHand - shotsPerHand; i < (1 * shotsPerHand); i++) {
+								GameObject target = handTargets [i];
+								GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
+								BulletController bc = bulletInstance.GetComponent<BulletController> ();
+								bc.damage = 2; 
+								bulletInstance.rigidbody.velocity = target.transform.up * 5; 
+								Destroy (bulletInstance, 5f);						
+						}
 				}
 		}
 
 		public void ShotLeft ()
 		{		
-				for (int i = 2 * shotsPerHand - shotsPerHand; i < (2 * shotsPerHand); i++) {
-						GameObject target = handTargets [i];
-						GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
-						BulletController bc = bulletInstance.GetComponent<BulletController> ();
-						bc.damage = 2; 
-						bulletInstance.rigidbody.velocity = target.transform.up * 100; 
-						Destroy (bulletInstance, 5f);						
+				if (bossEnabled) {
+						for (int i = 2 * shotsPerHand - shotsPerHand; i < (2 * shotsPerHand); i++) {
+								GameObject target = handTargets [i];
+								GameObject bulletInstance = (GameObject)Instantiate (bullet, target.transform.position, target.transform.rotation);
+								BulletController bc = bulletInstance.GetComponent<BulletController> ();
+								bc.damage = 2; 
+								bulletInstance.rigidbody.velocity = target.transform.up * 5; 
+								Destroy (bulletInstance, 5f);						
+						}
 				}
 		}
 	

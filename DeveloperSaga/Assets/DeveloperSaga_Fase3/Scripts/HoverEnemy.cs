@@ -30,28 +30,29 @@ public class HoverEnemy : MonoBehaviour
 				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs") && shouldMove) {
 						if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 								if (playerNear) {
+										this.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y, player.position.z);
 						
 										if (player.position.x < transform.position.x) {
-												this.transform.Translate (new Vector3 (-0.25f, 0, 0));								
+												this.transform.Translate (new Vector3 (-0.015f, 0, 0));								
 										}
 
 										if (player.position.x > transform.position.x) {
-												this.transform.Translate (new Vector3 (0.25f, 0, 0));								
+												this.transform.Translate (new Vector3 (0.015f, 0, 0));								
 										}
 
-										if (player.position.y + 30f > transform.position.y) {
-												this.transform.Translate (new Vector3 (0, 0.25f, 0));								
+										if (player.position.y + 2f > transform.position.y) {
+												this.transform.Translate (new Vector3 (0, 0.015f, 0));								
 										}
 
-										if (player.position.y + 30f < transform.position.y) {
-												this.transform.Translate (new Vector3 (0, -0.25f, 0));								
+										if (player.position.y + 2f < transform.position.y) {
+												this.transform.Translate (new Vector3 (0, -0.015f, 0));								
 										}
 
 										if (!isShooting) {
 												GameObject instance = (GameObject)Instantiate (bullet, ponto.position, ponto.rotation);
 												BulletController cont = (BulletController)instance.GetComponent <BulletController> ();
 												cont.damage = 1;
-												instance.rigidbody.velocity = ponto.up * -100;
+												instance.rigidbody.velocity = ponto.up * -5;
 												Destroy (instance, 5f);
 												StartCoroutine (WaitToFireAgain ());
 										}

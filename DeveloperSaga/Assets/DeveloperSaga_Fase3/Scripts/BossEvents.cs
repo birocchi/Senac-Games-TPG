@@ -89,7 +89,7 @@ public class BossEvents : MonoBehaviour
 
 				
 				bossAnimator.SetBool ("goaway", true);
-				yield return new WaitForSeconds (3f);
+				yield return new WaitForSeconds (1.5f);
 				ParticleSystem o = (ParticleSystem)Instantiate (transformationParticles, explosionPosition.position, explosionPosition.rotation);
 		
 				yield return new WaitForSeconds (0.2f);
@@ -114,12 +114,15 @@ public class BossEvents : MonoBehaviour
 				Destroy (this, 5);
 		
 				yield return new WaitForSeconds (1f);
+
+				SongController.songToPlay = 3;
 		
 				CharController.halt = false;
 				GUIController.halt = false;
 				MovingEnemy.shouldMove = true;
 				GroundedEnemy.shouldMove = true;
 				HoverEnemy.shouldMove = true;
+				WeaponController.enabled = true;
 				
 		}
 
@@ -132,7 +135,8 @@ public class BossEvents : MonoBehaviour
 						GUIController.halt = true;
 						MovingEnemy.shouldMove = false;
 						GroundedEnemy.shouldMove = false;
-						HoverEnemy.shouldMove = false;
+						HoverEnemy.shouldMove = false;			
+						WeaponController.enabled = false;
 				}
 		}
 	 

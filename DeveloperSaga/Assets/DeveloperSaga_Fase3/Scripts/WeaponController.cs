@@ -3,6 +3,7 @@ using System.Collections;
 
 public class WeaponController : MonoBehaviour
 {	
+		public static bool enabled = true;
 		private Animator animator;
 		public Transform pontoArmaFrente;	
 		public Transform pontoArmaDiagonal;	
@@ -24,7 +25,7 @@ public class WeaponController : MonoBehaviour
 		// Update is called once per frame
 		void  Update ()
 		{
-				if (Time.timeScale > 0.75) {
+				if (Time.timeScale > 0.75 && enabled) {
 						if (Input.GetButtonDown ("Fire1")) {
 								Shot ();
 						}
@@ -36,7 +37,7 @@ public class WeaponController : MonoBehaviour
 				GameObject instance = (GameObject)Instantiate (bullet, pontoMira.position, pontoMira.rotation);
 				BulletController bc = instance.GetComponent<BulletController> ();
 				bc.damage = 1;
-				instance.rigidbody.velocity = pontoMira.up * -100;
+				instance.rigidbody.velocity = pontoMira.up * -5;
 				Destroy (instance, 10f);
 		}
 
@@ -44,7 +45,7 @@ public class WeaponController : MonoBehaviour
 		{
 				
 
-				if (animator != null && pontoAtivo != null) {
+				if (animator != null && pontoAtivo != null && enabled) {
 						if (Input.GetButton ("Fire1")) {
 								if (Time.timeScale > 0.75) {
 										if (Input.GetAxis ("Vertical") > 0 && Input.GetAxis ("Horizontal") == 0f) {

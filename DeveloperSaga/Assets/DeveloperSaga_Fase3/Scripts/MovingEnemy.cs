@@ -31,23 +31,24 @@ public class MovingEnemy : MonoBehaviour
 				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs") && shouldMove) {
 						if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 								if (playerNear) {
+										this.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y, player.position.z);
 						
-										if (player.position.x <= transform.position.x - 40f || player.position.x > transform.position.x + 40f) {
-												this.transform.Translate (new Vector3 (0, 0, 0.25f));								
+										if (player.position.x <= transform.position.x - 3f || player.position.x > transform.position.x + 3f) {
+												this.transform.Translate (new Vector3 (0, 0, 0.02f));								
 										}
 
-										if (player.position.y + 30f > transform.position.y) {
-												this.transform.Translate (new Vector3 (0, 0.25f, 0));								
+										if (player.position.y + 2f > transform.position.y) {
+												this.transform.Translate (new Vector3 (0, 0.02f, 0));								
 										}
 
-										Quaternion rotation = Quaternion.LookRotation (new Vector3 (player.position.x, player.position.y + 10f, player.position.z) - transform.position);
-										transform.rotation = Quaternion.Slerp (transform.rotation, rotation, Time.deltaTime * 2f);
+										Quaternion rotation = Quaternion.LookRotation (new Vector3 (player.position.x, player.position.y + 0.3f, player.position.z) - transform.position);
+										transform.rotation = Quaternion.Slerp (transform.rotation, rotation, Time.deltaTime * 3f);
 
 										if (!isShooting) {
 												GameObject instance = (GameObject)Instantiate (bullet, ponto.position, ponto.rotation);
 												BulletController cont = (BulletController)instance.GetComponent <BulletController> ();
 												cont.damage = damage;
-												instance.rigidbody.velocity = ponto.up * -100;
+												instance.rigidbody.velocity = ponto.up * -5;
 												Destroy (instance, 5f);
 												StartCoroutine (WaitToFireAgain ());
 										}
