@@ -13,6 +13,7 @@ public class EnemyHealthController : MonoBehaviour
 		public Transform explosionPoint;
 		public Transform center;
 		public Light light;
+		private ParticleSystem instance0;
 	
 		// Use this for initialization
 		void Start ()
@@ -25,7 +26,7 @@ public class EnemyHealthController : MonoBehaviour
 		{					
 				if (!enemyDead) {
 						if (enemyHealth <= 0) {	
-								ParticleSystem instance0 = (ParticleSystem)Instantiate (explosionParticles0, new Vector3 (explosionPoint.position.x, explosionPoint.position.y, explosionPoint.position.z), transform.rotation);
+								instance0 = (ParticleSystem)Instantiate (explosionParticles0, new Vector3 (explosionPoint.position.x, explosionPoint.position.y, explosionPoint.position.z), transform.rotation);
 
 								foreach (ParticleSystem ps in particleSystems) {
 										ps.enableEmission = false;
@@ -37,7 +38,6 @@ public class EnemyHealthController : MonoBehaviour
 								StartCoroutine (DisableRenderer ());
 								enemyDead = true;				
 								collider.enabled = false;
-								Destroy (instance0, 4f);
 								Destroy (mainObj, 4f);
 						}
 				}

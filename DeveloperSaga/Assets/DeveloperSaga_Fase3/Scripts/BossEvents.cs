@@ -87,7 +87,9 @@ public class BossEvents : MonoBehaviour
 		private IEnumerator ExitBoss ()
 		{
 
-				
+				Destroy (boss, 7);
+				Destroy (gameObject, 7);
+
 				bossAnimator.SetBool ("goaway", true);
 				yield return new WaitForSeconds (1.5f);
 				ParticleSystem o = (ParticleSystem)Instantiate (transformationParticles, explosionPosition.position, explosionPosition.rotation);
@@ -110,8 +112,7 @@ public class BossEvents : MonoBehaviour
 				}
 
 				
-				Destroy (o, 5);
-				Destroy (this, 5);
+				
 		
 				yield return new WaitForSeconds (1f);
 

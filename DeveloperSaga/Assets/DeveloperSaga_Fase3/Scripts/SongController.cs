@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SongController : MonoBehaviour
 {
-		public static int songToPlay = 0;
+		public static int songToPlay = -1;
 		public AudioClip[] avaliableSongs;
 		private int playingSong;
 
@@ -17,6 +17,7 @@ public class SongController : MonoBehaviour
 		void Update ()
 		{
 				if (songToPlay != playingSong) {
+						Debug.Log ("Song changed! Song: " + songToPlay);
 						if (avaliableSongs.Length > 0) {
 								audio.volume = audio.volume -= 0.01f;
 								if (audio.volume <= 0f) {

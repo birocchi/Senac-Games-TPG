@@ -65,6 +65,10 @@ public class Boss3Controller : MonoBehaviour
 								foreach (Renderer r in rs)
 										r.enabled = false;
 
+								Collider[] col = GetComponentsInChildren<Collider> ();
+								foreach (Collider c in col)
+										c.enabled = false;
+
 								Light[] ls = GetComponentsInChildren<Light> ();
 								foreach (Light l in ls)
 										l.enabled = false;

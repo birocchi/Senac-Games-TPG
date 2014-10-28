@@ -14,6 +14,8 @@ public class BulletController : MonoBehaviour
 				GameObject gameManager = GameObject.Find ("GameManager");
 				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
 				originalColor = renderer.material.GetColor ("_Emission");
+		
+				Destroy (gameObject, 10f);
 		}
 	
 		// Update is called once per frame
@@ -58,5 +60,68 @@ public class BulletController : MonoBehaviour
 				this.collider.enabled = false;
 
 				Destroy (gameObject, 2);
+		}
+
+		void OnTriggerEnter (Collider other)
+		{
+				if (other.gameObject.tag.Equals ("Enemy")) {						
+						if (abilitiesManager.IsAbilityActive ("SuperTiro.cs")) {
+								other.gameObject.SendMessage ("DoDamage", damage * 3);
+						} else {
+								other.gameObject.SendMessage ("DoDamage", damage);
+						}
+						this.traceParticles.enableEmission = false;
+						this.traceParticles.Stop ();
+						this.renderer.enabled = false;
+						this.rigidbody.detectCollisions = false;
+						this.collider.enabled = false;
+			
+						Destroy (gameObject, 2);
+				} else if (other.gameObject.tag.Equals ("Player")) {
+						if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
+								other.gameObject.SendMessage ("DoDamage", damage / 2);
+						} else {
+								other.gameObject.SendMessage ("DoDamage", damage);
+						}
+						this.traceParticles.enableEmission = false;
+						this.traceParticles.Stop ();
+						this.renderer.enabled = false;
+						this.rigidbody.detectCollisions = false;
+						this.collider.enabled = false;
+			
+						Destroy (gameObject, 2);
+				} else if (!name.Equals ("Boss Bullet")) {	
+						if (other.gameObject.name.Equals ("AreaDanoBoss")) {
+								if (abilitiesManager.IsAbilityActive ("SuperTiro.cs")) {
+										other.gameObject.SendMessage ("DoDamage", damage * 3);
+								} else {
+										other.gameObject.SendMessage ("DoDamage", damage);
+								}
+								this.traceParticles.enableEmission = false;
+								this.traceParticles.Stop ();
+								this.renderer.enabled = false;
+								this.rigidbody.detectCollisions = false;
+								this.collider.enabled = false;
+						}
+				}
+				if (other.gameObject.tag.Equals ("StaticEnemy")) {												
+						this.traceParticles.enableEmission = false;
+						this.traceParticles.Stop ();
+						this.renderer.enabled = false;
+						this.rigidbody.detectCollisions = false;
+						this.collider.enabled = false;
+				
+						Destroy (gameObject, 2);
+				} else if (!other.gameObject.tag.Equals ("EnemyArea")) {
+						if (other.gameObject.renderer != null && other.gameObject.renderer.enabled) {
+								this.traceParticles.enableEmission = false;
+								this.traceParticles.Stop ();
+								this.renderer.enabled = false;
+								this.rigidbody.detectCollisions = false;
+								this.collider.enabled = false;
+			
+								Destroy (gameObject, 2);
+						}
+				}
 		}
 }

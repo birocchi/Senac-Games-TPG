@@ -127,6 +127,17 @@ public class CharController : MonoBehaviour
 				
 				} else {
 						animator2.SetBool ("run", false);
+						animator2.SetBool ("jump", false);
+						Vector3 moveDirection = Vector3.zero;
+						if (controller.isGrounded) {
+								vSpeed = -2;
+						}
+						vSpeed -= gravity * Time.deltaTime;
+						moveDirection.y = vSpeed;
+						moveDirection.z = 0f;
+			
+						controller.Move (moveDirection * Time.deltaTime);
+
 				}
 						
 				if (abilitiesManager.IsAbilityActive ("CafeExpresso.cs") && !cureActivated) {
