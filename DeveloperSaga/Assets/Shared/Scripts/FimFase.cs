@@ -29,4 +29,10 @@ public class FimFase : MonoBehaviour
 						Application.LoadLevel (levelToLoad);
 		
 		}
+
+		void OnTriggerEnter2D(Collider2D other){
+		if (other.gameObject.tag == "Player") 
+				Application.LoadLevel (levelToLoad);
+			
+		}
 }
