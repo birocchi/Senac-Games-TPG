@@ -233,6 +233,7 @@ public class GUIController : MonoBehaviour
 				if (Input.GetButton ("Abilities")) {
 						//Caso afirmativo, indica a "parada" no tempo
 						stopTime = true;
+						PauseController.avaliable = false;
 						//Verifica se o som de "parada" ja foi tocado. Caso negativo, toca-o
 						if (!playedFreezeSound) {
 								/** E necessario "reinicializar" o tempo antes de reproduzir o som,
@@ -255,6 +256,7 @@ public class GUIController : MonoBehaviour
 			 *  ao normal e toca-se o som de "volta" da mesma forma como o de "parada"
 			**/
 						stopTime = false;
+						PauseController.avaliable = true;
 						if (!playedRevertSound) {
 								float t = Time.timeScale;
 								Time.timeScale = 1;
@@ -322,23 +324,10 @@ public class GUIController : MonoBehaviour
 				}
 
 				//Separa as habilidades em tipos
-				List<Ability> listaArmas = new List<Ability> ();
-				List<Ability> listaPoderes = new List<Ability> ();
-				List<Ability> listaEspeciais = new List<Ability> ();
-
-				foreach (Ability ability in abilitiesManager.abilitiesList) {
-						if (ability.type == Ability.AbilityType.WeaponAbility) {
-								listaArmas.Add (ability);
-						} else if (ability.type == Ability.AbilityType.PowerAbility) {
-								listaPoderes.Add (ability);
-						} else if (ability.type == Ability.AbilityType.SpecialAbility) {
-								listaEspeciais.Add (ability);
-						}
-				}
+				List<Ability> abilitiesList = abilitiesManager.abilitiesList;
+				
 				//Inicializa os valores
-				int weaponAbilitiesToDraw = listaArmas.Count;
-				int powerAbilitiesToDraw = listaPoderes.Count;
-				int specialAbilitiesToDraw = listaEspeciais.Count;
+				int abilitiesToDraw = abilitiesList.Count;
 				int abilitiesElementYPos = abilitiesElementStartingYPos;
 
 				//Se o tempo foi completamente parado ou esta em processo de parada,
@@ -347,7 +336,7 @@ public class GUIController : MonoBehaviour
 						GUI.Box (new Rect (moveXValue, -2, 107, Screen.height + 6), "");						
 
 						//Verifica se as texturas necessarias foram definidas
-						if (abilityWeapon != null && abilityPower != null && abilitySpecial != null) {
+						if (abilitiesList != null) {
 			
 								GUIStyle style = new GUIStyle (GUI.skin.GetStyle ("label"));
 								style.fontSize = 22;
@@ -355,166 +344,44 @@ public class GUIController : MonoBehaviour
 
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
-								while (weaponAbilitiesToDraw > 0) {
-										Rect weaponButton = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);	
-
-										if (weaponButton.Contains (Event.current.mousePosition)) {
-												GUI.color = Color.white;
-												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaArmas [listaArmas.Count - weaponAbilitiesToDraw].name, style);
-												style.fontSize = 12;
-												GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 500, 72), listaArmas [listaArmas.Count - weaponAbilitiesToDraw].description, style);
-
-												if (Input.GetMouseButton (0)) {
-														GUI.DrawTexture (weaponButton, abilityWeaponClicked);
-
-												} else {
-														GUI.DrawTexture (weaponButton, abilityWeaponHighlighted);
-												}
-										} else {
-												GUI.DrawTexture (weaponButton, abilityWeapon);
-										}
-
-										abilitiesElementYPos += 85;
-										weaponAbilitiesToDraw--;
-								}
-
-								//Insere um espaço extra entre as armas e as demais habilidades
-								abilitiesElementYPos += 20;
-
-								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
-								//Referente a quantidade de habilidades do personagem
-								while (powerAbilitiesToDraw > 0) {
+								while (abilitiesToDraw > 0) {
 										Rect powerButton = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);	
 
-										if (!listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active && !listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown) {
+										if (!abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive && !abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown) {
 												if (powerButton.Contains (Event.current.mousePosition)) {
 														GUI.color = Color.white;
 														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name, style);
+														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 12, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityName, style);
 														style.fontSize = 12;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].description, style);
+														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 37, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].description, style);
 						
-														if (Input.GetMouseButton (0) || listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active) {
-																GUI.DrawTexture (powerButton, abilityPowerClicked);
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active = true;
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeRunning = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeActive;
-														} else if (!listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active) {
-																GUI.DrawTexture (powerButton, abilityPowerHighlighted);
+														if (Input.GetMouseButton (0) || abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive) {
+																GUI.DrawTexture (powerButton, abilitiesList[abilitiesList.Count - abilitiesToDraw].GetClickedIcon());
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive = true;
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].timeRunning = abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeActive;
+														} else if (!abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive) {
+															GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetHighlightedIcon());
 														}
 												} else {
-														GUI.DrawTexture (powerButton, abilityPower);
+													GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetIcon());
 												}
 										} else {
 												style.fontSize = 22;
 												style.fontStyle = FontStyle.Bold;
-												if (listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active) {					
+												if (abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive) {					
 							
 														GUI.color = Color.white;
 														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (em execuçao)", style);
-							
-														int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeRunning * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeActive;
-							
-														Vector2 size = new Vector3 (100, 15); 
-							
-														// Constrain all drawing to be within a pixel area .
-														GUI.BeginGroup (new Rect (moveXValue + 100, abilitiesElementYPos + 40, totalBarra, 72));
-							
-														// Define progress bar texture within customStyle under Normal > Background
-														GUI.Box (new Rect (0, 0, size.x, size.y), "");
-							
-														// Always match BeginGroup calls with an EndGroup call 
-														GUI.EndGroup (); 
-							
-														if (Time.timeScale > 0.75) {
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeRunning--;
-														}
-							
-														GUI.DrawTexture (powerButton, abilityPowerHighlighted);
-							
-														if (totalBarra <= 0) {
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active = false;
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown = true;
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeCooldown;
-								
-														} 
-												}
-						
-												if (listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown) {			
-							
-														GUI.color = Color.white;
-														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (recarregando)", style);
-							
-														int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeCooldown - 100;
-														totalBarra *= -1;
-							
-														Vector2 size = new Vector3 (100, 15);
-							
-														// Constrain all drawing to be within a pixel area .
-														GUI.BeginGroup (new Rect (moveXValue + 100, abilitiesElementYPos + 40, totalBarra, 72));
-							
-														// Define progress bar texture within customStyle under Normal > Background
-														GUI.Box (new Rect (0, 0, size.x, size.y), "");
-							
-														// Always match BeginGroup calls with an EndGroup call 
-														GUI.EndGroup (); 
-							
-														if (Time.timeScale > 0.75) {
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown--;
-														}
-							
-														if (totalBarra > 100) { 
-																listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown = false;							
-														}
-							
-														GUI.DrawTexture (powerButton, abilityPowerClicked); 
-												}
-										}
-
-										abilitiesElementYPos += 85;
-										powerAbilitiesToDraw--;
-								} 
-
-								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
-								//Referente a quantidade de habilidades do personagem
-								while (specialAbilitiesToDraw > 0) {
-										Rect specialButton = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);	
-					
-										if (!listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active && !listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].cooldown) {
-												if (specialButton.Contains (Event.current.mousePosition)) {
-														GUI.color = Color.white;
-														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].name, style);
+														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 12, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityName, style);
 														style.fontSize = 12;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 37, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].description, style);
+														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 37, 500, 72), "Em execuçao", style);
+
+														int totalBarra = abilitiesList [abilitiesList.Count - abilitiesToDraw].timeRunning * 61 / abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeActive;
 							
-														if (Input.GetMouseButton (0) || listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active) {
-																GUI.DrawTexture (specialButton, abilitySpecialClicked);
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active = true;
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeRunning = listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].totalTimeActive;
-														} else if (!listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active) {
-																GUI.DrawTexture (specialButton, abilitySpecialHighlighted);
-														}
-												} else {
-														GUI.DrawTexture (specialButton, abilitySpecial);
-												}
-										} else {
-												style.fontSize = 22;
-												style.fontStyle = FontStyle.Bold;
-												if (listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active) {					
-							
-														GUI.color = Color.white;
-														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].name + " (em execuçao)", style);
-							
-														int totalBarra = listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeRunning * 100 / listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].totalTimeActive;
-							
-														Vector2 size = new Vector3 (100, 15); 
+														Vector2 size = new Vector3 (15, 61); 
 							
 														// Constrain all drawing to be within a pixel area .
-														GUI.BeginGroup (new Rect (moveXValue + 100, abilitiesElementYPos + 40, totalBarra, 72));
+														GUI.BeginGroup (new Rect (moveXValue + 80, abilitiesElementYPos + 6, 72, totalBarra));
 							
 														// Define progress bar texture within customStyle under Normal > Background
 														GUI.Box (new Rect (0, 0, size.x, size.y), "");
@@ -523,32 +390,34 @@ public class GUIController : MonoBehaviour
 														GUI.EndGroup (); 
 							
 														if (Time.timeScale > 0.75) {
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeRunning--;
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].timeRunning--;
 														}
 							
-														GUI.DrawTexture (specialButton, abilitySpecialHighlighted);
+														GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetHighlightedIcon());
 							
 														if (totalBarra <= 0) {
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active = false;
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].cooldown = true;
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeCooldown = listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].totalTimeCooldown;
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive = false;
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown = true;
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].timeCooldown = abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeCooldown;
 								
 														} 
 												}
 						
-												if (listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].cooldown) {			
+												if (abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown) {			
 							
 														GUI.color = Color.white;
 														GUI.contentColor = Color.white;
-														GUI.Label (new Rect (moveXValue + 100, abilitiesElementYPos + 12, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].name + " (recarregando)", style);
+														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 12, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityName, style);
+														style.fontSize = 12;
+														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 37, 500, 72), "Recarregando", style);
 							
-														int totalBarra = listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeCooldown * 100 / listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].totalTimeCooldown - 100;
+														int totalBarra = abilitiesList [abilitiesList.Count - abilitiesToDraw].timeCooldown * 61 / abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeCooldown - 61;
 														totalBarra *= -1;
 							
-														Vector2 size = new Vector3 (100, 15);
+														Vector2 size = new Vector3 (15, 61);
 							
 														// Constrain all drawing to be within a pixel area .
-														GUI.BeginGroup (new Rect (moveXValue + 100, abilitiesElementYPos + 40, totalBarra, 72));
+														GUI.BeginGroup (new Rect (moveXValue + 80, abilitiesElementYPos + 6, 72, totalBarra));
 							
 														// Define progress bar texture within customStyle under Normal > Background
 														GUI.Box (new Rect (0, 0, size.x, size.y), "");
@@ -557,58 +426,48 @@ public class GUIController : MonoBehaviour
 														GUI.EndGroup (); 
 							
 														if (Time.timeScale > 0.75) {
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeCooldown--;
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].timeCooldown--;
 														}
 							
-														if (totalBarra > 100) { 
-																listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].cooldown = false;							
+														if (totalBarra > 61) { 
+																abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown = false;							
 														}
 							
-														GUI.DrawTexture (specialButton, abilitySpecialClicked); 
+														GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetClickedIcon()); 
 												}
 										}
-					
+
 										abilitiesElementYPos += 85;
-										specialAbilitiesToDraw--;
-								} 
+										abilitiesToDraw--;
+								}
 						}
 
 				} else {
 						//Verifica se as texturas necessarias foram definidas
-						if (abilityWeapon != null && abilityPower != null && abilitySpecial != null) {
+						if (abilitiesList != null) {
 
 								float moveXValueActive = moveXValue + 60f; 
 					
 								GUIStyle style = new GUIStyle (GUI.skin.GetStyle ("label"));
 								style.fontSize = 22;
 								style.fontStyle = FontStyle.Bold;
-				
+								
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
-								while (weaponAbilitiesToDraw > 0) {			
-										abilitiesElementYPos += 85;  
-										weaponAbilitiesToDraw--; 
-								} 
-				
-								//Insere um espaço extra entre as armas e as demais habilidades
-								abilitiesElementYPos += 20;
-				
-								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
-								//Referente a quantidade de habilidades do personagem
-								while (powerAbilitiesToDraw > 0) {
-										if (listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active) {					
+								while (abilitiesToDraw > 0) {
+										if (abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive) {					
 												Rect powerButton = new Rect (moveXValueActive + 17, abilitiesElementYPos, 72, 72);	
 
 												GUI.color = Color.white;
 												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (em execuçao)", style);
+												//GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityName + " (em execuçao)", style);
 												
-												int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeRunning * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeActive;
+												int totalBarra = abilitiesList [abilitiesList.Count - abilitiesToDraw].timeRunning * 61 / abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeActive;
 
-												Vector2 size = new Vector3 (100, 15); 
+												Vector2 size = new Vector3 (15, 61); 
 												
 												// Constrain all drawing to be within a pixel area .
-												GUI.BeginGroup (new Rect (moveXValueActive + 100, abilitiesElementYPos + 40, totalBarra, 72));
+												GUI.BeginGroup (new Rect (moveXValueActive + 80, abilitiesElementYPos + 6, 72, totalBarra));
 						
 												// Define progress bar texture within customStyle under Normal > Background
 												GUI.Box (new Rect (0, 0, size.x, size.y), "");
@@ -617,33 +476,33 @@ public class GUIController : MonoBehaviour
 												GUI.EndGroup (); 
 
 												if (Time.timeScale > 0.75) {
-														listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeRunning--;
+														abilitiesList [abilitiesList.Count - abilitiesToDraw].timeRunning--;
 												}
 																								
-												GUI.DrawTexture (powerButton, abilityPowerHighlighted);
+												GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetHighlightedIcon());
 
 												if (totalBarra <= 0) {
-														listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].active = false;
-														listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown = true;
-														listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeCooldown;
+														abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive = false;
+														abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown = true;
+														abilitiesList [abilitiesList.Count - abilitiesToDraw].timeCooldown = abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeCooldown;
 
 												}
 										}
 
-										if (listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown) {					
+										if (abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown) {					
 												Rect powerButton = new Rect (moveXValueActive + 17, abilitiesElementYPos, 72, 72);	
 						
 												GUI.color = Color.white;
 												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].name + " (recarregando)", style);
+												//GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityName + " (recarregando)", style);
 						
-												int totalBarra = listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown * 100 / listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].totalTimeCooldown - 100;
+												int totalBarra = abilitiesList [abilitiesList.Count - abilitiesToDraw].timeCooldown * 61 / abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeCooldown - 61;
 												totalBarra *= -1; 
 
-												Vector2 size = new Vector3 (100, 15);
+												Vector2 size = new Vector3 (15, 61);
 						 
 												// Constrain all drawing to be within a pixel area .
-												GUI.BeginGroup (new Rect (moveXValueActive + 100, abilitiesElementYPos + 40, totalBarra, 72));
+												GUI.BeginGroup (new Rect (moveXValueActive + 80, abilitiesElementYPos + 6, 72, totalBarra));
 						
 												// Define progress bar texture within customStyle under Normal > Background
 												GUI.Box (new Rect (0, 0, size.x, size.y), "");
@@ -652,93 +511,19 @@ public class GUIController : MonoBehaviour
 												GUI.EndGroup (); 
 
 												if (Time.timeScale > 0.75) {
-														listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].timeCooldown--;
+														abilitiesList [abilitiesList.Count - abilitiesToDraw].timeCooldown--;
 												}
 
-												if (totalBarra > 100) { 
-														listaPoderes [listaPoderes.Count - powerAbilitiesToDraw].cooldown = false;							
+												if (totalBarra > 61) { 
+														abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown = false;							
 												}
 						
-												GUI.DrawTexture (powerButton, abilityPowerClicked); 
+												GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetClickedIcon()); 
 										}
 										
 					
 										abilitiesElementYPos += 85;
-										powerAbilitiesToDraw--;
-								}
-
-								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
-								//Referente a quantidade de habilidades do personagem
-								while (specialAbilitiesToDraw > 0) {
-										if (listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active) {					
-												Rect specialButton = new Rect (moveXValueActive + 17, abilitiesElementYPos, 72, 72);	
-						
-												GUI.color = Color.white;
-												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].name + " (em execuçao)", style);
-						
-												int totalBarra = listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeRunning * 100 / listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].totalTimeActive;
-						
-												Vector2 size = new Vector3 (100, 15); 
-						
-												// Constrain all drawing to be within a pixel area .
-												GUI.BeginGroup (new Rect (moveXValueActive + 100, abilitiesElementYPos + 40, totalBarra, 72));
-						
-												// Define progress bar texture within customStyle under Normal > Background
-												GUI.Box (new Rect (0, 0, size.x, size.y), "");
-						
-												// Always match BeginGroup calls with an EndGroup call 
-												GUI.EndGroup (); 
-						
-												if (Time.timeScale > 0.75) {
-														listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeRunning--;
-												}
-						
-												GUI.DrawTexture (specialButton, abilitySpecialHighlighted);
-						
-												if (totalBarra <= 0) {
-														listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].active = false;
-														listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].cooldown = true;
-														listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeCooldown = listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].totalTimeCooldown;
-							
-												}
-										}
-					
-										if (listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].cooldown) {					
-												Rect specialButton = new Rect (moveXValueActive + 17, abilitiesElementYPos, 72, 72);	
-						
-												GUI.color = Color.white;
-												GUI.contentColor = Color.white;
-												GUI.Label (new Rect (moveXValueActive + 100, abilitiesElementYPos + 12, 500, 72), listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].name + " (recarregando)", style);
-						
-												int totalBarra = listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeCooldown * 100 / listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].totalTimeCooldown - 100;
-												totalBarra *= -1; 
-						
-												Vector2 size = new Vector3 (100, 15);
-						
-												// Constrain all drawing to be within a pixel area .
-												GUI.BeginGroup (new Rect (moveXValueActive + 100, abilitiesElementYPos + 40, totalBarra, 72));
-						
-												// Define progress bar texture within customStyle under Normal > Background
-												GUI.Box (new Rect (0, 0, size.x, size.y), "");
-						
-												// Always match BeginGroup calls with an EndGroup call 
-												GUI.EndGroup (); 
-						
-												if (Time.timeScale > 0.75) {
-														listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].timeCooldown--;
-												}
-						
-												if (totalBarra > 100) { 
-														listaEspeciais [listaEspeciais.Count - specialAbilitiesToDraw].cooldown = false;							
-												}
-						
-												GUI.DrawTexture (specialButton, abilitySpecialClicked); 
-										}
-					
-					
-										abilitiesElementYPos += 85;
-										specialAbilitiesToDraw--;
+										abilitiesToDraw--;
 								}
 						}
 				}

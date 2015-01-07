@@ -200,8 +200,8 @@ public class CharController : MonoBehaviour
 		void OnTriggerExit (Collider t)
 		{				
 				if (t.gameObject.tag == "Platform") {
-						gameObject.transform.parent = null;
-						
+					transform.localScale = transform.localScale;
+					transform.SetParent(null);						
 				}
 		}
 
@@ -220,8 +220,8 @@ public class CharController : MonoBehaviour
 						DoDamage (1);
 				}
 				if (trigger.gameObject.tag == "Platform") {
-						gameObject.transform.parent = trigger.gameObject.transform;
-						
+					transform.localScale = transform.localScale;
+					transform.SetParent(trigger.gameObject.transform);							
 				}
 				if (trigger.collider.gameObject.tag.Equals ("Mug")) {
 						trigger.collider.gameObject.SendMessage ("GetMug", SendMessageOptions.DontRequireReceiver);

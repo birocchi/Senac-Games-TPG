@@ -13,7 +13,7 @@ public class SkipAndLoad : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				if (Input.GetKeyUp (KeyCode.Escape)) {
+				if (Input.GetKeyUp (KeyCode.Escape) || Input.GetButton("Pause")) {
 						PlayerPrefs.SetString ("CurrentLevel", levelName);
 						PlayerPrefs.Save ();
 						Application.LoadLevel (levelName);

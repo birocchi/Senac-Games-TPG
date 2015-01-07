@@ -10,6 +10,7 @@ public class ScriptIconController : MonoBehaviour
 		public string abilityDescription;
 		public int abilityDuration;
 		public int abilityCooldown;
+		public string abilityIconName;
 	
 		// Use this for initialization
 		void Start ()
@@ -34,7 +35,7 @@ public class ScriptIconController : MonoBehaviour
 		public void GetAbility ()
 		{
 				if (!abilitiesManager.HetAbility (abilityName)) {
-						abilitiesManager.abilitiesList.Add (new Ability (abilityName, abilityType, null, abilityDescription, abilityDuration, abilityCooldown));
+					abilitiesManager.abilitiesList.Add (new Ability (abilityName, abilityType, abilityIconName, abilityDescription, abilityDuration, abilityCooldown));
 				}
 				StartCoroutine (DestroyThis ());
 		}

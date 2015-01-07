@@ -26,7 +26,7 @@ public class WeaponController : MonoBehaviour
 		void  Update ()
 		{
 				if (Time.timeScale > 0.75 && enabled) {
-						if (Input.GetButtonDown ("Fire1")) {
+						if (Input.GetButtonDown ("Fire")) {
 								Shot ();
 						}
 				}
@@ -46,7 +46,7 @@ public class WeaponController : MonoBehaviour
 				
 
 				if (animator != null && pontoAtivo != null && enabled) {
-						if (Input.GetButton ("Fire1")) {
+						if (Input.GetButton ("Fire")) {
 								if (Time.timeScale > 0.75) {
 										if (Input.GetAxis ("Vertical") > 0 && Input.GetAxis ("Horizontal") == 0f) {
 												pontoAtivo = pontoArmaCima;	

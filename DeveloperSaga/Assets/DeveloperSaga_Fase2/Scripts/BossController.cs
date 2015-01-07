@@ -66,7 +66,7 @@ public class BossController : MonoBehaviour {
 			}
 			
 			if(elapsedTime < fireInterval){
-				elapsedTime += Time.fixedDeltaTime;
+				elapsedTime += Time.deltaTime;
 			}
 
 			if(armUpCounter <= 0){

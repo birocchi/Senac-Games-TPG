@@ -96,7 +96,7 @@ public class BossEvents : MonoBehaviour
 		
 				yield return new WaitForSeconds (0.2f);
 		
-				RenderSettings.skybox.SetColor ("_Tint", new Color (0f, 0.2f, 0f, 1f));
+				RenderSettings.skybox.SetColor ("_Tint", new Color (0f, 0.1f, 0f, 0.4f));
 
 				foreach (Light light in lights) {
 						light.intensity = light.intensity / 3;
@@ -104,7 +104,7 @@ public class BossEvents : MonoBehaviour
 
 
 				foreach (Material mat in materialToChange) {
-						mat.SetColor ("_Color", new Color (0f, 0.2f, 0f, 1f));
+						mat.SetColor ("_Color", new Color (0f, 0.1f, 0f, 0.4f));
 				}
 				
 				foreach (GameObject thunder in thunders) {

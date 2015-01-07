@@ -23,21 +23,21 @@ public class DragRigidbody : MonoBehaviour
 
 		void OnMouseDown ()
 		{
-				if (abilitiesManager.IsAbilityActive ("Forca.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Telecinesia.cs")) {
 						HandleInputBegin (Input.mousePosition);
 				}
 		}
 	
 		void OnMouseUp ()
 		{
-				if (abilitiesManager.IsAbilityActive ("Forca.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Telecinesia.cs")) {
 						HandleInputEnd (Input.mousePosition);
 				}
 		}
 	
 		void OnMouseDrag ()
 		{
-				if (abilitiesManager.IsAbilityActive ("Forca.cs")) {
+				if (abilitiesManager.IsAbilityActive ("Telecinesia.cs")) {
 						HandleInput (Input.mousePosition);
 				}
 		}

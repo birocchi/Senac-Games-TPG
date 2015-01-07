@@ -23,7 +23,7 @@ public class ShootingScript : MonoBehaviour {
 	}
 
 	void Update () {
-		if(Input.GetButtonDown("Fire1") && elapsedTime >= fireInterval){
+		if(Input.GetButtonDown("Fire") && elapsedTime >= fireInterval){
 			isShooting = true;
 			shotInstance = (GameObject)Instantiate(shot, transform.FindChild("ShotSpawn").position, transform.rotation);
 			shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right, shotLifeTime );

@@ -19,7 +19,6 @@ public class ShowMessage : MonoBehaviour
 		public class Message
 		{
 				public string messageText;
-				public Transform transform;
 				public float duration;
 				public Texture texture = new Texture ();
 		}
@@ -84,11 +83,10 @@ public class ShowMessage : MonoBehaviour
 		void OnGUI ()
 		{
 				if (showMGUI && messageToShow != null) {
-						Vector3 pos = Camera.main.WorldToScreenPoint (messageToShow.transform.position);
-						GUI.DrawTexture (new Rect (pos.x, pos.y + 25f, messageToShow.texture.width, messageToShow.texture.height), messageToShow.texture);
+						GUI.DrawTexture (new Rect (Screen.width / 2 - messageToShow.texture.width / 2, 5f, messageToShow.texture.width, messageToShow.texture.height), messageToShow.texture);
 						GUI.skin.label.wordWrap = true;
 						GUIStyle fontToUse = font;
-						GUI.Label (new Rect (pos.x, pos.y + 35f, messageToShow.texture.width - 50, messageToShow.texture.height - 50), messageToShow.messageText, fontToUse);
+						GUI.Label (new Rect (Screen.width / 2 - messageToShow.texture.width / 2, 13f, messageToShow.texture.width - 50, messageToShow.texture.height - 50), messageToShow.messageText, fontToUse);
 				}
 		}
 }

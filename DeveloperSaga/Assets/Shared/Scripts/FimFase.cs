@@ -3,6 +3,7 @@ using System.Collections;
 
 public class FimFase : MonoBehaviour
 {
+
 		public string levelToLoad;
 		// Use this for initialization
 		void Start ()
@@ -13,7 +14,13 @@ public class FimFase : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-	
+			if (Input.GetKey (KeyCode.LeftControl)) {
+				if (Input.GetKey (KeyCode.LeftAlt)) {
+					if (Input.GetKey (KeyCode.F12)) {
+						Application.LoadLevel (levelToLoad);
+					}	
+				}
+			}
 		}
 
 		void OnCollisionEnter2D (Collision2D coll)
