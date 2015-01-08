@@ -71,7 +71,10 @@ public class GUIController : MonoBehaviour
 		//CoinManager
 		CoinManager coinManager;
 
-		private int previousNumberOfCoins;
+		//ShortcutManager
+		ShortcutManager shortcutManager;
+
+		private int previousNumberOfCoins;	
 
 		/**
 	 * Nome: Start
@@ -86,6 +89,7 @@ public class GUIController : MonoBehaviour
 				lifeManager = gameManager.GetComponent<LifeManager> ();
 				abilitiesManager = gameManager.GetComponent<AbilitiesManager> ();
 				coinManager = gameManager.GetComponent<CoinManager> ();
+				shortcutManager = gameManager.GetComponent<ShortcutManager> ();
 
 				//Inicializando valores
 				stopTime = false;
@@ -104,7 +108,9 @@ public class GUIController : MonoBehaviour
 
 				coinsToShow = 0;
 				previousNumberOfCoins = coinManager.numberOfCoins;
-		}
+
+				
+			}
 
 		/**
 	 * Nome: Update
@@ -325,6 +331,8 @@ public class GUIController : MonoBehaviour
 
 				//Separa as habilidades em tipos
 				List<Ability> abilitiesList = abilitiesManager.abilitiesList;
+
+				int keyButton;
 				
 				//Inicializa os valores
 				int abilitiesToDraw = abilitiesList.Count;
@@ -341,14 +349,19 @@ public class GUIController : MonoBehaviour
 								GUIStyle style = new GUIStyle (GUI.skin.GetStyle ("label"));
 								style.fontSize = 22;
 								style.fontStyle = FontStyle.Bold;
+								keyButton = 1;
 
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
 								while (abilitiesToDraw > 0) {
-										Rect powerButton = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);	
+										if (abilitiesElementYPos + 72 > Screen.height) {
+											break;
+										}
+
+										Rect button = new Rect (moveXValue + 17, abilitiesElementYPos, 72, 72);	
 
 										if (!abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive && !abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown) {
-												if (powerButton.Contains (Event.current.mousePosition)) {
+												if (button.Contains (Event.current.mousePosition)) {
 														GUI.color = Color.white;
 														GUI.contentColor = Color.white;
 														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 12, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityName, style);
@@ -356,15 +369,15 @@ public class GUIController : MonoBehaviour
 														GUI.Label (new Rect (moveXValue + 120, abilitiesElementYPos + 37, 500, 72), abilitiesList [abilitiesList.Count - abilitiesToDraw].description, style);
 						
 														if (Input.GetMouseButton (0) || abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive) {
-																GUI.DrawTexture (powerButton, abilitiesList[abilitiesList.Count - abilitiesToDraw].GetClickedIcon());
+																GUI.DrawTexture (button, abilitiesList[abilitiesList.Count - abilitiesToDraw].GetClickedIcon());
 																abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive = true;
 																abilitiesList [abilitiesList.Count - abilitiesToDraw].timeRunning = abilitiesList [abilitiesList.Count - abilitiesToDraw].totalTimeActive;
 														} else if (!abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive) {
-															GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetHighlightedIcon());
+															GUI.DrawTexture (button, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetHighlightedIcon());
 														}
 												} else {
-													GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetIcon());
-												}
+													GUI.DrawTexture (button, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetIcon());
+												}										
 										} else {
 												style.fontSize = 22;
 												style.fontStyle = FontStyle.Bold;
@@ -393,7 +406,7 @@ public class GUIController : MonoBehaviour
 																abilitiesList [abilitiesList.Count - abilitiesToDraw].timeRunning--;
 														}
 							
-														GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetHighlightedIcon());
+														GUI.DrawTexture (button, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetHighlightedIcon());
 							
 														if (totalBarra <= 0) {
 																abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive = false;
@@ -433,19 +446,37 @@ public class GUIController : MonoBehaviour
 																abilitiesList [abilitiesList.Count - abilitiesToDraw].cooldown = false;							
 														}
 							
-														GUI.DrawTexture (powerButton, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetClickedIcon()); 
+														GUI.DrawTexture (button, abilitiesList [abilitiesList.Count - abilitiesToDraw].GetClickedIcon()); 
 												}
 										}
 
+										//Desenha os atalhos de teclado
+										Rect keyIcon = new Rect (moveXValue + 25, abilitiesElementYPos + 40, 24, 24);
+										Shortcut shortcut = shortcutManager.GetShortcut(keyButton);
+										
+										if (shortcut != null) {
+											GUI.DrawTexture (keyIcon, shortcut.GetKeyTexture());
+										}
+
+										//Desenha os atalhos de joystick (se um estiver disponivel)
+										if (Input.GetJoystickNames ().Length > 0) {
+											Rect buttonIcon = new Rect (moveXValue + 53, abilitiesElementYPos + 36, 32, 32);
+
+											if (shortcut != null) {
+												GUI.DrawTexture (buttonIcon, shortcut.GetButtonTexture());
+											}
+											
+										}
+										
+										keyButton++;
 										abilitiesElementYPos += 85;
-										abilitiesToDraw--;
+										abilitiesToDraw--;									
 								}
 						}
 
 				} else {
 						//Verifica se as texturas necessarias foram definidas
 						if (abilitiesList != null) {
-
 								float moveXValueActive = moveXValue + 60f; 
 					
 								GUIStyle style = new GUIStyle (GUI.skin.GetStyle ("label"));
@@ -455,6 +486,10 @@ public class GUIController : MonoBehaviour
 								//Repete a exibiçao de habilidades de armas enquanto houver elementos de habilidade a serem exibidos.
 								//Referente a quantidade de habilidades do personagem
 								while (abilitiesToDraw > 0) {
+										if (abilitiesElementYPos + 72 > Screen.height) {
+											break;
+										}
+
 										if (abilitiesList [abilitiesList.Count - abilitiesToDraw].abilityActive) {					
 												Rect powerButton = new Rect (moveXValueActive + 17, abilitiesElementYPos, 72, 72);	
 
@@ -527,7 +562,7 @@ public class GUIController : MonoBehaviour
 								}
 						}
 				}
-		}
+		}		
 
 		private void ShowCoins ()
 		{

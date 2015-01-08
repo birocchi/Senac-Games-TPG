@@ -52,7 +52,7 @@ public class ActionController : MonoBehaviour
 						//Detect Joystick
 						if (Input.GetJoystickNames ().Length > 0) {
 								GUI.DrawTexture (new Rect (Screen.width / 2f - 250f + 110f, Screen.height - 145f, 64, 64), joystickAction);
-								GUI.DrawTexture (new Rect (Screen.width / 2f - 250f + 182f, Screen.height - 135f, 48, 48), keyboardAction);
+								GUI.DrawTexture (new Rect (Screen.width / 2f - 250f + 182f, Screen.height - 136f, 48, 48), keyboardAction);
 								GUI.Label (new Rect (Screen.width / 2f - 82f, Screen.height - 162f, 200, 180), message, font);
 						} else {
 								GUI.DrawTexture (new Rect (Screen.width / 2f - 250f + 152f, Screen.height - 135f, 48, 48), keyboardAction);
