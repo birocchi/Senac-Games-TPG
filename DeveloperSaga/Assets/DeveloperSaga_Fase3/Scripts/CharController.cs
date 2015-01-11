@@ -56,7 +56,7 @@ public class CharController : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				if (!halt) {
+				if (!halt && !PauseController.isPaused) {
 						this.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y, fixedZ);
 						if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 								shieldParticles.enableEmission = true;
@@ -297,7 +297,6 @@ public class CharController : MonoBehaviour
 
 		void OnParticleCollision (GameObject other)
 		{
-				Debug.Log ("Collided with particle!"); 
 				if (abilitiesManager.IsAbilityActive ("Escudos.cs")) {
 						DoDamage (1);
 				} else {

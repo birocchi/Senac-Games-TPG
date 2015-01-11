@@ -28,7 +28,7 @@ public class MovingEnemy : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{	
-				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs") && shouldMove) {
+				if (Time.timeScale > 0.75 && !abilitiesManager.IsAbilityActive ("Parar.cs") && shouldMove && !PauseController.isPaused) {
 						if (enemyHealth != null && enemyHealth.enemyHealth > 0) {
 								if (playerNear) {
 										this.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y, player.position.z);

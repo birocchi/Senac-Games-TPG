@@ -122,7 +122,7 @@ public class GUIController : MonoBehaviour
 	 **/
 		void Update ()
 		{
-				if (!halt) {
+				if (!halt && !PauseController.isPaused) {
 						if (previousNumberOfCoins != coinManager.numberOfCoins) {
 								coinsToShow++;
 								previousNumberOfCoins = coinManager.numberOfCoins;
@@ -140,7 +140,7 @@ public class GUIController : MonoBehaviour
 	 **/
 		void OnGUI ()
 		{
-				if (!halt) {
+				if (!halt && !PauseController.isPaused) {
 						GUI.skin = skin;
 
 						//Controla a exibiçao de energia na tela

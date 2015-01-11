@@ -16,7 +16,7 @@ public class FimFase : MonoBehaviour
 		{
 			if (Input.GetKey (KeyCode.LeftControl)) {
 				if (Input.GetKey (KeyCode.LeftAlt)) {
-					if (Input.GetKey (KeyCode.F12)) {
+					if (Input.GetKey (KeyCode.F12)) {						
 						Application.LoadLevel (levelToLoad);
 					}	
 				}
