@@ -83,6 +83,7 @@ public class LifeManager : MonoBehaviour {
 
 	IEnumerator ChangeToGameOver(){
 		yield return new WaitForSeconds(0.5f);
-		Application.LoadLevel("GameOver");
+		SongController.songToPlay = -1;
+		GameObject.Find("GameManager").GetComponent<CheckpointManager>().ReloadCheckPoint();
 	}
 }

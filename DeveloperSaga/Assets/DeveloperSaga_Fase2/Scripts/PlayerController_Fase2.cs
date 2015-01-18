@@ -18,16 +18,23 @@ public class PlayerController_Fase2 : MonoBehaviour {
 	public float horizontalMove;
 
 	private LifeManager lifeManager;
+	private CheckpointManager checkpointManager;
 	private Transform groundCheck;
 	private bool jumpPressed;
+
 
 	
 	void Awake () {
 		//Set up references
 		groundCheck = transform.FindChild("GroundCheck");
 		lifeManager = GameObject.Find("GameManager").GetComponent<LifeManager>();
+		checkpointManager = GameObject.Find("GameManager").GetComponent<CheckpointManager>();
 		isGrounded = true;
 		isHurt = false;
+	}
+
+	void Start(){
+		checkpointManager.LoadState();
 	}
 
 	void Update (){

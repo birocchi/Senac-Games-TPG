@@ -58,7 +58,7 @@ public class BossController : MonoBehaviour {
 			//Shoot
 			if(Vector2.Distance(target.position,transform.position) < viewDistance && elapsedTime >= fireInterval){
 				isShooting = true;
-				shotInstance = (GameObject)Instantiate(shot, transform.position, transform.rotation);
+				shotInstance = (GameObject)Instantiate(shot, transform.FindChild("ShotSpawn").position, transform.rotation);
 				shotInstance.GetComponent<ShotController>().Initialize(shotSpeed, transform.rotation * (Vector3)Vector2.right, shotLifeTime );
 				Physics2D.IgnoreCollision(this.collider2D, shotInstance.collider2D);
 				elapsedTime = 0;

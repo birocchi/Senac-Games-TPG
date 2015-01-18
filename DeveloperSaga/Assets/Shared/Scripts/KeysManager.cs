@@ -5,10 +5,10 @@ public class KeysManager : MonoBehaviour {
 
 	public enum Keys {Red = 0, Green = 1, Blue = 2, Yellow = 3};
 
-	bool hasRedKey;
-	bool hasBlueKey;
-	bool hasGreenKey;
-	bool hasYellowKey;
+	public bool hasRedKey;
+	public bool hasBlueKey;
+	public bool hasGreenKey;
+	public bool hasYellowKey;
 
 	// Use this for initialization
 	void Start () {

@@ -15,7 +15,7 @@ public class KeyholeSwitch : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other) {
 		if(other.gameObject.tag.Equals("Player") && keysManager.HasKey(keyColor)){
 			AudioSource.PlayClipAtPoint(audio.clip, transform.position);
-			keysManager.LoseKey(keyColor);
+			//keysManager.LoseKey(keyColor);
 			Destroy(gameObject);
 		}
 	}
