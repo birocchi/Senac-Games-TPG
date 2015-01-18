@@ -38,7 +38,7 @@ public class CheckpointManager : MonoBehaviour {
 		Application.LoadLevel (Application.loadedLevelName);
 	}
 
-	public void ClearCheckpoint(){
+	public static void ClearCheckpoint(){
 		PlayerPrefs.SetInt("ReloadedLevel", 0);
 	}
 }

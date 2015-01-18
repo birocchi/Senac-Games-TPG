@@ -134,13 +134,13 @@ public class PauseController : MonoBehaviour {
 						if (camera != null) {
 							camera.SendMessage ("OnApplicationQuit");
 						}
-						GameObject.Find("GameManager").GetComponent<CheckpointManager>().ClearCheckpoint();
+						CheckpointManager.ClearCheckpoint();
 						Application.LoadLevel (0);
 					}								
 					break;
 				case "sair":
 					if (GUI.Button (button.rect, button.text)  || buttonClicked == 2) {
-						GameObject.Find("GameManager").GetComponent<CheckpointManager>().ClearCheckpoint();
+						CheckpointManager.ClearCheckpoint();
 						Application.Quit ();
 					}
 					break;

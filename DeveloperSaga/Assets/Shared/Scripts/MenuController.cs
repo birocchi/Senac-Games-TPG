@@ -94,13 +94,13 @@ public class MenuController : MonoBehaviour
 						case "iniciar":
 								if (GUI.Button (button.rect, button.text) || buttonClicked == 0) {
 										PlayerPrefs.SetString ("CurrentLevel", "Fase1");
-										GameObject.Find("GameManager").GetComponent<CheckpointManager>().ClearCheckpoint();
+										CheckpointManager.ClearCheckpoint();
 										Application.LoadLevel ("cutscene1");
 								}
 								break;
 						case "continuar":								
 								if (GUI.Button (button.rect, button.text)  || buttonClicked == 1) {
-										GameObject.Find("GameManager").GetComponent<CheckpointManager>().ClearCheckpoint();
+										CheckpointManager.ClearCheckpoint();
 										Application.LoadLevel (PlayerPrefs.GetString ("CurrentLevel"));
 								}								
 								break;
