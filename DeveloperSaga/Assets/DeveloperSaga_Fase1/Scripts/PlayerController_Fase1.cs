@@ -6,7 +6,6 @@ public class PlayerController_Fase1: MonoBehaviour
 	public float speed;
 	public float jumpForce;
 	public GameObject corpse;
-	public Vector3 latestCheckpoint;
 	
 	//Used by the AnimationController
 	[HideInInspector]
@@ -20,28 +19,31 @@ public class PlayerController_Fase1: MonoBehaviour
 
 	private JumpScript jumpScript;
 	private LifeManager lifeManager;
+	private CheckpointManager checkpointManager;
 	private Transform groundCheck;
 	private bool restartLevel;
-
-
-	
 	
 	void Awake () {
 		//Set up references
 		groundCheck = transform.FindChild("GroundCheck");
 		lifeManager = GameObject.Find("GameManager").GetComponent<LifeManager>();
+		checkpointManager = GameObject.Find("GameManager").GetComponent<CheckpointManager>();
 		isGrounded = true;
 		isHurt = false;
 		jumpScript = GetComponent<JumpScript>();
 	}
-	
+
+	void Start(){
+		checkpointManager.LoadState();
+	}
+
 	void Update (){
 		// The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
 		isGrounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Steppable"));
 		Debug.DrawLine(transform.position, groundCheck.position);
 
 		if(restartLevel) {
-			Application.LoadLevel (Application.loadedLevelName);
+			checkpointManager.ReloadCheckPoint();
 		}
 	}
 	
@@ -108,10 +110,7 @@ public class PlayerController_Fase1: MonoBehaviour
 			Instantiate(corpse, this.transform.position, this.transform.rotation);
 			this.renderer.enabled = false;
 			this.rigidbody2D.isKinematic = true;
-			if(latestCheckpoint != null) {
-				StartCoroutine(WaitUp());
-				//this.rigidbody2D.position = latestCheckpoint;
-			}
+			StartCoroutine(WaitUp());
 		}
 	}
 	

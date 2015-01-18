@@ -11,10 +11,10 @@ public class LifeManager : MonoBehaviour {
 	private int bossLife;
 	public int bossMaxLife = 6;
 
-	public int PlayerLife {get { return playerLife; }}
+	public int PlayerLife {get { return playerLife; } set {playerLife = value;}}
 	public int BossLife {get { return bossLife; }}
 
-	void Start(){
+	void Awake(){
 		playerLife = maxLife;
 		bossLife = bossMaxLife;
 	}
