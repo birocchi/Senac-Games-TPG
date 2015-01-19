@@ -16,7 +16,8 @@ public class FimFase : MonoBehaviour
 		{
 			if (Input.GetKey (KeyCode.LeftControl)) {
 				if (Input.GetKey (KeyCode.LeftAlt)) {
-					if (Input.GetKey (KeyCode.F12)) {						
+					if (Input.GetKey (KeyCode.F12)) {	
+						CheckpointManager.ClearCheckpoint();
 						Application.LoadLevel (levelToLoad);
 					}	
 				}
@@ -26,12 +27,14 @@ public class FimFase : MonoBehaviour
 		void OnCollisionEnter2D (Collision2D coll)
 		{
 				if (coll.gameObject.tag == "Player") 
+						CheckpointManager.ClearCheckpoint();
 						Application.LoadLevel (levelToLoad);
 		
 		}
 
 		void OnTriggerEnter2D(Collider2D other){
 		if (other.gameObject.tag == "Player") 
+				CheckpointManager.ClearCheckpoint();
 				Application.LoadLevel (levelToLoad);
 			
 		}
