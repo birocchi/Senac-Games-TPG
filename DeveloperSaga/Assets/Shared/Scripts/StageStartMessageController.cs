@@ -11,26 +11,24 @@ public class StageStartMessageController : MonoBehaviour {
 	Texture2D stageNameTexture;
 	Texture2D lineTexture;
 	float alpha;
-	float tparamNumber = 0.05f;
-	float velNumber = 0f;
-	float tparamName = 0.05f;
-	float velName = 0f;
-
+	float duration = 0.9F;
+	float startTime;
+	
 	// Use this for initialization
 	void Start () {
 		stageNumberTexture = Resources.Load<Texture2D>("Shared/GUI/stages/pt/stage." + stageNumber + ".number");
 		stageNameTexture = Resources.Load<Texture2D>("Shared/GUI/stages/pt/stage." + stageNumber + ".name");
 		lineTexture = Resources.Load<Texture2D>("Shared/GUI/stages/stage.line");
 		StartCoroutine(WaitAndStart ());
+		startTime = Time.time;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
-
+	
 	void OnGUI() {
-
 		if (fadeIn) {
 			alpha = Mathf.Lerp (alpha, 1, 1f * Time.deltaTime);
 			if (!waiting) {
@@ -43,48 +41,62 @@ public class StageStartMessageController : MonoBehaviour {
 				StartCoroutine(FadeOut ());
 			}
 		}
-
+		
+		float posNum = 0f;
+		float posNam = 0f;
+		
+		if (fadeIn || (!fadeOut && showGui)) {
+			float t = (Time.time - startTime) / duration;
+			posNum = Mathf.SmoothStep(100f, 300f, t);
+			posNam = Mathf.SmoothStep(300f, 100f, t);
+		}
+		else if (fadeOut) {
+			float t = (Time.time - startTime) / duration;
+			posNum = Mathf.SmoothStep(300f, 100f, t);
+			posNam = Mathf.SmoothStep(100f, 300f, t);
+		}
+		
 		if (showGui) {
 			if (!waiting && !fadeIn && !fadeOut) {
 				StartCoroutine(ShowAndWait());
 			}
-
+			
 			GUI.color = new Color(1,1,1, alpha);
-
-			tparamNumber += Time.deltaTime;
-			tparamName += Time.deltaTime;
-			GUI.DrawTexture (new Rect(Screen.width - stageNumberTexture.width - Mathf.SmoothDamp(280f, 0f, ref velNumber, tparamNumber), 200, stageNumberTexture.width, stageNumberTexture.height), stageNumberTexture);
-			GUI.DrawTexture (new Rect(Screen.width - lineTexture.width - 50, 246, lineTexture.width, lineTexture.height), lineTexture);
-			GUI.DrawTexture (new Rect(Screen.width - stageNameTexture.width - Mathf.SmoothDamp(90f, 300f, ref velName, tparamName), 256, stageNameTexture.width, stageNameTexture.height), stageNameTexture);
+			
+			GUI.DrawTexture (new Rect(Screen.width - stageNumberTexture.width - 100 - posNum, 220, stageNumberTexture.width, stageNumberTexture.height), stageNumberTexture);
+			GUI.DrawTexture (new Rect(Screen.width - stageNameTexture.width - 100 - posNam, 276, stageNameTexture.width, stageNameTexture.height), stageNameTexture);
+			GUI.DrawTexture (new Rect(Screen.width - lineTexture.width - 100 - 50, 266, lineTexture.width, lineTexture.height), lineTexture);
 		}
 	}
-
+	
 	private IEnumerator FadeIn ()
 	{
 		waiting = true;
 		showGui = true;
+		startTime = Time.time;
 		yield return new WaitForSeconds (2f);
 		waiting = false;
 		fadeIn = false;
 	}
-
+	
 	private IEnumerator FadeOut ()
 	{
 		waiting = true;
+		startTime = Time.time;
 		yield return new WaitForSeconds (2f);
 		waiting = false;
 		fadeOut = false;
 		showGui = false;
 	}
-
+	
 	private IEnumerator ShowAndWait ()
 	{
 		waiting = true;
-		yield return new WaitForSeconds (3f);
+		yield return new WaitForSeconds (3.5f);
 		waiting = false;
 		fadeOut = true;
 	}
-
+	
 	private IEnumerator WaitAndStart ()
 	{
 		yield return new WaitForSeconds (1f);
