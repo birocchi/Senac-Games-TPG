@@ -59,8 +59,6 @@ public class MenuController : MonoBehaviour
 					currentButton = 0;
 				}
 
-				Debug.Log (Input.mousePosition);
-
 				float axis = Input.GetAxis("Vertical");
 				if (axis != 0 && !changingFocus) {
 					if (GUI.GetNameOfFocusedControl() == "") {

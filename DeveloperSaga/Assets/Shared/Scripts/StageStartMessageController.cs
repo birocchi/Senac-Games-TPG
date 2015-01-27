@@ -18,7 +18,7 @@ public class StageStartMessageController : MonoBehaviour {
 	void Start () {
 		stageNumberTexture = Resources.Load<Texture2D>("Shared/GUI/stages/pt/stage." + stageNumber + ".number");
 		stageNameTexture = Resources.Load<Texture2D>("Shared/GUI/stages/pt/stage." + stageNumber + ".name");
-		lineTexture = Resources.Load<Texture2D>("Shared/GUI/stages/stage.line");
+		lineTexture = Resources.Load<Texture2D>("Shared/GUI/stages/pt/stage." + stageNumber + ".line");
 		StartCoroutine(WaitAndStart ());
 		startTime = Time.time;
 	}

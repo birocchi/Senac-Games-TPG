@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class AbilitiesManager : MonoBehaviour
 {
-
 		public List<Ability> abilitiesList;
 	
 		public Ability GetAbilityByName (string name)
